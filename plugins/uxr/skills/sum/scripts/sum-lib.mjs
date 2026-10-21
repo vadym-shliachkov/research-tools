@@ -70,6 +70,29 @@ export function resolveMethod(preset = 'sum3', modifiers = {}) {
   return { preset, config, string: methodString(config) };
 }
 
+// Proportions in the contract are written as 0.78, not 78: a percentage typed as a whole number would silently
+// rescale the score.
+const PROPORTIONS = ['completion_benchmark', 'gate_threshold'];
+export function contractErrors(contract) {
+  const errors = [];
+  const scopes = [['defaults', contract.defaults ?? {}], ...Object.entries(contract.tasks ?? {}).map(([t, tc]) => [`tasks.${t}`, tc ?? {}])];
+  for (const [where, tc] of scopes) {
+    for (const key of PROPORTIONS) {
+      const v = tc[key];
+      if (v !== undefined && !(typeof v === 'number' && v > 0 && v < 1)) errors.push(`${where}.${key} must be a proportion between 0 and 1 (78% is 0.78); got ${JSON.stringify(v)}.`);
+    }
+  }
+  return errors;
+}
+
+// The spread rule behind "the verdict depends on the method": applicable methods differ by more than 10 points
+// for some group. lists: one array of group percentages per method.
+export function dependsOnMethod(lists) {
+  const groups = Math.max(0, ...lists.map((l) => l.length));
+  return Array.from({ length: groups }, (_, gi) => lists.map((l) => l[gi]).filter(Number.isFinite))
+    .some((p) => p.length > 1 && Math.max(...p) - Math.min(...p) > 0.10);
+}
+
 // ---------- components ----------
 
 export function piecewise(p, b) {
@@ -84,7 +107,8 @@ export function completionComponent({ x, n }, { mode = 'original', benchmark, sm
   if (mode === 'original') { score = pUse; z = inv(pUse); }
   else if (mode === 'piecewise') { score = piecewise(pUse, benchmark); z = inv(score); }
   else { z = (pUse - benchmark) / (pUse * (1 - pUse)); score = cdf(z); }
-  return { x, n, p, ...(smoothing === 'laplace' ? { smoothed: pUse } : {}), score, z, pct: score, ci: adjustedWald(x, n) };
+  // Only a benchmark gives completion a target; in the original, 50% is the midpoint of Φ⁻¹, not a goal.
+  return { x, n, p, ...(smoothing === 'laplace' ? { smoothed: pUse } : {}), score, z, pct: score, targetPct: mode === 'original' ? null : 0.5, ci: adjustedWald(x, n) };
 }
 
 export function aggregate(parts, { agg = 'z-mean', shift = 0 } = {}) {
@@ -139,6 +163,8 @@ const satValue = (row, cols) => (cols.every((c) => row[c] !== null && row[c] !==
 
 function timeTarget(rows, tc, config, src, fixed) {
   if (fixed !== undefined) return fixed;
+  // A target carried from an earlier wave is frozen, including an empirical one, so the waves stay comparable.
+  if (tc.time_target_from_previous_s) return { value: tc.time_target_from_previous_s, source: 'previous wave' };
   if (config.timeTarget === 'target') {
     if (tc.time_target_s) return { value: tc.time_target_s, source: 'contract target' };
     if (tc.expert_time_s) {
@@ -193,7 +219,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       if (!Number.isFinite(inv(qUse)) && fixed.rescueExtremes) { qUse = (N - E + 0.5) / (N + 1); fixed.smoothed = true; }
       const z = inv(qUse);
       if (!Number.isFinite(z) && config.agg === 'z-mean') qa.errors.push({ code: 'errors-extreme', message: `Error-free rate is ${Math.round(q * 100)}%; its z-score is infinite. Choose smoothing (laplace) or percentage averaging.` });
-      components.errors = { errors: E, opportunities: N, rate: E / N, quality: q, ...(qUse !== q ? { smoothed: qUse } : {}), z, pct: qUse };
+      components.errors = { errors: E, opportunities: N, rate: E / N, quality: q, ...(qUse !== q ? { smoothed: qUse } : {}), z, pct: qUse, targetPct: null };
     }
     if (comp === 'time') {
       const target = timeTarget(rows, tc, config, src, fixed.time);
@@ -215,7 +241,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       components.time = {
         n: times.length, target: target.value, targetSource: target.source, log: config.timeLog,
         mean: mean(times), median: quantile(times, 0.5), geoMean: Math.exp(mean(times.map(Math.log))),
-        ci: config.timeLog ? ci.map(Math.exp) : ci, z, pct: cdf(z),
+        ci: config.timeLog ? ci.map(Math.exp) : ci, z, pct: cdf(z), targetPct: 0.5,
       };
     }
     if (comp === 'satisfaction') {
@@ -226,7 +252,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       const s = sd(vals);
       const z = zAgainst(m, tc.sat_target, s);
       if (Number.isNaN(z)) qa.errors.push({ code: 'zero-variance', message: `Every satisfaction rating is ${m}, not the target ${tc.sat_target}; the z-score is undefined.` });
-      const out = { n: vals.length, from: src.cols, scale: src.scale, target: tc.sat_target, mean: m, sd: s, ci: s > 0 ? tInterval(vals) : [m, m], z, pct: cdf(z) };
+      const out = { n: vals.length, from: src.cols, scale: src.scale, target: tc.sat_target, mean: m, sd: s, ci: s > 0 ? tInterval(vals) : [m, m], z, pct: cdf(z), targetPct: 0.5 };
       if (src.cols.length > 1) {
         const items = rows.filter((r) => src.cols.every((c) => r[c] !== null)).map((r) => src.cols.map((c) => r[c]));
         if (items.length >= 3) out.alpha = cronbachAlpha(items);
@@ -239,7 +265,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
   if (config.shift) qa.warnings.push({ code: 'sigma-shift', message: `A ${config.shift} sigma shift is applied; scores are not comparable with unshifted SUM.` });
   if (config.smoothing === 'laplace') qa.warnings.push({ code: 'smoothing', message: 'Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.' });
   const parts = config.components.map((k) => ({ ...components[k], weight: config.weights ? config.weights[k] ?? 0 : 1 }));
-  return { components, sum: aggregate(parts, config), qa };
+  return { components, sum: { ...aggregate(parts, config), targetPct: 0.5 }, qa };
 }
 
 function microsoftTask(rows, tc, header, qa) {
@@ -256,9 +282,11 @@ function microsoftTask(rows, tc, header, qa) {
   if (complete.length < rows.length) qa.warnings.push({ code: 'incomplete-rows', message: `${rows.length - complete.length} row(s) lack one of the four answers and are left out.` });
   const n = complete.length;
   if (!n) { qa.errors.push({ code: 'no-data', message: 'No complete rows.' }); return { components: {}, sum: null, qa }; }
+  // Each pass rate has no target of its own. The score's target is the pass rate the team agreed (gate_threshold);
+  // without one there is no target, and 50% is not one.
   const share = (pred) => {
     const x = complete.filter(pred).length;
-    return { x, n, pct: x / n, z: inv(x / n), ci: adjustedWald(x, n) };
+    return { x, n, pct: x / n, z: inv(x / n), ci: adjustedWald(x, n), targetPct: null };
   };
   const components = {
     completion: share((r) => r.success === 1),
@@ -267,7 +295,7 @@ function microsoftTask(rows, tc, header, qa) {
     satisfaction: { ...share((r) => r.satisfaction >= th.satisfaction), threshold: th.satisfaction },
   };
   const all = share((r) => r.success === 1 && r.perceived_time >= th.perceived_time && r.ease >= th.ease && r.satisfaction >= th.satisfaction);
-  return { components, sum: { pct: all.pct, z: all.z, x: all.x, n, ci: all.ci }, qa };
+  return { components, sum: { pct: all.pct, z: all.z, x: all.x, n, ci: all.ci, targetPct: tc.gate_threshold ?? null }, qa };
 }
 
 // ---------- whole study ----------
@@ -275,12 +303,17 @@ function microsoftTask(rows, tc, header, qa) {
 function productOf(tasks, config) {
   const ok = tasks.filter((t) => t.sum);
   if (!ok.length) return null;
-  if (config.kind === 'usability-score' || config.agg === 'pct-mean') {
+  if (config.kind === 'usability-score') {
+    const targets = unique(ok.map((t) => t.sum.targetPct));
     const pct = mean(ok.map((t) => t.sum.pct));
-    return { pct, z: inv(pct) };
+    return { pct, z: inv(pct), targetPct: targets.length === 1 ? targets[0] : null };
+  }
+  if (config.agg === 'pct-mean') {
+    const pct = mean(ok.map((t) => t.sum.pct));
+    return { pct, z: inv(pct), targetPct: 0.5 };
   }
   const z = mean(ok.map((t) => t.sum.z));
-  return { z, pct: cdf(z + (config.shift ?? 0)) };
+  return { z, pct: cdf(z + (config.shift ?? 0)), targetPct: 0.5 };
 }
 
 function scoreGroup(records, contract, config, header, fixed = {}) {
@@ -313,15 +346,26 @@ function bootstrapGroup(records, contract, config, header, fixed, B, seed) {
     for (const t of g.tasks) if (t.sum && Number.isFinite(t.sum.pct)) taskDraws.set(t.task, [...(taskDraws.get(t.task) ?? []), t.sum.pct]);
   }
   const ci = (xs) => (xs && xs.length >= 20 ? [quantile(xs, 0.025), quantile(xs, 0.975)] : null);
-  return { product: ci(productDraws), tasks: Object.fromEntries([...taskDraws].map(([k, v]) => [k, ci(v)])), skipped, smoothedSamples, B };
+  return { product: ci(productDraws), productDraws, tasks: Object.fromEntries([...taskDraws].map(([k, v]) => [k, ci(v)])), skipped, smoothedSamples, B };
+}
+
+// Range of a difference between two groups. Their bootstrap samples are independent, so pairing draw i with draw i
+// gives draws of the difference.
+function differenceCi(a, b) {
+  const n = Math.min(a.length, b.length);
+  if (n < 20) return null;
+  const d = Array.from({ length: n }, (_, i) => a[i] - b[i]);
+  return [quantile(d, 0.025), quantile(d, 0.975)];
 }
 
 export function runSum(table, contract, opts = {}) {
   const { method = 'auto', modifiers = {}, bootstrap = 2000, seed = 20261021, sensitivity = method === 'auto' } = opts;
   let resolved;
   let choice = null;
+  const invalid = contractErrors(contract);
+  if (invalid.length) return { status: 'error', message: invalid.join(' ') };
   if (method === 'auto') {
-    choice = choose(table, contract);
+    choice = choose(table, contract, modifiers);
     if (choice.status !== 'ok') return { status: choice.status, question: choice.question, options: choice.options, message: choice.message, choice };
     try { resolved = Object.keys(modifiers).length ? resolveMethod(choice.preset, { ...choice.config, ...modifiers }) : { preset: choice.preset, config: choice.config, string: methodString(choice.config) }; }
     catch (e) { return { status: 'error', message: e.message }; }
@@ -347,38 +391,45 @@ export function runSum(table, contract, opts = {}) {
   });
 
   const status = needs.size ? 'needs-input' : qa.errors.length ? 'error' : 'ok';
+  const draws = [];
   if (status === 'ok' && bootstrap > 0) {
     groups.forEach((g, gi) => {
       const fixed = Object.fromEntries(g.tasks.map((t) => [t.task, t.components.time ? { time: { value: t.components.time.target, source: t.components.time.targetSource } } : {}]));
       const bs = bootstrapGroup(g.records, contract, config, table.header, fixed, bootstrap, seed + gi);
       g.product.ci = bs.product;
+      draws[gi] = bs.productDraws;
       for (const t of g.tasks) t.sum.ci = t.sum.ci ?? bs.tasks[t.task] ?? null;
       g.bootstrap = { B: bs.B, skipped: bs.skipped, smoothedSamples: bs.smoothedSamples, seed: seed + gi, unit: 'participant' };
       if (bs.skipped / bs.B > 0.05) qa.warnings.push({ code: 'bootstrap-skips', message: `${bs.skipped} of ${bs.B} bootstrap samples gave an undefined score; the interval is approximate.`, where: g.group ? `group ${g.group}` : 'all tasks' });
     });
   }
   for (const g of groups) delete g.records;
+  const prevDiff = contract.previous?.differences ?? [];
+  if (prevDiff.length) qa.warnings.push({ code: 'previous-differs', message: `The contract differs from the previous wave (${prevDiff.join('; ')}), so the waves are not directly comparable.`, where: 'contract' });
+
+  // Every group against the first one, so a comparison of designs reports the difference and how sure it is.
+  const comparison = status === 'ok' && groups.length > 1
+    ? groups.slice(1).map((g, i) => ({ group: g.group, vs: groups[0].group, diff: g.product.pct - groups[0].product.pct, ci: draws.length ? differenceCi(draws[i + 1], draws[0]) : null }))
+    : null;
 
   const result = {
     status, version: VERSION,
     method: { preset: resolved.preset, string: resolved.string, config },
     ...(choice ? { choice: { reasons: choice.reasons, suggestions: choice.suggestions } } : {}),
-    groups, qa,
+    groups, ...(comparison ? { comparison } : {}), qa,
     ...(needs.size ? { question: `The contract is missing: ${[...needs].join('; ')}.`, message: `Missing: ${[...needs].join('; ')}` } : {}),
   };
 
   if (status === 'ok' && sensitivity) {
     result.sensitivity = compareMethods(table, contract, { exclude: resolved.preset, smoothing: config.smoothing });
-    const chosen = groups.map((g) => g.product.pct);
-    result.methodDependent = groups.some((g, gi) => {
-      const pcts = [chosen[gi], ...result.sensitivity.filter((s) => s.status === 'ok').map((s) => s.products[gi]?.pct).filter(Number.isFinite)];
-      return Math.max(...pcts) - Math.min(...pcts) > 0.10;
-    });
+    const ok = result.sensitivity.filter((s) => s.status === 'ok');
+    result.methodDependent = dependsOnMethod([groups.map((g) => g.product.pct), ...ok.map((s) => s.products.map((p) => p.pct))]);
   }
   return result;
 }
 
-export function compareMethods(table, contract, { exclude = null, smoothing = 'none' } = {}) {
+// bootstrap > 0 adds each method's range and quality warnings, for the side-by-side comparison the user reads.
+export function compareMethods(table, contract, { exclude = null, smoothing = 'none', bootstrap = 0, seed } = {}) {
   const out = [];
   for (const preset of Object.keys(PRESETS)) {
     if (preset === exclude) continue;
@@ -388,9 +439,13 @@ export function compareMethods(table, contract, { exclude = null, smoothing = 'n
     else if (preset === 'sum4' && !contract.defaults?.error_opportunities_predefined) why = 'error opportunities were not defined before the study';
     else if (preset === 'pearson' && contract.defaults?.completion_benchmark === undefined) why = 'no completion benchmark';
     if (why) { out.push({ preset, status: 'not-applicable', reason: why }); continue; }
-    const r = runSum(table, contract, { method: preset, modifiers: preset === 'microsoft' || smoothing === 'none' ? {} : { smoothing }, bootstrap: 0, sensitivity: false });
+    const r = runSum(table, contract, { method: preset, modifiers: preset === 'microsoft' || smoothing === 'none' ? {} : { smoothing }, bootstrap, ...(seed !== undefined ? { seed } : {}), sensitivity: false });
     out.push(r.status === 'ok'
-      ? { preset, string: r.method.string, status: 'ok', products: r.groups.map((g) => ({ group: g.group, pct: g.product.pct })) }
+      ? {
+        preset, string: r.method.string, status: 'ok',
+        products: r.groups.map((g) => ({ group: g.group, pct: g.product.pct, ...(bootstrap ? { ci: g.product.ci ?? null } : {}) })),
+        ...(bootstrap ? { warnings: r.qa.warnings.map((w) => `${w.where}: ${w.message}`) } : {}),
+      }
       : { preset, status: 'not-applicable', reason: r.message ?? r.qa?.errors?.[0]?.message ?? r.status });
   }
   return out;
@@ -401,7 +456,8 @@ export function compareMethods(table, contract, { exclude = null, smoothing = 'n
 const sameConfig = (a, b) => ['components', 'agg', 'completion', 'timeTarget', 'timeLog', 'failedTime', 'shift', 'weights']
   .every((k) => JSON.stringify(a[k]) === JSON.stringify(b[k]));
 
-export function choose(table, contract) {
+// modifiers: the ones the user already chose (for example --smoothing laplace after the 0%/100% question).
+export function choose(table, contract, modifiers = {}) {
   const header = table.header;
   const records = toRecords(table);
   const tasks = unique(records.map((r) => r.task_id));
@@ -409,10 +465,13 @@ export function choose(table, contract) {
   const reasons = [];
   const suggestions = [];
   const say = (rule, decision, why) => reasons.push({ rule, decision, why });
+  const invalid = contractErrors(contract);
+  if (invalid.length) return { status: 'error', message: invalid.join(' '), reasons, suggestions };
 
   if (contract.previous?.method?.config) {
     const prev = contract.previous.method;
-    say('previous-run', `reuse ${prev.preset}`, 'A previous wave of this study exists. Reusing its method and targets keeps the waves comparable.');
+    const diff = contract.previous.differences ?? [];
+    say('previous-run', `reuse ${prev.preset}`, `A previous wave of this study exists. Reusing its method and targets keeps the waves comparable.${diff.length ? ` But the contract differs from it (${diff.join('; ')}), so the waves are not directly comparable.` : ''}`);
     return { status: 'ok', preset: prev.preset, config: prev.config, string: methodString(prev.config), reasons, suggestions };
   }
 
@@ -427,6 +486,7 @@ export function choose(table, contract) {
   if (msReady && contract.goal === 'gate') {
     say('goal-gate', 'microsoft', 'The goal is a pass/fail gate and all four ratings are present; the share of users who passed everything is the clearest answer.');
     suggestions.push('Show sum3 next to it for gradation (it is in the sensitivity table).');
+    if (d.gate_threshold === undefined) suggestions.push('No pass mark (gate_threshold) was agreed, so the score is reported without a target: as the share of people who passed everything, with its range.');
     const config = PRESETS.microsoft;
     return { status: 'ok', preset: 'microsoft', config, string: methodString(config), reasons, suggestions };
   }
@@ -475,9 +535,17 @@ export function choose(table, contract) {
     const E = errRows.reduce((s, r) => s + (r.errors ?? 0), 0);
     return x === 0 || x === rows.length || (config.components.includes('errors') && errRows.length && E === 0);
   });
+  // The fix for an infinite z-score changes the method, so the user picks it; autopilot does not.
   if (extreme.length && config.agg === 'z-mean') {
-    config.smoothing = 'laplace';
-    say('extremes', 'smoothing=laplace', `Task(s) ${extreme.join(', ')} have 0% or 100% on a proportion, whose z-score is infinite; Laplace smoothing keeps the score finite and is labelled.`);
+    const fix = modifiers.smoothing === 'laplace' ? 'smoothing=laplace' : modifiers.agg === 'pct-mean' ? 'agg=pct-mean' : null;
+    if (!fix) {
+      return {
+        status: 'needs-input', reasons, suggestions,
+        question: `Task(s) ${extreme.join(', ')} have 0% or 100% on a proportion, so its original z-score is infinite. Which fix should be used: Laplace smoothing ((x+0.5)/(n+1), labelled; 5 of 5 counts as about 92%), percentage averaging (MeasuringU style), or a different method?`,
+        options: ['--smoothing laplace', '--agg pct-mean', '--method <preset>'], flag: 'rerun with the chosen modifier',
+      };
+    }
+    say('extremes', fix, `Task(s) ${extreme.join(', ')} have 0% or 100% on a proportion, whose z-score is infinite. ${fix === 'smoothing=laplace' ? 'Laplace smoothing was chosen; it keeps the score finite and is labelled.' : 'Percentage averaging was chosen; it needs no z-score for proportions.'}`);
   }
 
   if (tasks.length >= 10 && records.length >= 100 && contract.goal === 'diagnose') {

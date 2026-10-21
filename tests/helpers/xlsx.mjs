@@ -56,7 +56,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const colName = (i) => { let s = ''; for (i++; i > 0; i = Math.floor((i - 1) / 26)) s = String.fromCharCode(65 + ((i - 1) % 26)) + s; return s; };
 
 // sheets: { name: rows }, rows: arrays of cells; a cell is a string, a number, null,
-// or { v: number, fmt: 'time' | 'date' } to store a styled Excel serial value.
+// or { v: number, fmt: 'time' | 'date' | 'h:mm' } to store a styled Excel serial value ('time' is h:mm:ss).
 export function xlsx(sheets) {
   const strings = [];
   const sIndex = (s) => { let i = strings.indexOf(s); if (i < 0) { i = strings.length; strings.push(s); } return i; };
@@ -68,14 +68,14 @@ export function xlsx(sheets) {
     'xl/_rels/workbook.xml.rels': `<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${
       names.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')}</Relationships>`,
     // Style 0: general, 1: built-in time h:mm:ss (21), 2: built-in date (14).
-    'xl/styles.xml': '<?xml version="1.0"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cellXfs count="3"><xf numFmtId="0"/><xf numFmtId="21" applyNumberFormat="1"/><xf numFmtId="14" applyNumberFormat="1"/></cellXfs></styleSheet>',
+    'xl/styles.xml': '<?xml version="1.0"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cellXfs count="4"><xf numFmtId="0"/><xf numFmtId="21" applyNumberFormat="1"/><xf numFmtId="14" applyNumberFormat="1"/><xf numFmtId="20" applyNumberFormat="1"/></cellXfs></styleSheet>',
   };
   names.forEach((n, si) => {
     const rows = sheets[n].map((row, r) => `<row r="${r + 1}">${row.map((cell, c) => {
       const ref = `${colName(c)}${r + 1}`;
       if (cell === null || cell === undefined) return '';
       if (typeof cell === 'number') return `<c r="${ref}"><v>${cell}</v></c>`;
-      if (typeof cell === 'object') return `<c r="${ref}" s="${cell.fmt === 'time' ? 1 : 2}"><v>${cell.v}</v></c>`;
+      if (typeof cell === 'object') return `<c r="${ref}" s="${{ time: 1, date: 2, 'h:mm': 3 }[cell.fmt]}"><v>${cell.v}</v></c>`;
       return `<c r="${ref}" t="s"><v>${sIndex(cell)}</v></c>`;
     }).join('')}</row>`).join('');
     files[`xl/worksheets/sheet${si + 1}.xml`] = `<?xml version="1.0"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rows}</sheetData></worksheet>`;

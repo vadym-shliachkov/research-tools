@@ -5,20 +5,20 @@
    - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
    - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
    - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
-     only carry meaning: at or above the target, below it. */
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
 
 /* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
    does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
 @page {
   size: A4; margin: 20mm 20mm 22mm;
-  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #667085; }
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
 }
 @page :first { margin-top: 14mm; @bottom-right { content: none; } }
 
 :root {
   --ink: #1d2433;
   --body: #344054;
-  --muted: #667085;
+  --muted: #5f6980;
   --line: #e4e7ec;
   --surface: #f6f7f9;
   --accent: #1f3a5f;
@@ -27,6 +27,7 @@
   --good-soft: #ecfdf3;
   --bad: #b42318;
   --bad-soft: #fef3f2;
+  --unsure: #7d8799;
 
   --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
   --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
@@ -74,14 +75,16 @@ section > h2 { break-inside: avoid; }
 .band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
 
 .glance { padding: 8mm 0 0; }
-.glance-head { display: flex; gap: 8mm; align-items: flex-start; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
 .score { flex: none; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
 .score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
 .score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
 .score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
-.verdict { font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
 
-/* ---- Component bars: the bar is the score, the line at 50% is "exactly on target", the whisker is the range. ---- */
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
 .bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
 .bars .label { color: var(--ink); }
 .bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
@@ -89,19 +92,20 @@ section > h2 { break-inside: avoid; }
 .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
 .fill.below { background: var(--bad); }
 .fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
 .mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
 .ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
 .ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
 .ci::before { left: 0; }
 .ci::after { right: 0; }
 .bars .value { text-align: right; font-weight: 600; color: var(--ink); }
-.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; break-before: avoid; }
 
 /* ---- Boxes ---- */
 .callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
 .callout.warn { background: var(--bad-soft); }
 .callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
-code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; word-break: break-all; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
 
 /* ---- Tables ---- */
 table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
@@ -118,4 +122,16 @@ td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
 
 @media screen {
   body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
 }

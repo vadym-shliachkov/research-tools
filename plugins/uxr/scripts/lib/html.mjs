@@ -33,20 +33,33 @@ ${body}
 const clamp = (x) => Math.max(0, Math.min(1, x));
 const pctText = (x) => `${Math.round(x * 100)}%`;
 
-// rows: [{ label, sub, pct, ci: [lo, hi] | null }]. The fill shows the score, the line at 50% is "on target".
+// The colour states the verdict, so it follows the range when there is one: a bar whose range crosses the target
+// line is neutral, whatever side its point estimate is on. Without a target there is no line and no verdict colour.
+function verdictClass(r, target) {
+  if (target === null) return 'neutral';
+  const ci = r.ci && r.ci.every(Number.isFinite) ? r.ci : null;
+  if (!ci) return r.pct < target ? 'below' : 'above';
+  return ci[0] > target ? 'above' : ci[1] < target ? 'below' : 'neutral';
+}
+
+// rows: [{ label, sub, pct, ci: [lo, hi] | null, target: 0..1 | null }]. The fill shows the score, the line marks the
+// target (50% when target is not given).
 export function bars(rows) {
   return `<div class="bars">${rows.map((r) => {
-    const cls = r.pct < 0.5 ? 'below' : 'above';
+    const target = r.target === undefined ? 0.5 : r.target;
     const ci = r.ci && r.ci.every(Number.isFinite)
       ? `<span class="ci" style="left:${(clamp(r.ci[0]) * 100).toFixed(1)}%;width:${((clamp(r.ci[1]) - clamp(r.ci[0])) * 100).toFixed(1)}%"></span>` : '';
+    const mid = target === null ? '' : `<span class="mid" style="left:${(clamp(target) * 100).toFixed(1)}%"></span>`;
     return `<div class="label">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</div>`
-      + `<div class="track"><span class="fill ${cls}" style="width:${(clamp(r.pct) * 100).toFixed(1)}%"></span><span class="mid"></span>${ci}</div>`
+      + `<div class="track"><span class="fill ${verdictClass(r, target)}" style="width:${(clamp(r.pct) * 100).toFixed(1)}%"></span>${mid}${ci}</div>`
       + `<div class="value">${pctText(r.pct)}</div>`;
   }).join('')}</div>`;
 }
 
 // Writes the HTML and prints it to PDF next to it. Returns the PDF path, or null with a warning when it cannot print.
-export function writeDocument(html, htmlPath, browser, warnings) {
+export function writeDocument(html, htmlFile, browser, warnings) {
+  // The browser resolves a relative --print-to-pdf path against its own folder, not ours.
+  const htmlPath = path.resolve(htmlFile);
   fs.mkdirSync(path.dirname(htmlPath), { recursive: true });
   fs.writeFileSync(htmlPath, html);
   const pdfPath = htmlPath.replace(/\.html$/, '.pdf');

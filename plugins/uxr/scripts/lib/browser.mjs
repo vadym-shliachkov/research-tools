@@ -29,7 +29,10 @@ export function findBrowser(env = process.env, platform = process.platform, exis
   return browserCandidates(env, platform).find((p) => exists(p)) ?? null;
 }
 
-export function printPdf(browser, htmlPath, pdfPath, { timeoutMs = 120000 } = {}) {
+export function printPdf(browser, htmlFile, pdfFile, { timeoutMs = 120000 } = {}) {
+  // Both paths absolute: Chrome resolves a relative --print-to-pdf path against its own folder.
+  const htmlPath = path.resolve(htmlFile);
+  const pdfPath = path.resolve(pdfFile);
   const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'uxr-chrome-'));
   try {
     const r = spawnSync(browser, [
@@ -38,7 +41,7 @@ export function printPdf(browser, htmlPath, pdfPath, { timeoutMs = 120000 } = {}
       `--print-to-pdf=${pdfPath}`, '--virtual-time-budget=10000', pathToFileURL(htmlPath).href,
     ], { timeout: timeoutMs, stdio: 'pipe' });
     if (!fs.existsSync(pdfPath) || fs.statSync(pdfPath).size === 0) {
-      throw new Error(`The browser did not produce a PDF (exit ${r.status ?? 'timeout'}). ${String(r.stderr ?? '').slice(0, 300)}`);
+      throw new Error(`The browser (${path.basename(browser)}) exited with ${r.status ?? 'a timeout'} but wrote no PDF at ${pdfPath}.`);
     }
   } finally {
     try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch { /* browser may still hold files on Windows */ }

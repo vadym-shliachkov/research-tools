@@ -25,29 +25,39 @@ const USAGE = `Usage:
   uxr.mjs readability <explainer.json>
   uxr.mjs check-edit <draft.json> <edited.json>`;
 
-const { values: opt, positionals } = parseArgs({
-  allowPositionals: true,
-  options: {
-    out: { type: 'string' }, sheet: { type: 'string' }, 'json-path': { type: 'string' }, delimiter: { type: 'string' },
-    'header-row': { type: 'string' }, mapping: { type: 'string' }, log: { type: 'string' }, study: { type: 'string' },
-  },
-});
-const [command, input, second] = positionals;
-
-const readTable = (p) => parseCsv(fs.readFileSync(p, 'utf8').replace(/^﻿/, ''));
-const write = (p, content) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, content); };
 function finish(result) {
   console.log(JSON.stringify(result, null, 2));
   process.exit(result.status === 'ok' ? 0 : result.status === 'needs-input' ? 2 : 1);
 }
 
+let parsed;
+try {
+  parsed = parseArgs({
+    allowPositionals: true,
+    options: {
+      out: { type: 'string' }, sheet: { type: 'string' }, 'json-path': { type: 'string' }, delimiter: { type: 'string' },
+      'header-row': { type: 'string' }, mapping: { type: 'string' }, log: { type: 'string' }, study: { type: 'string' },
+      help: { type: 'boolean' },
+    },
+  });
+} catch (e) {
+  finish({ status: 'error', message: `${e.message}\n${USAGE}` });
+}
+const { values: opt, positionals } = parsed;
+const [command, input, second] = positionals;
+
+const readTable = (p) => parseCsv(fs.readFileSync(p, 'utf8').replace(/^﻿/, ''));
+const write = (p, content) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, content); };
+
 const slug = (s) => String(s ?? 'study').toLowerCase().normalize('NFKC').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '') || 'study';
+// The user's own calendar date, not UTC: a run in Kyiv just after midnight belongs to the new day.
+const localDate = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 const COMMANDS = {
   'out-dir'() {
     const isFile = input !== '-' && fs.existsSync(input) && fs.statSync(input).isFile();
     const base = path.join(isFile ? path.dirname(path.resolve(input)) : process.cwd(), 'uxr-results');
-    const stem = `${slug(opt.study)}-${new Date().toISOString().slice(0, 10)}`;
+    const stem = `${slug(opt.study)}-${localDate()}`;
     let dir = path.join(base, stem);
     for (let i = 2; fs.existsSync(dir); i++) dir = path.join(base, `${stem}-${i}`);
     fs.mkdirSync(dir, { recursive: true });
@@ -87,6 +97,7 @@ const COMMANDS = {
   },
 };
 
+if (opt.help) finish({ status: 'ok', usage: USAGE });
 if (!COMMANDS[command] || !input) finish({ status: 'error', message: USAGE });
 try {
   finish(COMMANDS[command]());

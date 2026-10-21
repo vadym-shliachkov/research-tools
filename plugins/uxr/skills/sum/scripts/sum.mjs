@@ -11,7 +11,7 @@ const fs = await import('node:fs');
 const path = await import('node:path');
 const { parseArgs } = await import('node:util');
 const { parseCsv } = await import('../../../scripts/lib/csv.mjs');
-const { validateExplainer, renderExplainerHtml } = await import('../../../scripts/lib/explainer.mjs');
+const { validateExplainer, verdictErrors, renderExplainerHtml } = await import('../../../scripts/lib/explainer.mjs');
 const { writeDocument } = await import('../../../scripts/lib/html.mjs');
 const { findBrowser } = await import('../../../scripts/lib/browser.mjs');
 const SUM = await import('./sum-lib.mjs');
@@ -25,30 +25,37 @@ const USAGE = `Usage:
               [--smoothing none|laplace] [--time-target target|empirical] [--time-log log|raw]
               [--failed-time exclude|cutoff] [--weights c=.5,t=.25,s=.25] [--shift 0|1.5]
               [--bootstrap 2000] [--seed N] [--previous result.json] --out result.json
-  sum.mjs compare <data.csv> --contract contract.json
+  sum.mjs compare <data.csv> --contract contract.json [--smoothing none|laplace] [--bootstrap 1000] [--previous result.json] [--out compare.json]
   sum.mjs report <result.json> --out-dir DIR [--lang en|ua]       report.md + report.html
   sum.mjs facts <result.json> [--lang en|ua] [--out facts.json]   plain facts for the explainer draft
   sum.mjs explainer <explainer.json> --result result.json --out-dir DIR   explainer HTML + PDF (after the editor)`;
 
-const { values: opt, positionals } = parseArgs({
-  allowPositionals: true,
-  options: {
-    contract: { type: 'string' }, mapping: { type: 'string' }, previous: { type: 'string' }, out: { type: 'string' },
-    method: { type: 'string' }, components: { type: 'string' }, agg: { type: 'string' }, completion: { type: 'string' },
-    smoothing: { type: 'string' }, 'time-target': { type: 'string' }, 'time-log': { type: 'string' },
-    'failed-time': { type: 'string' }, weights: { type: 'string' }, shift: { type: 'string' },
-    bootstrap: { type: 'string' }, seed: { type: 'string' }, study: { type: 'string' },
-    'out-dir': { type: 'string' }, lang: { type: 'string' }, result: { type: 'string' },
-  },
-});
-const [command, dataPath] = positionals;
-
-const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
-const write = (p, obj) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, JSON.stringify(obj, null, 2)); };
 function finish(result) {
   console.log(JSON.stringify(result, null, 2));
   process.exit(result.status === 'ok' ? 0 : result.status === 'needs-input' ? 2 : 1);
 }
+
+let parsed;
+try {
+  parsed = parseArgs({
+    allowPositionals: true,
+    options: {
+      contract: { type: 'string' }, mapping: { type: 'string' }, previous: { type: 'string' }, out: { type: 'string' },
+      method: { type: 'string' }, components: { type: 'string' }, agg: { type: 'string' }, completion: { type: 'string' },
+      smoothing: { type: 'string' }, 'time-target': { type: 'string' }, 'time-log': { type: 'string' },
+      'failed-time': { type: 'string' }, weights: { type: 'string' }, shift: { type: 'string' },
+      bootstrap: { type: 'string' }, seed: { type: 'string' }, study: { type: 'string' },
+      'out-dir': { type: 'string' }, lang: { type: 'string' }, result: { type: 'string' }, help: { type: 'boolean' },
+    },
+  });
+} catch (e) {
+  finish({ status: 'error', message: `${e.message}\n${USAGE}` });
+}
+const { values: opt, positionals } = parsed;
+const [command, dataPath] = positionals;
+
+const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+const write = (p, obj) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, JSON.stringify(obj, null, 2)); };
 
 // null in a contract means "not decided"; the calculator treats only defined values as decisions.
 function dropNulls(v) {
@@ -57,19 +64,47 @@ function dropNulls(v) {
   return v;
 }
 
+// Every decision that makes two waves comparable. Values missing from this wave's contract are carried over from
+// the previous one; values that differ are listed, so the run can warn that the waves are not comparable.
+const CARRIED = ['scales', 'satisfaction_from', 'sat_target', 'time_target_s', 'expert_time_s', 'expert_multiplier', 'cutoff_s',
+  'completion_benchmark', 'error_opportunities_predefined', 'thresholds', 'gate_threshold'];
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+function carryPrevious(contract, prev) {
+  const differences = [];
+  const prevContract = dropNulls(prev.contract ?? {});
+  const carry = (cur, before, where) => {
+    for (const k of CARRIED) {
+      if (before?.[k] === undefined) continue;
+      if (cur[k] === undefined) cur[k] = before[k];
+      else if (!same(cur[k], before[k])) differences.push(`${where}.${k} was ${JSON.stringify(before[k])}, now ${JSON.stringify(cur[k])}`);
+    }
+  };
+  contract.defaults ??= {};
+  contract.tasks ??= {};
+  carry(contract.defaults, prevContract.defaults, 'defaults');
+  for (const [t, tc] of Object.entries(prevContract.tasks ?? {})) carry((contract.tasks[t] ??= {}), tc, `tasks.${t}`);
+  // The time target each task actually used, including an empirical one, is frozen for this wave.
+  for (const g of prev.groups ?? []) {
+    for (const t of g.tasks ?? []) {
+      const target = t.components?.time?.target;
+      if (!target) continue;
+      const tc = (contract.tasks[t.task] ??= {});
+      const explicit = tc.time_target_s ?? contract.defaults.time_target_s;
+      if (explicit !== undefined && explicit !== target) differences.push(`task ${t.task} time target was ${Math.round(target)} s, now ${explicit} s`);
+      else tc.time_target_from_previous_s = target;
+    }
+  }
+  return [...new Set(differences)];
+}
+
 function loadContract() {
   if (!opt.contract) throw new Error('--contract is required');
   const contract = dropNulls(readJson(opt.contract));
   if (opt.previous) {
     const prev = readJson(opt.previous);
-    contract.previous = { method: prev.method, from: opt.previous };
-    contract.tasks ??= {};
-    for (const g of prev.groups ?? []) {
-      for (const t of g.tasks ?? []) {
-        const target = t.components?.time?.target;
-        if (target && !contract.tasks[t.task]?.time_target_s) contract.tasks[t.task] = { ...(contract.tasks[t.task] ?? {}), time_target_s: target };
-      }
-    }
+    const differences = carryPrevious(contract, prev);
+    contract.previous = { method: prev.method, from: opt.previous, differences };
   }
   return contract;
 }
@@ -84,6 +119,7 @@ const pct = (x) => (Number.isFinite(x) ? Math.round(x * 1000) / 10 : null);
 function summary(r) {
   return {
     status: r.status, method: r.method?.string, preset: r.method?.preset,
+    ...(r.message && !r.question ? { message: r.message } : {}),
     ...(r.question ? { question: r.question, options: r.options } : {}),
     ...(r.choice ? { reasons: r.choice.reasons.map((x) => `${x.decision}: ${x.why}`), suggestions: r.choice.suggestions } : {}),
     groups: r.groups?.map((g) => ({
@@ -94,6 +130,7 @@ function summary(r) {
         components: Object.fromEntries(Object.entries(t.components).map(([k, c]) => [k, { pct: pct(c.pct), z: Number.isFinite(c.z) ? Math.round(c.z * 1000) / 1000 : c.z }])),
       })),
     })),
+    comparison: r.comparison?.map((c) => ({ group: c.group, vs: c.vs, diffPoints: pct(c.diff), ci: c.ci?.map(pct) ?? null })),
     sensitivity: r.sensitivity?.map((s) => (s.status === 'ok' ? `${s.preset}: ${s.products.map((p) => `${p.group ? `${p.group} ` : ''}${pct(p.pct)}%`).join(', ')}` : `${s.preset}: not applicable (${s.reason})`)),
     methodDependent: r.methodDependent,
     qa: r.qa && { errors: r.qa.errors.map((e) => `${e.where}: ${e.message}`), warnings: r.qa.warnings.map((w) => `${w.where}: ${w.message}`) },
@@ -114,6 +151,7 @@ const COMMANDS = {
       defaults: {
         scales, satisfaction_from: null, sat_target: null, time_target_s: null, expert_time_s: null, expert_multiplier: 3,
         cutoff_s: null, completion_benchmark: null, error_opportunities_predefined: table.header.includes('errors') ? null : false,
+        gate_threshold: null,
       },
       tasks: Object.fromEntries(tasks.map((t) => [t, {}])),
       compare_with_measuringu: false, accessibility_data: false,
@@ -123,16 +161,19 @@ const COMMANDS = {
       { key: 'defaults.satisfaction_from', question: `Which rating is satisfaction? Candidates: ${[...ratings, ...(items.length ? [`average of ${items.join(', ')}`] : [])].join('; ') || 'none found'}. The original SUM averaged ease, satisfaction and perceived time.` },
       { key: 'defaults.sat_target', question: 'What average rating counts as good? Common choices: 4 on a 5-point scale; 5.6 (Sauro & Kindlund) or 5 (Autodesk) on a 7-point scale.' },
       { key: 'defaults.time_target_s or tasks.<task>.time_target_s', question: `What is an acceptable time for each task (${tasks.join(', ')})? Or an expert time to multiply by 3. Leave empty to let autopilot derive it from satisfied users.` },
-      { key: 'defaults.completion_benchmark', question: 'Is there a completion rate the task must reach (for example 78%)? Leave empty if not.' },
+      { key: 'defaults.completion_benchmark', question: 'Is there a completion rate the task must reach (for example 78%, written 0.78)? Leave empty if not.' },
       { key: 'defaults.cutoff_s', question: 'Was there a time limit per task? It is needed if failed attempts should count at the limit.' },
     ];
     if (table.header.includes('errors')) toFill.push({ key: 'defaults.error_opportunities_predefined', question: 'Were the possible errors for each task listed before the study started (yes/no)?' });
+    if (['success', 'perceived_time', 'ease', 'satisfaction'].every((c) => table.header.includes(c))) {
+      toFill.push({ key: 'defaults.gate_threshold', question: 'If the goal is a pass/fail gate: what share of people must pass everything (finish, and rate time, ease and satisfaction good enough) for the product to pass, for example 80% (written 0.8)? Leave empty to report the share without a target.' });
+    }
     for (const missing of Object.keys(scales).length ? [] : ratings) toFill.push({ key: `defaults.scales.${missing}`, question: `What is the scale of ${missing} (for example 1–5)?` });
     if (opt.out) write(opt.out, contract);
     return { status: 'ok', out: opt.out ?? null, contract, toFill };
   },
   choose(table) {
-    const c = SUM.choose(table, loadContract());
+    const c = SUM.choose(table, loadContract(), modifiers());
     return { ...c, reasons: c.reasons?.map((x) => ({ ...x })) };
   },
   run(table) {
@@ -146,7 +187,21 @@ const COMMANDS = {
     return { ...summary(r), out: opt.out ?? null };
   },
   compare(table) {
-    return { status: 'ok', methods: SUM.compareMethods(table, loadContract()).map((s) => ({ ...s, products: s.products?.map((p) => ({ group: p.group, pct: pct(p.pct) })) })) };
+    const contract = loadContract();
+    const invalid = SUM.contractErrors(contract);
+    if (invalid.length) return { status: 'error', message: invalid.join(' ') };
+    const methods = SUM.compareMethods(table, contract, {
+      smoothing: opt.smoothing ?? 'none', bootstrap: opt.bootstrap !== undefined ? Number(opt.bootstrap) : 1000,
+      ...(opt.seed !== undefined ? { seed: Number(opt.seed) } : {}),
+    });
+    const ok = methods.filter((s) => s.status === 'ok');
+    const out = {
+      status: 'ok',
+      methods: methods.map((s) => ({ ...s, products: s.products?.map((p) => ({ group: p.group, pct: pct(p.pct), ci: p.ci?.map(pct) ?? null })) })),
+      methodDependent: SUM.dependsOnMethod(ok.map((s) => s.products.map((p) => p.pct))),
+    };
+    if (opt.out) write(opt.out, { ...out, contract, data: path.resolve(dataPath), generated_at: new Date().toISOString() });
+    return { ...out, out: opt.out ?? null };
   },
 };
 
@@ -175,14 +230,19 @@ const DOC_COMMANDS = {
     if (errors.length) return { status: 'error', message: errors.join('; ') };
     if (!doc.review) return { status: 'error', message: 'This explainer has no editor review. Run the plain-language editor on it first, then render the edited file.' };
     const result = readJson(opt.result);
+    // The verdict is judged here against the result itself, so wording that overstates it cannot reach the PDF.
+    const facts = REPORT.explainerFacts(result, doc.lang);
+    const overstated = verdictErrors(doc, facts.overall?.verdict);
+    if (overstated.length) return { status: 'error', message: overstated.join('; '), errors: overstated };
     const html = renderExplainerHtml(doc, { chart: REPORT.explainerChart(result, doc.lang) });
     const warnings = [];
-    const htmlPath = path.join(opt['out-dir'], `explainer${suffix(doc.lang)}.html`);
+    const htmlPath = path.resolve(opt['out-dir'], `explainer${suffix(doc.lang)}.html`);
     const pdf = writeDocument(html, htmlPath, findBrowser(), warnings);
     return { status: 'ok', html: htmlPath, pdf, warnings, review: doc.review };
   },
 };
 
+if (opt.help) finish({ status: 'ok', usage: USAGE });
 if ((!COMMANDS[command] && !DOC_COMMANDS[command]) || !dataPath) finish({ status: 'error', message: USAGE });
 try {
   if (DOC_COMMANDS[command]) finish(DOC_COMMANDS[command](readJson(dataPath)));

@@ -1,11 +1,11 @@
 # SUM methods: presets, modifiers, formulas and sources
 
 Every run records its resolved method string, for example
-`SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1`. Two SUM numbers are comparable only when their method strings match. Never write "SUM = 67%" without the method.
+`SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1`. Two SUM numbers are comparable only when their method strings match **and** their targets and scales match. The string does not hold the targets; `result.json` records the contract, and `--previous` warns when a later wave's targets differ. Never write "SUM = 67%" without the method.
 
 ## Common building blocks
 
-Each component becomes a **z-score against its target** and a **percentage** `Φ(z)`. 50% means exactly on target; above 50% is better than the target.
+Each component becomes a **z-score against its target** and a **percentage** `Φ(z)`. For time and satisfaction, 50% means exactly on target; above 50% is better than the target. Completion (without a benchmark) and the error-free rate have **no target**: their z is Φ⁻¹ of the share itself, so 50% is only the midpoint of that scale. Reports show them as plain shares, not as on or off target.
 
 | Component | Raw input | z | Percentage |
 |---|---|---|---|
@@ -28,7 +28,8 @@ The two give different numbers on the same data: on the source report's checkout
 - Completion: adjusted-Wald 95% interval (Sauro & Lewis 2005).
 - Time: t-interval on log times, reported as a geometric-mean range.
 - Satisfaction: t-interval on the mean.
-- SUM: participant-level bootstrap, 2000 samples, seeded and reproducible. Resamples that hit 0% or 100% are Laplace-smoothed rather than dropped, because dropping them would cut off the extreme samples and bias the range. MeasuringU's calculator also reports SUM intervals, but its method is not published; the bootstrap is this skill's own choice.
+- SUM: participant-level bootstrap, 2000 samples, seeded and reproducible. Resamples that hit 0% or 100% are Laplace-smoothed rather than dropped, because dropping them would cut off the extreme samples and bias the range. A resample whose score is undefined for another reason (in a tiny study, every time or rating in the resample can be identical) is dropped and counted; above 5% dropped, a warning says the range is approximate. MeasuringU's calculator also reports SUM intervals, but its method is not published; the bootstrap is this skill's own choice.
+- Groups: each group is bootstrapped on its own. The difference between a group and the first one gets a range from pairing the two groups' independent samples (`result.comparison`); a range that excludes 0 means one design is clearly better.
 
 ## Presets
 
@@ -65,6 +66,7 @@ The two give different numbers on the same data: on the source report's checkout
 ### `microsoft`: Usability Score
 - **Answers:** "what share of users had a good-enough experience?" It suits a pass/fail gate for decision makers.
 - **Formula:** per user, pass = success ∧ perceived time ≥ 3 (as expected) ∧ ease ≥ 4 (somewhat easy) ∧ satisfaction ≥ 4 (somewhat satisfied), on 5-point scales. Score = share of users who pass. Other scales need explicit `thresholds` in the contract.
+- **Target:** none by default. The score is a share, and 50% has no special meaning for it. A gate needs a pass mark the team agrees before the study (`gate_threshold`, for example 0.8 = at least 80% must pass); the verdict then compares the score's range with that mark. The four pass rates never have a target of their own.
 - **Source:** Van Waardhuizen, McLean-Oliver, Perry & Munko, *Explorations on Single Usability Metrics*, CHI 2019. That is 36 studies, ~500 tasks and ~9000 observations; they dropped objective time and errors from the single metric.
 - **Pitfalls:** a cliff at each threshold, and all failures look alike. Always show the four pass rates next to the score; the marginal averages can all look fine while only 60% pass everything.
 
@@ -88,7 +90,8 @@ The two give different numbers on the same data: on the source report's checkout
 
 ## Edge cases the scripts stop on
 
-- **Completion or error-free rate of exactly 0% or 100% under `z-mean`:** Φ⁻¹ is infinite. Choose `--smoothing laplace`, `--agg pct-mean`, or report completion separately. 5/5 is weak evidence, not infinite usability: with smoothing it is z ≈ 1.38.
+- **Completion or error-free rate of exactly 0% or 100% under `z-mean`:** Φ⁻¹ is infinite. The user chooses `--smoothing laplace`, `--agg pct-mean`, or reporting completion separately; autopilot asks as well. 5/5 is weak evidence, not infinite usability: with smoothing it is z ≈ 1.38.
+- **A rate written as a whole number** (`completion_benchmark: 78`): refused. Write `0.78`.
 - **Zero spread (SD = 0):** defined as z = 0 only when the mean equals the target; otherwise the ruler is broken and the component is undefined.
 - **No time target:** never invented. Give one, an expert time, or agree to an empirical target.
 - **Satisfaction items on different scales:** they cannot be averaged into a composite.

@@ -114,6 +114,12 @@ describe('extract', () => {
     assert.ok(r.warnings.some((w) => /time/i.test(w)));
   });
 
+  test('XLSX: "1:03" typed into an h:mm cell stays two-part, so its meaning gets asked', () => {
+    const r = extract(file('t.xlsx', xlsx({ S: [['Participant', 'Task', 'Time'], ['P1', 'A', { v: 1 / 24 + 3 / 1440, fmt: 'h:mm' }], ['P2', 'A', { v: 58 / 1440, fmt: 'h:mm' }]] })));
+    assert.deepEqual(r.table.rows.map((x) => x[2]), ['1:03', '0:58']);
+    assert.ok(profile(r.table).mustAsk.some((a) => a.topic === 'time-format'));
+  });
+
   test('a single-sheet workbook needs no sheet choice', () => {
     const r = extract(file('d.xlsx', xlsx({ Only: [['a'], [1]] })));
     assert.equal(r.status, 'ok');
@@ -173,6 +179,34 @@ describe('profile', () => {
     assert.deepEqual(col('Sat (1-5)').scaleHint, [1, 5]);
     assert.ok(!p.mustAsk.some((a) => a.topic === 'time-format'), 'h:mm:ss needs no question');
     assert.match(p.mustAsk.find((a) => a.topic === 'scale-range').question, /header says 1–5/);
+  });
+
+  test('h:mm:ss values that all end in :00 are asked about (Excel may have turned m:ss into h:mm)', () => {
+    const p = profile(table([['Participant', 'Task', 'Time'], ['P1', 'A', '1:03:00'], ['P2', 'A', '0:58:00']]));
+    assert.match(p.mustAsk.find((a) => a.topic === 'time-format').question, /ends in :00/);
+  });
+
+  test('0/1 success is still confirmed, and a single rating is asked about as satisfaction', () => {
+    const p = profile(table([['Participant', 'Task', 'Success', 'SEQ'], ['P1', 'A', '1', '6'], ['P2', 'A', '0', '3'], ['P3', 'A', '1', '5']]));
+    const asks = p.mustAsk.map((a) => a.topic);
+    assert.ok(asks.includes('success-coding'));
+    assert.ok(asks.includes('satisfaction-construct'));
+    const coded = profile(table([['Participant', 'Task', 'Success'], ['P1', 'A', '1'], ['P2', 'A', '2'], ['P3', 'A', '3']]));
+    assert.match(coded.mustAsk.find((a) => a.topic === 'success-coding').question, /"2"/);
+  });
+
+  test('wide headers get roles from their field part, so the must-ask list is complete', () => {
+    const p = profile(table([
+      ['ID', 'Завдання 1 успіх', 'Завдання 1 час', 'Завдання 1 легкість', 'Завдання 2 успіх', 'Завдання 2 час', 'Завдання 2 легкість'],
+      ['P1', '1', '30', '6', '0', '50', '3'], ['P2', '1', '41', '5', '1', '44', '4'],
+    ]));
+    assert.equal(p.layout, 'wide');
+    assert.equal(p.columns.find((c) => c.name === 'Завдання 1 час').roles[0].role, 'time_s');
+    const asks = p.mustAsk.map((a) => a.topic);
+    for (const topic of ['success-coding', 'time-format', 'scale-range', 'scale-direction', 'satisfaction-construct', 'wide-pairing']) {
+      assert.ok(asks.includes(topic), `missing ${topic} in ${asks}`);
+    }
+    assert.match(p.mustAsk.find((a) => a.topic === 'scale-range').question, /"легкість" \(in every task\) \(seen 3–6\)/);
   });
 
   test('decimal comma numbers are recognised', () => {
@@ -288,6 +322,33 @@ describe('normalize', () => {
     assert.deepEqual(r.table.header, ['source_row', 'participant_id', 'task_id', 'success', 'time_s']);
     assert.deepEqual(r.table.rows, [['2', 'P1', '1', '1', '30.5'], ['2', 'P1', '2', '0', '50'], ['3', 'P2', '1', '1', '41']]);
     assert.equal(r.log.dropped[0].reason, 'no data for task 2');
+  });
+
+  test('a confirmed mm:ss reads Excel\'s h:mm:00 as minutes:seconds; times over an hour are flagged', () => {
+    const t = table([['p', 't', 'time'], ['P1', 'A', '1:03:00'], ['P2', 'A', '0:58:00']]);
+    const cols = { participant_id: { from: 'p' }, task_id: { from: 't' }, time_s: { from: 'time', unit: 'mm:ss' } };
+    const r = normalize(t, { version: 1, layout: 'long', columns: cols });
+    assert.deepEqual(r.table.rows.map((x) => x[3]), ['63', '58']);
+    assert.deepEqual(r.log.warnings, []);
+    const hours = normalize(t, { version: 1, layout: 'long', columns: { ...cols, time_s: { from: 'time', unit: 's' } } });
+    assert.equal(hours.table.rows[0][3], '3780');
+    assert.match(hours.log.warnings.join(), /over an hour/);
+  });
+
+  test('success codes other than 0 and 1 stop unless mapped', () => {
+    const t = table([['p', 't', 's'], ['P1', 'A', '1'], ['P2', 'A', '2'], ['P3', 'A', '3']]);
+    const cols = { participant_id: { from: 'p' }, task_id: { from: 't' }, success: { from: 's' } };
+    const r = normalize(t, { version: 1, layout: 'long', columns: cols });
+    assert.equal(r.status, 'needs-input');
+    assert.match(r.message, /not 0 or 1/);
+    const mapped = normalize(t, { version: 1, layout: 'long', columns: { ...cols, success: { from: 's', map: { 1: 1, 2: 1, 3: 0 } } } });
+    assert.equal(mapped.status, 'ok');
+  });
+
+  test('wide layout: task names from the mapping replace column numbers', () => {
+    const wide = table([['ID', 'T1 Success', 'T2 Success'], ['P1', '1', '0']]);
+    const m = { version: 1, layout: 'wide', columns: { participant_id: { from: 'ID' } }, wide: { pattern: '^T(?<task>\\d+) (?<field>.+)$', fields: { Success: { to: 'success' } }, taskNames: { 1: 'Sign up', 2: 'Checkout' } } };
+    assert.deepEqual(normalize(wide, m).table.rows.map((x) => x[2]), ['Sign up', 'Checkout']);
   });
 
   test('satisfaction items are kept as sat_1..sat_k', () => {

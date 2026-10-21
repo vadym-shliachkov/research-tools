@@ -12,7 +12,8 @@
     "expert_multiplier": 3,
     "cutoff_s": null,
     "completion_benchmark": null,
-    "error_opportunities_predefined": null
+    "error_opportunities_predefined": null,
+    "gate_threshold": null
   },
   "tasks": {},
   "compare_with_measuringu": false,

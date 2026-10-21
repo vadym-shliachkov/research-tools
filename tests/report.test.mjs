@@ -4,9 +4,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { checkReadability } from '../plugins/uxr/scripts/lib/readability.mjs';
-import { validateExplainer, checkEdit, renderExplainerHtml } from '../plugins/uxr/scripts/lib/explainer.mjs';
+import { validateExplainer, checkEdit, verdictErrors, renderExplainerHtml } from '../plugins/uxr/scripts/lib/explainer.mjs';
 import { findBrowser, browserCandidates } from '../plugins/uxr/scripts/lib/browser.mjs';
-import { writeDocument } from '../plugins/uxr/scripts/lib/html.mjs';
+import { writeDocument, bars } from '../plugins/uxr/scripts/lib/html.mjs';
 import * as SUM from '../plugins/uxr/skills/sum/scripts/sum-lib.mjs';
 import { buildReportMd, buildReportHtml, explainerFacts, explainerChart } from '../plugins/uxr/skills/sum/scripts/report-lib.mjs';
 
@@ -95,6 +95,42 @@ describe('explainer structure and the editor guard', () => {
     assert.match(checkEdit(EXPLAINER, ok).errors.join(), /review/);
   });
 
+  test('numbers written as words count as kept; numbers the edit adds are rejected', () => {
+    const draft = structuredClone(EXPLAINER);
+    draft.sections[2].paragraphs = ['8 of 10 people finished. People rated the task 3.7 out of 5.'];
+    const words = structuredClone(draft);
+    words.sections[2].paragraphs = ['Eight of ten people finished. People rated the task 3.7 out of 5.'];
+    words.review = { readable: true, notes: [] };
+    assert.deepEqual(checkEdit(draft, words).errors, []);
+    const ua = { ...structuredClone(draft), lang: 'ua' };
+    const uaEdit = structuredClone(ua);
+    uaEdit.sections[2].paragraphs = ['Вісім із десяти людей виконали завдання. Оцінка — 3,7 з 5.'];
+    uaEdit.review = { readable: true, notes: [] };
+    assert.deepEqual(checkEdit(ua, uaEdit).errors, []);
+    const added = structuredClone(words);
+    added.sections[4].paragraphs = ['Fixing it would lift the score to 75%.'];
+    assert.match(checkEdit(draft, added).errors.join(), /added by the edit: 75/);
+  });
+
+  test('wording may not state the verdict more firmly than the result supports', () => {
+    const draft = { ...structuredClone(EXPLAINER), verdict: 'uncertain' };
+    const edit = (sentence, lang = 'en') => {
+      const e = { ...structuredClone(draft), lang, review: { readable: true, notes: [] } };
+      e.sections[1].paragraphs = [...draft.sections[1].paragraphs, sentence];
+      return checkEdit({ ...draft, lang }, e).errors;
+    };
+    assert.match(edit('The score is above target, but the study cannot yet confirm it.').join(), /verdict is "uncertain"/);
+    assert.match(edit('Above target.').join(), /verdict/);
+    assert.deepEqual(edit('The score looks above target, but the study cannot yet tell.'), []);
+    assert.deepEqual(edit('We cannot yet tell whether it is above target.'), []);
+    assert.match(edit('Результат вищий за ціль.', 'ua').join(), /verdict/);
+    assert.deepEqual(edit('Схоже, результат вищий за ціль, але дослідження ще не може це підтвердити.', 'ua'), []);
+    assert.deepEqual(verdictErrors({ lang: 'en', headline: { sentence: 'The score is above target.' } }, 'above'), []);
+    assert.equal(verdictErrors({ lang: 'en', headline: { sentence: 'The score is below target.' } }, 'above').length, 1);
+    const changed = { ...structuredClone(draft), verdict: 'above', review: { readable: true, notes: [] } };
+    assert.match(checkEdit(draft, changed).errors.join(), /verdict changed/);
+  });
+
   test('renders an A4 page with the headline, sections, glossary and component chart', () => {
     const html = renderExplainerHtml(EXPLAINER, { chart: explainerChart(RESULT, 'en') });
     assert.match(html, /<html lang="en">/);
@@ -159,6 +195,75 @@ describe('SUM reports', () => {
     assert.equal(f.overall.verdict, 'uncertain');
     assert.equal(f.tasks[0].sum.verdict, 'uncertain');
     assert.match(f.overall.verdictPlain, /cannot yet be sure/);
+    // Completion has no target without a benchmark, so the facts give its number and no verdict.
+    assert.equal(f.tasks[0].components.completion.onTarget, null);
+    assert.equal(f.tasks[0].components.time.onTarget, false);
+  });
+
+  test('bars are coloured by the verdict: grey when the range crosses the line, no line without a target', () => {
+    const html = bars([
+      { label: 'a', pct: 0.67, ci: [0.45, 0.85] }, { label: 'b', pct: 0.7, ci: [0.6, 0.8] },
+      { label: 'c', pct: 0.9, ci: [0.82, 0.95], target: 0.8 }, { label: 'd', pct: 0.75, ci: null, target: null },
+    ]);
+    assert.deepEqual([...html.matchAll(/fill (\w+)/g)].map((m) => m[1]), ['neutral', 'above', 'above', 'neutral']);
+    assert.match(html, /class="mid" style="left:80\.0%"/);
+    assert.equal([...html.matchAll(/class="mid"/g)].length, 3);
+  });
+});
+
+describe('Usability Score reports', () => {
+  const DATA = T(['participant_id', 'task_id', 'success', 'perceived_time', 'ease', 'satisfaction'], [
+    ['U1', 't', 1, 4, 4, 4], ['U2', 't', 1, 3, 4, 5], ['U3', 't', 1, 3, 5, 4], ['U4', 't', 1, 4, 4, 3], ['U5', 't', 1, 2, 4, 4],
+    ['U6', 't', 1, 3, 3, 4], ['U7', 't', 1, 5, 5, 5], ['U8', 't', 0, 3, 4, 4], ['U9', 't', 1, 3, 4, 4], ['U10', 't', 1, 4, 5, 4],
+  ]);
+  const scales = { perceived_time: [1, 5], ease: [1, 5], satisfaction: [1, 5] };
+  const result = (defaults) => {
+    const contract = { version: 1, study: 'Gate', goal: 'gate', defaults: { scales, ...defaults } };
+    return { ...SUM.runSum(DATA, contract, { method: 'microsoft', bootstrap: 300 }), contract, generated_at: '2026-10-21T10:00:00Z' };
+  };
+
+  test('report.md and report.html build in both languages', () => {
+    for (const lang of ['en', 'ua']) {
+      const md = buildReportMd(result({}), lang);
+      assert.match(md, lang === 'en' ? /pass at Perceived time ≥ 3, Ease ≥ 4, Satisfaction ≥ 4 · no pass mark agreed/ : /прохід від .*прохідну частку не погоджено/);
+      assert.match(buildReportHtml(result({ gate_threshold: 0.5 }), lang), /class="bars"/);
+    }
+    assert.match(buildReportMd(result({ gate_threshold: 0.5 }), 'en'), /Pass mark 50\.0%/);
+  });
+
+  test('without a pass mark there is no target and no verdict; with one, the range is judged against it', () => {
+    const none = explainerFacts(result({}), 'en');
+    assert.equal(none.overall.verdict, 'no-target');
+    assert.equal(none.overall.target, null);
+    assert.match(none.reading, /No pass mark was agreed/);
+    assert.equal(none.tasks[0].components.ease.onTarget, null);
+    assert.equal(explainerChart(result({}), 'en').at(-1).target, null);
+    const gate = explainerFacts(result({ gate_threshold: 0.2 }), 'en');
+    assert.equal(gate.overall.target, 20);
+    assert.equal(gate.overall.verdict, 'above');
+    assert.match(gate.overall.verdictPlain, /pass mark of 20%/);
+  });
+});
+
+describe('comparing groups', () => {
+  const rows = CHECKOUT.rows.flatMap((r) => [[...r, 'A'], [`${r[0]}b`, ...r.slice(1), 'B']]);
+  const data = T([...CHECKOUT.header, 'group'], rows);
+  const r = { ...SUM.runSum(data, CONTRACT, { method: 'sum3', bootstrap: 300 }), contract: CONTRACT, generated_at: '2026-10-21T10:00:00Z' };
+
+  test('facts have no single overall result, but a comparison with a range', () => {
+    const f = explainerFacts(r, 'en');
+    assert.equal(f.overall, null);
+    assert.equal(f.groups.length, 2);
+    assert.equal(f.comparison[0].diffPoints, 0);
+    assert.equal(f.comparison[0].verdict, 'uncertain');
+    assert.equal(f.groups[1].sensitivity.length, f.groups[0].sensitivity.length);
+  });
+
+  test('the report shows a score card for every group and the difference', () => {
+    const html = buildReportHtml(r, 'en');
+    assert.match(html, /Overall SUM · A/);
+    assert.match(html, /Overall SUM · B/);
+    assert.match(buildReportMd(r, 'en'), /Difference B vs A: \+0\.0 points/);
   });
 });
 

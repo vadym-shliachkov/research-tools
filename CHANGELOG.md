@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- `/uxr:sum`, after an edge-case QA pass:
+  - **Usability Score reports:** `report` no longer crashes on a `microsoft` result, in English or Ukrainian.
+  - **No invented targets:** a pass/fail gate is judged against the pass mark the team agrees (`gate_threshold`, asked when the goal is a gate). Without one, the score is a share with its range and no target. Completion without a required rate, mistakes and the Usability Score's pass rates are no longer called "on target".
+  - **Verdicts are not overstated:** chart bars are coloured by the range, not the point estimate, so a result the study cannot yet confirm is grey. `check-edit` and `SUM explainer` refuse a headline or result section that claims more than the verdict, and numbers the editor added.
+  - **Comparing designs:** every group gets its own score card and facts, plus the difference between groups with a range.
+  - **Intake:** Excel times typed as "1:03" are no longer read as hours; a confirmed minutes:seconds unit is applied; task times over an hour are flagged. Success codes other than 0/1 stop normalization unless mapped. Success, scale and satisfaction questions are always asked, also in wide layouts, which can now name their tasks.
+  - **Contract:** a rate written as 78 instead of 0.78 is refused. Autopilot asks which fix to use for 0% or 100% instead of applying Laplace smoothing itself.
+  - **Next wave:** every target and scale carries over, time targets are frozen, and a changed one is flagged as not comparable.
+  - **Compare mode** shows each method's range and whether the verdict depends on the method, and can save `compare.json`.
+  - **Smaller fixes:** a relative `--out-dir` prints the PDF; `--help` shows the usage; the results folder uses the local date; `report.html` works on a phone; better contrast; clearer instructions for a missing study name, a user who cannot confirm the data, the no-data template and hosts without Node.
+
 ## 0.1.0 (2026-10-21)
 
 ### Added

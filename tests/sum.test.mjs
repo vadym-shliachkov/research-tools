@@ -86,6 +86,28 @@ describe('golden numbers from the literature', () => {
     near(task0(r).components.perceived_time.pct, 0.9, 1e-12);
   });
 
+  test('Usability Score target: the agreed pass mark, or none', () => {
+    const data = T(['participant_id', 'task_id', 'success', 'perceived_time', 'ease', 'satisfaction'], [
+      ['U1', 't', 1, 4, 4, 4], ['U2', 't', 1, 3, 4, 5], ['U3', 't', 1, 3, 5, 4], ['U4', 't', 0, 4, 4, 3],
+    ]);
+    const scales = { perceived_time: [1, 5], ease: [1, 5], satisfaction: [1, 5] };
+    const none = SUM.runSum(data, { version: 1, defaults: { scales } }, { method: 'microsoft', bootstrap: 0 });
+    assert.equal(task0(none).sum.targetPct, null);
+    assert.equal(none.groups[0].product.targetPct, null);
+    assert.equal(task0(none).components.ease.targetPct, null);
+    const gate = SUM.runSum(data, { version: 1, defaults: { scales, gate_threshold: 0.8 } }, { method: 'microsoft', bootstrap: 0 });
+    assert.equal(gate.groups[0].product.targetPct, 0.8);
+  });
+
+  test('proportions in the contract must be written as 0.78, not 78', () => {
+    const bad = { ...CHECKOUT_CONTRACT, defaults: { ...CHECKOUT_CONTRACT.defaults, completion_benchmark: 78 } };
+    const r = SUM.runSum(CHECKOUT, bad, { method: 'pearson', bootstrap: 0 });
+    assert.equal(r.status, 'error');
+    assert.match(r.message, /0\.78/);
+    assert.equal(SUM.choose(CHECKOUT, bad).status, 'error');
+    assert.match(SUM.contractErrors({ defaults: { gate_threshold: 80 } }).join(), /gate_threshold/);
+  });
+
   test('Pearson task: original 43.4%, piecewise 36.3%, Bernoulli 30.8%', () => {
     const zS = (3.5 - 4) / 1.1;
     const zT = -(75 - 60) / 50;
@@ -227,6 +249,28 @@ describe('product level, groups and uncertainty', () => {
     assert.ok(!r.qa.warnings.some((w) => w.code === 'bootstrap-skips'));
   });
 
+  test('two groups: each is scored, and the difference gets a range', () => {
+    const bad = CHECKOUT.rows.map((r) => [r[0], r[1], r[2], r[3] === null ? null : r[3] * 2, ...r.slice(4), 'A']);
+    const good = CHECKOUT.rows.map((r) => [`${r[0]}b`, ...r.slice(1), 'B']);
+    const g = T([...CHECKOUT.header, 'group'], [...bad, ...good]);
+    const r = SUM.runSum(g, CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 400, seed: 5 });
+    const [c] = r.comparison;
+    assert.deepEqual([c.group, c.vs], ['B', 'A']);
+    near(c.diff, r.groups[1].product.pct - r.groups[0].product.pct, 1e-12);
+    assert.ok(c.ci[0] < c.diff && c.diff < c.ci[1]);
+    assert.equal(SUM.runSum(CHECKOUT, CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 0 }).comparison, undefined);
+  });
+
+  test('targets: SUM parts at 50%, completion without a benchmark and the error-free rate have none', () => {
+    const t = task0(SUM.runSum(CHECKOUT, CHECKOUT_CONTRACT, { method: 'sum4', bootstrap: 0 }));
+    assert.equal(t.components.completion.targetPct, null);
+    assert.equal(t.components.errors.targetPct, null);
+    assert.equal(t.components.time.targetPct, 0.5);
+    assert.equal(t.sum.targetPct, 0.5);
+    const p = task0(SUM.runSum(CHECKOUT, { ...CHECKOUT_CONTRACT, defaults: { ...CHECKOUT_CONTRACT.defaults, completion_benchmark: 0.78 } }, { method: 'pearson', bootstrap: 0 }));
+    assert.equal(p.components.completion.targetPct, 0.5);
+  });
+
   test('every run records the resolved method and a QA block', () => {
     const r = SUM.runSum(CHECKOUT, CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 0 });
     assert.ok(r.method.config && r.method.string && r.qa);
@@ -236,7 +280,8 @@ describe('product level, groups and uncertainty', () => {
 
 describe('autopilot', () => {
   const base = { version: 1, defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 4, time_target_s: 60 } };
-  const choose = (data, contract) => SUM.choose(data, contract);
+  const choose = (data, contract, modifiers) => SUM.choose(data, contract, modifiers);
+  const runSum = (data, contract, opts) => SUM.runSum(data, contract, opts);
 
   test('nothing special → sum3, z-mean', () => {
     const c = choose(CHECKOUT, base);
@@ -278,9 +323,17 @@ describe('autopilot', () => {
     assert.equal(choose(few, AUTODESK_CONTRACT).status, 'needs-input');
   });
 
-  test('a task at 100% → laplace smoothing', () => {
+  test('a task at 100% → asks which fix; the chosen one is applied and labelled', () => {
     const perfect = T(CHECKOUT.header, CHECKOUT.rows.slice(0, 8));
-    assert.equal(choose(perfect, base).config.smoothing, 'laplace');
+    const ask = choose(perfect, base);
+    assert.equal(ask.status, 'needs-input');
+    assert.ok(ask.options.includes('--smoothing laplace'));
+    const chosen = choose(perfect, base, { smoothing: 'laplace' });
+    assert.equal(chosen.status, 'ok');
+    assert.ok(chosen.reasons.some((r) => r.rule === 'extremes' && r.decision === 'smoothing=laplace'));
+    const r = runSum(perfect, base, { modifiers: { smoothing: 'laplace' }, bootstrap: 0 });
+    assert.equal(r.status, 'ok');
+    assert.equal(r.method.config.smoothing, 'laplace');
   });
 
   test('MeasuringU comparability → percentage averaging', () => {
@@ -300,6 +353,22 @@ describe('autopilot', () => {
   test('accessibility data → reported as a separate gate', () => {
     const c = choose(CHECKOUT, { ...base, accessibility_data: true });
     assert.ok(c.suggestions.some((s) => /accessibility/i.test(s)));
+  });
+
+  test('a gate without a pass mark says it will be reported without a target', () => {
+    const data = T(['participant_id', 'task_id', 'success', 'perceived_time', 'ease', 'satisfaction'], [['U1', 't', 1, 4, 4, 4], ['U2', 't', 0, 2, 3, 3]]);
+    const scales = { perceived_time: [1, 5], ease: [1, 5], satisfaction: [1, 5] };
+    assert.match(choose(data, { version: 1, goal: 'gate', defaults: { scales } }).suggestions.join(), /gate_threshold/);
+    assert.ok(!choose(data, { version: 1, goal: 'gate', defaults: { scales, gate_threshold: 0.8 } }).suggestions.join().includes('gate_threshold'));
+  });
+
+  test('compare with a bootstrap gives each method a range; the spread rule is shared', () => {
+    const methods = SUM.compareMethods(CHECKOUT, CHECKOUT_CONTRACT, { bootstrap: 200, seed: 1 });
+    const sum3 = methods.find((m) => m.preset === 'sum3');
+    assert.ok(sum3.products[0].ci[0] < sum3.products[0].pct);
+    assert.ok(Array.isArray(sum3.warnings));
+    assert.equal(SUM.dependsOnMethod([[0.5, 0.7], [0.55, 0.72]]), false);
+    assert.equal(SUM.dependsOnMethod([[0.5], [0.62]]), true);
   });
 
   test('auto run shows sensitivity across applicable presets and flags method dependence', () => {

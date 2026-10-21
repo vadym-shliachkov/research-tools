@@ -116,7 +116,7 @@ export function extract(source, opts = {}) {
     }
     if (!wb.sheetNames.includes(sheet)) return { status: 'error', message: `No sheet named "${sheet}". Sheets: ${wb.sheetNames.join(', ')}` };
     const { rows, formatted } = wb.readSheet(sheet);
-    if (formatted.time) warnings.push(`${formatted.time} cell(s) were time-formatted in Excel and are written as h:mm:ss`);
+    if (formatted.time) warnings.push(`${formatted.time} cell(s) were time-formatted in Excel and are written as Excel shows them (h:mm, m:ss or h:mm:ss); two-part values need the user to confirm minutes:seconds or hours:minutes`);
     if (formatted.date) warnings.push(`${formatted.date} cell(s) were date-formatted in Excel and are written as YYYY-MM-DD`);
     return { status: 'ok', table: tidy(rows, headerRow, warnings), info: { format: 'xlsx', sheet, sheets: wb.sheetNames, headerRow }, warnings };
   }

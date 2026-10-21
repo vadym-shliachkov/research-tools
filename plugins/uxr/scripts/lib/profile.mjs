@@ -86,6 +86,9 @@ function detectWide(header) {
 }
 
 export function profile({ header, rows }) {
+  // In a wide layout ("Task 1 time"), a column's role comes from its field part ("time"), not the task part.
+  const wide = detectWide(header);
+  const wideRe = wide ? new RegExp(wide.pattern, wide.flags) : null;
   const columns = header.map((name, index) => {
     const all = rows.map((r) => String(r[index] ?? '').trim());
     const present = all.filter((v) => !isMissing(v));
@@ -100,33 +103,49 @@ export function profile({ header, rows }) {
     }
     const hint = /[([]\s*(\d+)\s*[-–—]\s*(\d+)\s*[)\]]/.exec(name);
     if (hint) col.scaleHint = [Number(hint[1]), Number(hint[2])];
-    col.roles = roleScores(col, rows.length);
+    const field = wideRe?.exec(name)?.groups?.field?.trim();
+    if (field) col.wideField = field;
+    col.roles = roleScores(field ? { ...col, name: field } : col, rows.length);
     return col;
   });
 
-  const wide = detectWide(header);
   const top = (role) => columns.find((c) => c.roles[0]?.role === role);
+  const quoted = (c) => (c.wideField ? `"${c.wideField}" (in every task)` : `"${c.name}"`);
   const mustAsk = [];
   const ask = (topic, cols, question) => mustAsk.push({ topic, columns: cols.map((c) => (typeof c === 'string' ? c : c.name)), question });
 
+  // Asked even for 0/1 integers: 1/2/3 codes, or 1 meaning failure, would otherwise pass silently.
   const success = top('success');
-  if (success && success.type !== 'integer') {
-    ask('success-coding', [success], `How should each value of "${success.name}" count: ${success.top.map((t) => `"${t.value}"`).join(', ')}? In particular, does a partial or assisted success count as success?`);
+  if (success) {
+    const values = success.top.map((t) => `"${t.value}"`).join(', ');
+    ask('success-coding', [success], success.type === 'integer' && success.min >= 0 && success.max <= 1
+      ? `Does 1 in ${quoted(success)} mean the task was completed and 0 that it was not? Does a partial or assisted success count?`
+      : `How should each value of ${quoted(success)} count: ${values}? In particular, does a partial or assisted success count as success?`);
   }
   const time = top('time_s');
   if (time) {
-    const unitInName = /\b(?:ms|s|sec|secs|seconds|min|mins|minutes|с|сек|хв)\b|\((?:s|ms|min)\)/i.test(time.name);
-    // h:mm:ss (three parts, as Excel writes time cells) is unambiguous; m:ss vs h:mm is not.
+    const unitInName = /\b(?:ms|s|sec|secs|seconds|min|mins|minutes|с|сек|хв)\b|\((?:s|ms|min)\)/i.test(time.wideField ?? time.name);
     const twoPart = time.top.some((t) => /^\d+:\d{2}(?:[.,]\d+)?$/.test(t.value));
+    // h:mm:ss is unambiguous, unless every value has zero seconds: then Excel may have stored minutes:seconds typed
+    // into an h:mm cell (1:03 becomes 1:03:00, one hour instead of one minute).
+    const hoursOnly = time.top.length && time.top.every((t) => /^\d+:\d{2}:00$/.test(t.value));
     if (time.type === 'duration') {
-      if (twoPart) ask('time-format', [time], `Values in "${time.name}" look like ${time.top[0]?.value}. Is that minutes:seconds or hours:minutes?`);
-    } else if (!unitInName) ask('time-format', [time], `What unit is "${time.name}" in: seconds, milliseconds or minutes?`);
+      if (twoPart) ask('time-format', [time], `Values in ${quoted(time)} look like ${time.top[0]?.value}. Is that minutes:seconds or hours:minutes?`);
+      else if (hoursOnly) ask('time-format', [time], `Every value in ${quoted(time)} ends in :00 (for example ${time.top[0].value}). Is that hours:minutes:seconds, or minutes:seconds that Excel stored as hours:minutes?`);
+    } else if (!unitInName) ask('time-format', [time], `What unit is ${quoted(time)} in: seconds, milliseconds or minutes?`);
   }
-  const ratings = columns.filter((c) => RATING_ROLES.has(c.roles[0]?.role) || c.roles[0]?.role === 'rating');
+  // One entry per rating field: in a wide layout, the same question repeats for every task.
+  const ratingCols = columns.filter((c) => RATING_ROLES.has(c.roles[0]?.role) || c.roles[0]?.role === 'rating');
+  const ratings = [...new Map(ratingCols.map((c) => [c.wideField ?? c.name, c])).values()].map((c) => {
+    const same = ratingCols.filter((x) => (x.wideField ?? x.name) === (c.wideField ?? c.name));
+    return { ...c, min: Math.min(...same.map((x) => x.min)), max: Math.max(...same.map((x) => x.max)) };
+  });
   if (ratings.length) {
-    ask('scale-range', ratings, `What is the full scale of ${ratings.map((c) => `"${c.name}" (seen ${c.min}–${c.max}${c.scaleHint ? `; the header says ${c.scaleHint.join('–')}` : ''})`).join(', ')}? The highest possible answer may not appear in the data.`);
-    ask('scale-direction', ratings, `For ${ratings.map((c) => `"${c.name}"`).join(', ')}: is the highest number the best answer (very easy, very satisfied)?`);
-    if (ratings.length > 1) ask('satisfaction-construct', ratings, 'Which rating questions make up satisfaction: one of them, or an average of several?');
+    ask('scale-range', ratings, `What is the full scale of ${ratings.map((c) => `${quoted(c)} (seen ${c.min}–${c.max}${c.scaleHint ? `; the header says ${c.scaleHint.join('–')}` : ''})`).join(', ')}? The highest possible answer may not appear in the data.`);
+    ask('scale-direction', ratings, `For ${ratings.map(quoted).join(', ')}: is the highest number the best answer (very easy, very satisfied)?`);
+    ask('satisfaction-construct', ratings, ratings.length > 1
+      ? 'Which rating questions make up satisfaction: one of them, or an average of several?'
+      : `Is ${quoted(ratings[0])} the satisfaction measure? The original SUM averaged ease, satisfaction and perceived time.`);
   }
   const keyCols = columns.filter((c) => c.roles.length && c.missing > 0);
   if (keyCols.length) {
@@ -149,7 +168,7 @@ export function profile({ header, rows }) {
     const dups = [...seen.values()].filter((v) => v.length > 1);
     if (dups.length) ask('duplicates', [pid, tid], `Some participant × task pairs appear more than once (rows ${dups.map((d) => d.join('+')).join(', ')}). Keep the first, the last, or check them?`);
   }
-  if (wide) ask('wide-pairing', [], `Each row seems to be one participant with columns per task (tasks ${wide.tasks.join(', ')}; fields ${wide.fields.join(', ')}). Is that right, and which field is which?`);
+  if (wide) ask('wide-pairing', [], `Each row seems to be one participant with columns per task (tasks ${wide.tasks.join(', ')}; fields ${wide.fields.join(', ')}). Is that right, which field is which, and what is each task called (for the reports)?`);
 
   return { rows: rows.length, layout: wide ? 'wide' : 'long', ...(wide ? { wide } : {}), columns, mustAsk, suspectRows };
 }

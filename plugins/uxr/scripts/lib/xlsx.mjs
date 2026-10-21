@@ -1,5 +1,6 @@
 // Zero-dependency .xlsx reader: unzips the workbook and reads shared strings, styles and sheet cells.
-// Cells formatted as time or date are returned the way Excel shows them (h:mm:ss, YYYY-MM-DD), not as serial numbers.
+// Cells formatted as time or date are returned the way Excel shows them (h:mm, m:ss, h:mm:ss, YYYY-MM-DD), not as
+// serial numbers.
 import zlib from 'node:zlib';
 
 function unzip(buf) {
@@ -42,32 +43,42 @@ const decodeXml = (s) => s
 const attr = (tag, name) => new RegExp(`\\s${name}="([^"]*)"`).exec(tag)?.[1];
 const textOf = (xml) => [...xml.matchAll(/<t(?:\s[^>]*)?>([\s\S]*?)<\/t>/g)].map((m) => decodeXml(m[1])).join('');
 
-const TIME_IDS = new Set([18, 19, 20, 21, 45, 46, 47]);
+// Built-in time formats by what they show: h:mm (18, 20), mm:ss (45, 47) or h:mm:ss (19, 21, 46).
+const TIME_IDS = new Map([[18, 'h:mm'], [20, 'h:mm'], [45, 'm:ss'], [47, 'm:ss'], [19, 'h:mm:ss'], [21, 'h:mm:ss'], [46, 'h:mm:ss']]);
 const DATE_IDS = new Set([14, 15, 16, 17, 22]);
 
+// Each style becomes 'date', a time shape ('h:mm', 'm:ss', 'h:mm:ss') or null.
 function formatKinds(stylesXml) {
   const custom = new Map();
   for (const m of stylesXml.matchAll(/<numFmt\s[^>]*>/g)) custom.set(Number(attr(m[0], 'numFmtId')), decodeXml(attr(m[0], 'formatCode') ?? ''));
   const xfs = /<cellXfs[^>]*>([\s\S]*?)<\/cellXfs>/.exec(stylesXml)?.[1] ?? '';
   return [...xfs.matchAll(/<xf\s[^>]*?\/?>/g)].map((m) => {
     const id = Number(attr(m[0], 'numFmtId') ?? 0);
-    if (TIME_IDS.has(id)) return 'time';
+    if (TIME_IDS.has(id)) return TIME_IDS.get(id);
     if (DATE_IDS.has(id)) return 'date';
-    const code = (custom.get(id) ?? '').replace(/"[^"]*"|\[[^\]]*\]|\\./g, '');
+    const raw = custom.get(id) ?? '';
+    const code = raw.replace(/"[^"]*"|\\./g, '').replace(/\[(?![hms]+\])[^\]]*\]/gi, '');
     if (/[dy]/i.test(code)) return 'date';
-    if (/[hs]/i.test(code) || /m/i.test(code) && /:/.test(code)) return 'time';
+    const h = /h/i.test(code);
+    const s = /s/i.test(code);
+    if (h || s || (/m/i.test(code) && /:/.test(code))) return h && s ? 'h:mm:ss' : h ? 'h:mm' : 'm:ss';
     return null;
   });
 }
 
 const colIndex = (ref) => [...ref.replace(/\d+/g, '')].reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0) - 1;
 
-function excelTime(serial) {
+// Written in the shape the cell shows, so a two-part value stays ambiguous and gets asked about: "1:03" typed into an
+// h:mm cell may have meant 1 min 3 s. Seconds that the shape would hide fall back to h:mm:ss.
+function excelTime(serial, shape = 'h:mm:ss') {
   const total = Math.round(serial * 86400);
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const two = (x) => String(x).padStart(2, '0');
+  if (shape === 'h:mm' && s === 0) return `${h}:${two(m)}`;
+  if (shape === 'm:ss' && h === 0) return `${m}:${two(s)}`;
+  return `${h}:${two(m)}:${two(s)}`;
 }
 const excelDate = (serial) => new Date(Date.UTC(1899, 11, 30) + Math.round(serial * 86400000)).toISOString().slice(0, 10);
 
@@ -108,7 +119,8 @@ export function readWorkbook(buf) {
         else if (v !== undefined) {
           const kind = kinds[style];
           const num = Number(v);
-          if (kind === 'time' || (kind === 'date' && num < 1)) { value = excelTime(num); formatted.time++; }
+          if (kind && kind !== 'date') { value = excelTime(num, kind); formatted.time++; }
+          else if (kind === 'date' && num < 1) { value = excelTime(num); formatted.time++; }
           else if (kind === 'date') { value = excelDate(num); formatted.date++; }
           else value = String(num);
         }

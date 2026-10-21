@@ -93,7 +93,7 @@ test('report, facts and explainer: the explainer renders only after the editor r
   const facts = run('facts', result);
   assert.equal(facts.json.facts.overall.pct, 55);
 
-  const doc = { lang: 'en', title: 'How to understand your results', study: 'Checkout', headline: { value: '55%', label: 'Overall score', sentence: 'Slightly above target.' }, sections: ['measured', 'result', 'components', 'range', 'fix-first', 'limits'].map((id) => ({ id, heading: id, paragraphs: ['Text.'] })), glossary: [{ term: 'Score', definition: 'One number.' }] };
+  const doc = { lang: 'en', title: 'How to understand your results', study: 'Checkout', headline: { value: '55%', label: 'Overall score', sentence: 'Close to the target.' }, sections: ['measured', 'result', 'components', 'range', 'fix-first', 'limits'].map((id) => ({ id, heading: id, paragraphs: ['Text.'] })), glossary: [{ term: 'Score', definition: 'One number.' }] };
   const draft = path.join(dir, 'explainer.draft.json');
   fs.writeFileSync(draft, JSON.stringify(doc));
   const refused = run('explainer', draft, '--result', result, '--out-dir', dir);
@@ -106,16 +106,70 @@ test('report, facts and explainer: the explainer renders only after the editor r
   assert.equal(ok.code, 0);
   assert.ok(fs.existsSync(ok.json.html));
   assert.ok(ok.json.pdf === null ? ok.json.warnings.length > 0 : fs.existsSync(ok.json.pdf));
+
+  // The verdict is uncertain here, so a headline that calls the result above target is refused.
+  assert.equal(facts.json.facts.overall.verdict, 'uncertain');
+  fs.writeFileSync(edited, JSON.stringify({ ...doc, headline: { ...doc.headline, sentence: 'The score is above target.' }, review: { readable: true, notes: [] } }));
+  const overstated = run('explainer', edited, '--result', result, '--out-dir', dir);
+  assert.equal(overstated.code, 1);
+  assert.match(overstated.json.message, /uncertain/);
+});
+
+test('a relative --out-dir still gives a PDF next to the HTML', () => {
+  const { dir, data } = setup();
+  const contract = path.join(dir, 'c.json');
+  fs.writeFileSync(contract, JSON.stringify({ version: 1, defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 4, expert_time_s: 20 } }));
+  run('run', data, '--contract', contract, '--bootstrap', '0', '--out', path.join(dir, 'result.json'));
+  const doc = { lang: 'en', title: 'T', headline: { value: '55%', label: 'Score', sentence: 'Close to the target.' }, sections: ['measured', 'result', 'components', 'range', 'fix-first', 'limits'].map((id) => ({ id, heading: id, paragraphs: ['Text.'] })), glossary: [{ term: 'Score', definition: 'One number.' }], review: { readable: true, notes: [] } };
+  fs.writeFileSync(path.join(dir, 'explainer.json'), JSON.stringify(doc));
+  const r = spawnSync(process.execPath, [CLI, 'explainer', 'explainer.json', '--result', 'result.json', '--out-dir', 'sub'], { cwd: dir, encoding: 'utf8' });
+  const json = JSON.parse(r.stdout);
+  assert.equal(json.status, 'ok');
+  assert.ok(path.isAbsolute(json.html));
+  assert.ok(json.pdf === null ? json.warnings.length > 0 : fs.existsSync(json.pdf));
+});
+
+test('the next wave: earlier targets carry over, and a changed one is flagged', () => {
+  const { dir, data } = setup();
+  const c1 = path.join(dir, 'c1.json');
+  fs.writeFileSync(c1, JSON.stringify({ version: 1, defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 4, expert_time_s: 20 } }));
+  const wave1 = path.join(dir, 'wave1.json');
+  run('run', data, '--contract', c1, '--method', 'sum3', '--bootstrap', '0', '--out', wave1);
+
+  const c2 = path.join(dir, 'c2.json');
+  fs.writeFileSync(c2, JSON.stringify({ version: 1, defaults: { satisfaction_from: 'satisfaction' } }));
+  const same = run('run', data, '--contract', c2, '--previous', wave1, '--bootstrap', '0');
+  assert.equal(same.code, 0);
+  assert.equal(same.json.groups[0].tasks[0].sum.pct, 55.3);
+  assert.ok(!same.json.qa.warnings.some((w) => /previous wave/.test(w)));
+
+  fs.writeFileSync(c2, JSON.stringify({ version: 1, defaults: { satisfaction_from: 'satisfaction', sat_target: 3.5 } }));
+  const changed = run('run', data, '--contract', c2, '--previous', wave1, '--bootstrap', '0');
+  assert.match(changed.json.qa.warnings.join(), /sat_target was 4, now 3\.5.*not directly comparable/);
+  assert.match(changed.json.reasons[0], /not directly comparable/);
+});
+
+test('--help prints the usage instead of a stack trace', () => {
+  const r = run('--help');
+  assert.equal(r.code, 0);
+  assert.match(r.json.usage, /sum\.mjs compare/);
+  const bad = run('run', '--no-such-flag');
+  assert.equal(bad.code, 1);
+  assert.match(bad.json.message, /Usage/);
 });
 
 test('compare lists every preset with a value or a reason', () => {
   const { dir, data } = setup();
   const contract = path.join(dir, 'c.json');
   fs.writeFileSync(contract, JSON.stringify({ version: 1, defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 4, expert_time_s: 20 } }));
-  const r = run('compare', data, '--contract', contract);
+  const out = path.join(dir, 'compare.json');
+  const r = run('compare', data, '--contract', contract, '--bootstrap', '200', '--out', out);
   assert.equal(r.code, 0);
   const by = Object.fromEntries(r.json.methods.map((m) => [m.preset, m]));
   assert.equal(by.sum3.products[0].pct, 55.3);
+  assert.equal(by.sum3.products[0].ci.length, 2);
   assert.equal(by.sum4.status, 'not-applicable');
   assert.equal(by.pearson.status, 'not-applicable');
+  assert.equal(typeof r.json.methodDependent, 'boolean');
+  assert.ok(JSON.parse(fs.readFileSync(out, 'utf8')).contract);
 });

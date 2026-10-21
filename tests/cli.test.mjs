@@ -85,3 +85,21 @@ test('usage errors exit 1 with a message', () => {
   assert.equal(r.code, 1);
   assert.match(r.json.message, /Usage/);
 });
+
+test('--help and unknown flags answer with the usage, not a stack trace', () => {
+  const help = run('--help');
+  assert.equal(help.code, 0);
+  assert.match(help.json.usage, /uxr\.mjs profile/);
+  const bad = run('profile', 'x.csv', '--nope');
+  assert.equal(bad.code, 1);
+  assert.match(bad.json.message, /Usage/);
+});
+
+test('the results folder is named with the local date', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'uxr-out-'));
+  const src = path.join(dir, 'data.csv');
+  fs.writeFileSync(src, 'a\n1\n');
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  assert.match(run('out-dir', src, '--study', 'Checkout').json.dir, new RegExp(`checkout-${today}$`));
+});

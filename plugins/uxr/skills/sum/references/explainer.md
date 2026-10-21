@@ -9,6 +9,7 @@ A short document for a broad audience: product managers, designers, executives. 
   "lang": "en",
   "title": "How to understand your results",
   "study": "Checkout benchmark",
+  "verdict": "uncertain",
   "headline": {
     "value": "67%",
     "label": "Overall usability score",
@@ -29,13 +30,18 @@ A short document for a broad audience: product managers, designers, executives. 
 
 The six sections `measured`, `result`, `components`, `range`, `fix-first` and `limits` are required, in that order. Add `methods` when `facts.methodDependent` is true or the user asked for a comparison. `items` is optional in any section. The chart of components is added by the renderer after the `result` section; do not describe its colours.
 
+`verdict` is `facts.overall.verdict`, copied as is (leave it out when there are several groups). The editor must keep it, and `check-edit` and `SUM explainer` refuse a headline or result section that claims more than it: "is above target" when it is `uncertain`, for example.
+
 ## What each section says
 
 - **measured:** who did what, in one or two sentences: the number of people, the task in everyday words, what was recorded.
-- **result:** the score, and that 50% means "exactly on the target the team set". Say whether it is above or below target **according to `overall.verdict`**, which judges the range, not the point:
+- **result:** the score, and what it is compared with (`facts.reading`). Say where it stands **according to `overall.verdict`**, which judges the range, not the point:
   - `above` or `below`: say so plainly.
-  - `uncertain`: the range includes 50%. Do not call the result above or below target; say it looks above (or below), but the study cannot yet tell (`overall.verdictPlain`).
-- **components:** each part in everyday terms ("8 of 10 people finished"; "a typical attempt took 62 seconds; the target was 60"). Say which parts are on target and which are not.
+  - `uncertain`: the range includes the target. Do not call the result above or below target, not even with a "but" after it. Say it looks above (or below), but the study cannot yet tell (`overall.verdictPlain`).
+  - `no-target`: nobody agreed a target for this score (a Usability Score without a pass mark). Give the share and its range, and say there is no agreed pass mark. Never compare it with 50%.
+  - `no-range`: give the score, and say how sure we are is unknown.
+- **Several groups (designs):** `overall` is empty. Give each group's score and verdict (`groups[].overall`), then the difference from `comparison`: "B scored 68 points higher; the difference is most likely between 55 and 88 points, so B is clearly better" when its `verdict` is `higher` or `lower`, or "we cannot yet tell which is better" when it is `uncertain`. Use `fix-first` for each group's weakest parts.
+- **components:** each part in everyday terms ("8 of 10 people finished"; "a typical attempt took 62 seconds; the target was 60"). Call a part on or off target only when it has one (`onTarget` is `true` or `false`). When `onTarget` is `null` (completion without a required rate, mistakes, the Usability Score's pass rates), give the number without a verdict. Prefer the plain numbers to the part's percentage: "time on task 74%" means nothing to a reader.
 - **range:** how sure we are, using `overall.ci` ("with ten people, the true score is most likely between 48% and 80%"). Small studies give wide ranges; say what more participants would buy.
 - **fix-first:** the weakest component of each task (`tasks[].weakest`), and what that suggests looking into. Do not invent causes the data does not show.
 - **limits:** what the number does not say: why people struggled, other tasks, other users. Add each caveat from `facts.caveats` in plain words. If the method matters (`methodDependent`), say so here or in `methods`.
@@ -63,6 +69,7 @@ Write `explainer.ua.draft.json` (`"lang": "ua"`) from the **edited** English tex
 | Ease | Легкість |
 | Perceived time | Відчуття часу |
 | Target | Ціль |
+| Pass mark (Usability Score) | Прохідна частка |
 | Range (confidence range) | Діапазон (найімовірніший діапазон значень) |
 | Participant | Учасник |
 | Task | Завдання |

@@ -9,7 +9,7 @@ The mapping states, for each canonical field, where it comes from and how to con
 | `participant_id` | text | Required |
 | `task_id` | text | Required in long layout; comes from the column pattern in wide layout |
 | `group` | text | Optional: design, version or condition. Each group is scored separately. |
-| `success` | 0/1 | Map text codes explicitly |
+| `success` | 0/1 | Map text codes, and number codes other than 0/1 (`1/2/3`), explicitly; anything else stops normalization |
 | `time_s` | seconds | Convert with `unit` |
 | `errors` | count | |
 | `error_opportunities` | count | Often a constant: `{ "value": 5 }` |
@@ -25,7 +25,7 @@ The mapping states, for each canonical field, where it comes from and how to con
 | `from` | `"Duration"` | Source column header, exactly as in `raw.csv` |
 | `value` | `5` | A constant instead of a column |
 | `map` | `{ "Completed": 1, "Failed": 0, "Partial": 0 }` | Text codes, case-insensitive. Every value must be listed; `null` maps to blank. |
-| `unit` | `"s"`, `"ms"`, `"min"`, `"h"`, `"mm:ss"`, `"hh:mm"` | Time unit. `mm:ss` reads `1:03` as 63 s; three-part values are always h:mm:ss. |
+| `unit` | `"s"`, `"ms"`, `"min"`, `"h"`, `"mm:ss"`, `"hh:mm"` | Time unit. `mm:ss` reads `1:03` as 63 s, and also `1:03:00`, which is how Excel stores "1:03" typed into an h:mm cell. Other three-part values are h:mm:ss. Times over an hour get a warning. |
 | `scale` | `[1, 7]` | Full scale range; values outside it stop normalization |
 | `reverse` | `true` | Flip the scale (min + max − value) so higher is always better |
 | `missingAs` | `0` | What a blank means, **only** if the user said so (for example "blank errors = 0") |
@@ -66,12 +66,13 @@ The mapping states, for each canonical field, where it comes from and how to con
       "Time": { "to": "time_s", "unit": "s" },
       "Success": { "to": "success", "map": { "yes": 1, "no": 0 } },
       "SEQ": { "to": "seq", "scale": [1, 7] }
-    }
+    },
+    "taskNames": { "1": "Sign up", "2": "Checkout" }
   }
 }
 ```
 
-The profile proposes a pattern when it sees task-numbered columns. The pattern needs the named groups `task` and `field`. Field names in `fields` must match the `field` group exactly; any other per-task field is listed as ignored.
+The profile proposes a pattern when it sees task-numbered columns. The pattern needs the named groups `task` and `field`. Field names in `fields` must match the `field` group exactly; any other per-task field is listed as ignored. `taskNames` gives each task number the name the reports show; ask the user for them, or the charts say "1" and "2".
 
 ## Must ask, never guess
 

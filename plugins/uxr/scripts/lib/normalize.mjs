@@ -23,6 +23,8 @@ function parseNumber(s, decimal) {
 
 function parseTime(s, unit, decimal) {
   const parts = s.split(':');
+  // A confirmed mm:ss with h:mm:00 values: Excel stored "1:03" typed into an h:mm cell as one hour and three minutes.
+  if (parts.length === 3 && unit === 'mm:ss' && parseNumber(parts[2], decimal) === 0) return Number(parts[0]) * 60 + Number(parts[1]);
   if (parts.length === 3) return Number(parts[0]) * 3600 + Number(parts[1]) * 60 + parseNumber(parts[2], decimal);
   if (parts.length === 2) {
     if (unit === 'mm:ss') return Number(parts[0]) * 60 + parseNumber(parts[1], decimal);
@@ -48,6 +50,7 @@ export function normalize(raw, mapping) {
   const problems = new Map();
   const problem = (key, row) => problems.set(key, [...(problems.get(key) ?? []), row]);
   const log = { rowsIn: raw.rows.length, rowsOut: 0, dropped: [], blanks: {}, unusedColumns: [], warnings: [] };
+  const longTimes = [];
 
   const convert = (field, spec, value, sourceRow) => {
     const s = String(value ?? '').trim();
@@ -64,6 +67,9 @@ export function normalize(raw, mapping) {
     } else if (!NUMERIC.has(field)) return s;
     else v = field === 'time_s' && spec.unit ? parseTime(s, spec.unit, decimal) : parseNumber(s, decimal);
     if (typeof v !== 'number' || Number.isNaN(v)) { problem(`"${s}" in ${spec.from ?? field} is not a ${field === 'time_s' ? `time in ${spec.unit ?? 'an unstated unit'}` : 'number'}`, sourceRow); return ''; }
+    // success is 0 or 1. Other codes (2 = partial, 3 = failed) need a map, or they would silently count as failure.
+    if (field === 'success' && v !== 0 && v !== 1) { problem(`${v} in ${spec.from ?? field} is not 0 or 1; give success a map for its codes`, sourceRow); return ''; }
+    if (field === 'time_s' && v > 3600) longTimes.push(sourceRow);
     if (spec.scale) {
       const [lo, hi] = spec.scale;
       if (v < lo || v > hi) { problem(`${v} in ${spec.from ?? field} is outside the declared scale ${lo}–${hi}`, sourceRow); return ''; }
@@ -111,7 +117,7 @@ export function normalize(raw, mapping) {
         log.dropped.push({ source_row: sourceRow, reason: `no data for task ${task}` });
         continue;
       }
-      const rec = { ...base, task_id: task };
+      const rec = { ...base, task_id: mapping.wide.taskNames?.[task] ?? task };
       for (const c of cells) {
         const spec = wideFields[c.field];
         rec[spec.to] = convert(spec.to, { ...spec, from: c.header }, row[c.index], sourceRow);
@@ -142,6 +148,7 @@ export function normalize(raw, mapping) {
   }
 
   const fields = order([...new Set(kept.flatMap((r) => Object.keys(r)))]);
+  if (longTimes.length) log.warnings.push(`${longTimes.length} task time(s) are over an hour (rows ${[...new Set(longTimes)].slice(0, 8).join(', ')}). Check the time unit and format with the user: a ×60 mistake is silent.`);
   log.unusedColumns = raw.header.filter((h) => !used.has(h));
   log.rowsOut = kept.length;
   return { status: 'ok', table: { header: fields, rows: kept.map((r) => fields.map((f) => r[f] ?? '')) }, log };
