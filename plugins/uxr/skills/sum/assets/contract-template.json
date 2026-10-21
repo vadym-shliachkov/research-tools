@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "study": null,
+  "goal": null,
+  "decided_at": null,
+  "defaults": {
+    "scales": {},
+    "satisfaction_from": null,
+    "sat_target": null,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": null
+  },
+  "tasks": {},
+  "compare_with_measuringu": false,
+  "accessibility_data": false
+}
