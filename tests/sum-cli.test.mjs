@@ -78,6 +78,36 @@ test('an unfilled contract asks instead of computing', () => {
   assert.notEqual(r.code, 0);
 });
 
+test('report, facts and explainer: the explainer renders only after the editor review', () => {
+  const { dir, data } = setup();
+  const contract = path.join(dir, 'c.json');
+  fs.writeFileSync(contract, JSON.stringify({ version: 1, study: 'Checkout', defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 4, expert_time_s: 20 } }));
+  const result = path.join(dir, 'result.json');
+  run('run', data, '--contract', contract, '--bootstrap', '200', '--out', result);
+
+  const rep = run('report', result, '--out-dir', dir, '--lang', 'ua');
+  assert.equal(rep.code, 0);
+  assert.match(fs.readFileSync(rep.json.md, 'utf8'), /Звіт SUM/);
+  assert.match(rep.json.html, /report\.ua\.html$/);
+
+  const facts = run('facts', result);
+  assert.equal(facts.json.facts.overall.pct, 55);
+
+  const doc = { lang: 'en', title: 'How to understand your results', study: 'Checkout', headline: { value: '55%', label: 'Overall score', sentence: 'Slightly above target.' }, sections: ['measured', 'result', 'components', 'range', 'fix-first', 'limits'].map((id) => ({ id, heading: id, paragraphs: ['Text.'] })), glossary: [{ term: 'Score', definition: 'One number.' }] };
+  const draft = path.join(dir, 'explainer.draft.json');
+  fs.writeFileSync(draft, JSON.stringify(doc));
+  const refused = run('explainer', draft, '--result', result, '--out-dir', dir);
+  assert.equal(refused.code, 1);
+  assert.match(refused.json.message, /editor/);
+
+  const edited = path.join(dir, 'explainer.json');
+  fs.writeFileSync(edited, JSON.stringify({ ...doc, review: { readable: true, notes: [] } }));
+  const ok = run('explainer', edited, '--result', result, '--out-dir', dir);
+  assert.equal(ok.code, 0);
+  assert.ok(fs.existsSync(ok.json.html));
+  assert.ok(ok.json.pdf === null ? ok.json.warnings.length > 0 : fs.existsSync(ok.json.pdf));
+});
+
 test('compare lists every preset with a value or a reason', () => {
   const { dir, data } = setup();
   const contract = path.join(dir, 'c.json');

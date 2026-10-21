@@ -11,7 +11,11 @@ const fs = await import('node:fs');
 const path = await import('node:path');
 const { parseArgs } = await import('node:util');
 const { parseCsv } = await import('../../../scripts/lib/csv.mjs');
+const { validateExplainer, renderExplainerHtml } = await import('../../../scripts/lib/explainer.mjs');
+const { writeDocument } = await import('../../../scripts/lib/html.mjs');
+const { findBrowser } = await import('../../../scripts/lib/browser.mjs');
 const SUM = await import('./sum-lib.mjs');
+const REPORT = await import('./report-lib.mjs');
 
 const USAGE = `Usage:
   sum.mjs init-contract <data.csv> [--mapping mapping.json] [--previous result.json] --out contract.json
@@ -21,7 +25,10 @@ const USAGE = `Usage:
               [--smoothing none|laplace] [--time-target target|empirical] [--time-log log|raw]
               [--failed-time exclude|cutoff] [--weights c=.5,t=.25,s=.25] [--shift 0|1.5]
               [--bootstrap 2000] [--seed N] [--previous result.json] --out result.json
-  sum.mjs compare <data.csv> --contract contract.json`;
+  sum.mjs compare <data.csv> --contract contract.json
+  sum.mjs report <result.json> --out-dir DIR [--lang en|ua]       report.md + report.html
+  sum.mjs facts <result.json> [--lang en|ua] [--out facts.json]   plain facts for the explainer draft
+  sum.mjs explainer <explainer.json> --result result.json --out-dir DIR   explainer HTML + PDF (after the editor)`;
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -31,6 +38,7 @@ const { values: opt, positionals } = parseArgs({
     smoothing: { type: 'string' }, 'time-target': { type: 'string' }, 'time-log': { type: 'string' },
     'failed-time': { type: 'string' }, weights: { type: 'string' }, shift: { type: 'string' },
     bootstrap: { type: 'string' }, seed: { type: 'string' }, study: { type: 'string' },
+    'out-dir': { type: 'string' }, lang: { type: 'string' }, result: { type: 'string' },
   },
 });
 const [command, dataPath] = positionals;
@@ -142,8 +150,42 @@ const COMMANDS = {
   },
 };
 
-if (!COMMANDS[command] || !dataPath) finish({ status: 'error', message: USAGE });
+const suffix = (lang) => (lang === 'ua' ? '.ua' : '');
+
+// Commands that read a result or explainer JSON instead of the data table.
+const DOC_COMMANDS = {
+  report(result) {
+    if (!opt['out-dir']) return { status: 'error', message: '--out-dir is required' };
+    const lang = opt.lang ?? 'en';
+    const md = path.join(opt['out-dir'], `report${suffix(lang)}.md`);
+    const html = path.join(opt['out-dir'], `report${suffix(lang)}.html`);
+    fs.mkdirSync(opt['out-dir'], { recursive: true });
+    fs.writeFileSync(md, REPORT.buildReportMd(result, lang));
+    fs.writeFileSync(html, REPORT.buildReportHtml(result, lang));
+    return { status: 'ok', md, html };
+  },
+  facts(result) {
+    const facts = REPORT.explainerFacts(result, opt.lang ?? 'en');
+    if (opt.out) write(opt.out, facts);
+    return { status: 'ok', out: opt.out ?? null, facts };
+  },
+  explainer(doc) {
+    if (!opt.result || !opt['out-dir']) return { status: 'error', message: '--result and --out-dir are required' };
+    const { errors } = validateExplainer(doc);
+    if (errors.length) return { status: 'error', message: errors.join('; ') };
+    if (!doc.review) return { status: 'error', message: 'This explainer has no editor review. Run the plain-language editor on it first, then render the edited file.' };
+    const result = readJson(opt.result);
+    const html = renderExplainerHtml(doc, { chart: REPORT.explainerChart(result, doc.lang) });
+    const warnings = [];
+    const htmlPath = path.join(opt['out-dir'], `explainer${suffix(doc.lang)}.html`);
+    const pdf = writeDocument(html, htmlPath, findBrowser(), warnings);
+    return { status: 'ok', html: htmlPath, pdf, warnings, review: doc.review };
+  },
+};
+
+if ((!COMMANDS[command] && !DOC_COMMANDS[command]) || !dataPath) finish({ status: 'error', message: USAGE });
 try {
+  if (DOC_COMMANDS[command]) finish(DOC_COMMANDS[command](readJson(dataPath)));
   finish(COMMANDS[command](parseCsv(fs.readFileSync(dataPath, 'utf8').replace(/^﻿/, ''))));
 } catch (e) {
   finish({ status: 'error', message: e.message });

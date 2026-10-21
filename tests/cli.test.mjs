@@ -53,6 +53,33 @@ test('extract → profile → normalize on a messy workbook', () => {
   assert.equal(fs.readFileSync(out, 'utf8'), 'source_row,participant_id,task_id,success,time_s,seq\n2,P1,Checkout,1,42,6\n3,P2,Checkout,0,95,2\n');
 });
 
+test('out-dir creates uxr-results next to the source and never reuses a folder', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'uxr-out-'));
+  const src = path.join(dir, 'study.csv');
+  fs.writeFileSync(src, 'a\n1\n');
+  const a = run('out-dir', src, '--study', 'Checkout Benchmark');
+  const b = run('out-dir', src, '--study', 'Checkout Benchmark');
+  assert.equal(a.json.nextToSource, true);
+  assert.equal(path.dirname(a.json.dir), path.join(dir, 'uxr-results'));
+  assert.match(path.basename(a.json.dir), /^checkout-benchmark-\d{4}-\d{2}-\d{2}$/);
+  assert.equal(b.json.dir, `${a.json.dir}-2`);
+});
+
+test('readability and check-edit run from the command line', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'uxr-ed-'));
+  const draft = { lang: 'en', title: 't', headline: { value: '67%', label: 'Score', sentence: 'Most people managed.' }, sections: ['measured', 'result', 'components', 'range', 'fix-first', 'limits'].map((id) => ({ id, heading: id, paragraphs: ['Eight of 10 finished.'] })), glossary: [{ term: 'Score', definition: 'One number.' }] };
+  const d = path.join(dir, 'draft.json');
+  const e = path.join(dir, 'edited.json');
+  fs.writeFileSync(d, JSON.stringify(draft));
+  fs.writeFileSync(e, JSON.stringify({ ...draft, review: { readable: true, notes: [] } }));
+  assert.equal(run('readability', d).json.issues.length, 0);
+  assert.equal(run('check-edit', d, e).code, 0);
+  fs.writeFileSync(e, JSON.stringify(draft));
+  const bad = run('check-edit', d, e);
+  assert.equal(bad.code, 1);
+  assert.match(bad.json.message, /review/);
+});
+
 test('usage errors exit 1 with a message', () => {
   const r = run('bogus', 'x');
   assert.equal(r.code, 1);

@@ -14,20 +14,25 @@ const { extract } = await import('./lib/extract.mjs');
 const { parseCsv, toCsv } = await import('./lib/csv.mjs');
 const { profile } = await import('./lib/profile.mjs');
 const { normalize } = await import('./lib/normalize.mjs');
+const { checkReadability } = await import('./lib/readability.mjs');
+const { checkEdit } = await import('./lib/explainer.mjs');
 
 const USAGE = `Usage:
+  uxr.mjs out-dir <source|-> --study NAME          create the results folder next to the source (never overwrites)
   uxr.mjs extract <source> --out raw.csv [--sheet NAME] [--json-path a.b] [--delimiter ";"] [--header-row N]
   uxr.mjs profile <raw.csv> --out profile.json
-  uxr.mjs normalize <raw.csv> --mapping mapping.json --out data.csv [--log normalize-log.json]`;
+  uxr.mjs normalize <raw.csv> --mapping mapping.json --out data.csv [--log normalize-log.json]
+  uxr.mjs readability <explainer.json>
+  uxr.mjs check-edit <draft.json> <edited.json>`;
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     out: { type: 'string' }, sheet: { type: 'string' }, 'json-path': { type: 'string' }, delimiter: { type: 'string' },
-    'header-row': { type: 'string' }, mapping: { type: 'string' }, log: { type: 'string' },
+    'header-row': { type: 'string' }, mapping: { type: 'string' }, log: { type: 'string' }, study: { type: 'string' },
   },
 });
-const [command, input] = positionals;
+const [command, input, second] = positionals;
 
 const readTable = (p) => parseCsv(fs.readFileSync(p, 'utf8').replace(/^﻿/, ''));
 const write = (p, content) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, content); };
@@ -36,7 +41,27 @@ function finish(result) {
   process.exit(result.status === 'ok' ? 0 : result.status === 'needs-input' ? 2 : 1);
 }
 
+const slug = (s) => String(s ?? 'study').toLowerCase().normalize('NFKC').replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '') || 'study';
+
 const COMMANDS = {
+  'out-dir'() {
+    const isFile = input !== '-' && fs.existsSync(input) && fs.statSync(input).isFile();
+    const base = path.join(isFile ? path.dirname(path.resolve(input)) : process.cwd(), 'uxr-results');
+    const stem = `${slug(opt.study)}-${new Date().toISOString().slice(0, 10)}`;
+    let dir = path.join(base, stem);
+    for (let i = 2; fs.existsSync(dir); i++) dir = path.join(base, `${stem}-${i}`);
+    fs.mkdirSync(dir, { recursive: true });
+    return { status: 'ok', dir, nextToSource: isFile };
+  },
+  readability() {
+    const r = checkReadability(JSON.parse(fs.readFileSync(input, 'utf8')));
+    return { status: 'ok', ...r };
+  },
+  'check-edit'() {
+    if (!second) return { status: 'error', message: 'check-edit needs <draft.json> <edited.json>' };
+    const { errors } = checkEdit(JSON.parse(fs.readFileSync(input, 'utf8')), JSON.parse(fs.readFileSync(second, 'utf8')));
+    return errors.length ? { status: 'error', errors, message: errors.join('; ') } : { status: 'ok' };
+  },
   extract() {
     const r = extract(input, { sheet: opt.sheet, jsonPath: opt['json-path'], delimiter: opt.delimiter, headerRow: opt['header-row'] });
     if (r.status !== 'ok') return r;
