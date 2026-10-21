@@ -1,0 +1,8 @@
+# Normalize line endings: Windows checkouts must not turn scripts or
+# SKILL.md frontmatter into CRLF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.xlsx binary
+*.pdf binary

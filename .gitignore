@@ -1,0 +1,42 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Dependencies (the calculator scripts are zero-dependency; nothing is installed)
+node_modules/
+
+# Python caches, in case a future skill ships a Python helper
+__pycache__/
+*.pyc
+.venv/
+
+# Logs, temp and run output
+*.log
+*.tmp
+*.bak
+tests/output/
+coverage/
+
+# Local environment / secrets
+.env
+.env.*
+
+# Local Claude Code / Codex settings and agent scratch
+.claude/settings.local.json
+.superpowers/
+.playwright-mcp/
+
+# Agent instructions for developing THIS repo, kept local. Anchored so a
+# CLAUDE.md or AGENTS.md shipped inside a plugin is still tracked.
+/CLAUDE.md
+/AGENTS.md
+
+# Plans and source research stay local; plugins ship only distilled references.
+/docs/
