@@ -32,7 +32,9 @@ The six sections `measured`, `result`, `components`, `range`, `fix-first` and `l
 ## What each section says
 
 - **measured:** who did what, in one or two sentences: the number of people, the task in everyday words, what was recorded.
-- **result:** the score, and that 50% means "exactly on the target the team set". Say whether the result is above or below that, and by how much in plain words.
+- **result:** the score, and that 50% means "exactly on the target the team set". Say whether it is above or below target **according to `overall.verdict`**, which judges the range, not the point:
+  - `above` or `below`: say so plainly.
+  - `uncertain`: the range includes 50%. Do not call the result above or below target; say it looks above (or below), but the study cannot yet tell (`overall.verdictPlain`).
 - **components:** each part in everyday terms ("8 of 10 people finished"; "a typical attempt took 62 seconds; the target was 60"). Say which parts are on target and which are not.
 - **range:** how sure we are, using `overall.ci` ("with ten people, the true score is most likely between 48% and 80%"). Small studies give wide ranges; say what more participants would buy.
 - **fix-first:** the weakest component of each task (`tasks[].weakest`), and what that suggests looking into. Do not invent causes the data does not show.

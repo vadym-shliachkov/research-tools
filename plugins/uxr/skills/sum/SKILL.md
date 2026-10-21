@@ -81,7 +81,7 @@ On `needs-input` (an unmapped code, a value outside its scale, duplicates), ask,
 ## 9. Answer in the chat
 
 Write in the user's language, in five to eight lines:
-- the score with its range, and the chosen method in one plain sentence
+- the score with its range; whether it is clearly above or below target, or not yet clear (`facts.overall.verdict`); and the chosen method in one plain sentence
 - the weakest component and what to look at first
 - whether the verdict depends on the method, if the sensitivity check says so
 - the most important caveat

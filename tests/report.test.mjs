@@ -154,6 +154,11 @@ describe('SUM reports', () => {
     assert.equal(f.tasks[0].weakest.key, 'satisfaction');
     assert.ok(f.caveats.length >= 1);
     assert.equal(f.methodDependent, true);
+    // 67% looks above target, but its range starts below 50%, so "above target" is not yet certain.
+    assert.ok(f.overall.ci[0] < 50 && f.overall.ci[1] > 50);
+    assert.equal(f.overall.verdict, 'uncertain');
+    assert.equal(f.tasks[0].sum.verdict, 'uncertain');
+    assert.match(f.overall.verdictPlain, /cannot yet be sure/);
   });
 });
 

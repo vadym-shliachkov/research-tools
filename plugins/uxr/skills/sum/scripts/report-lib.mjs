@@ -210,12 +210,21 @@ const PLAIN_METHOD = {
   microsoft: 'The share of people for whom everything was good enough at once: they finished, and found the task fast, easy and satisfying enough.',
 };
 
+// Whether a score is clearly above or below the target (50%), judged on its 95% range, not on the point estimate.
+function scoreFacts(s) {
+  const out = { pct: pct0(s.pct), ci: s.ci ? s.ci.map(pct0) : null };
+  if (!s.ci) return { ...out, verdict: 'no-range', verdictPlain: 'There is no range for this score, so how sure we are is unknown.' };
+  if (s.ci[0] > 0.5) return { ...out, verdict: 'above', verdictPlain: 'Even the low end of the range is above the target, so the result is clearly above target.' };
+  if (s.ci[1] < 0.5) return { ...out, verdict: 'below', verdictPlain: 'Even the high end of the range is below the target, so the result is clearly below target.' };
+  return { ...out, verdict: 'uncertain', verdictPlain: `The range runs from ${out.ci[0]}% to ${out.ci[1]}% and includes the 50% target, so we cannot yet be sure whether the result is above or below target.` };
+}
+
 export function explainerFacts(result, lang = 'en') {
   const l = L[lang] ?? L.en;
   const us = isUs(result);
   const groups = (result.groups ?? []).map((g) => ({
     group: g.group,
-    overall: g.product ? { pct: pct0(g.product.pct), ci: g.product.ci ? g.product.ci.map(pct0) : null } : null,
+    overall: g.product ? scoreFacts(g.product) : null,
     tasks: g.tasks.map((t) => {
       const comps = Object.fromEntries(ORDER.filter((k) => t.components?.[k]).map((k) => {
         const c = t.components[k];
@@ -227,7 +236,7 @@ export function explainerFacts(result, lang = 'en') {
         return [k, { label: l[k], pct: pct0(c.pct), onTarget: c.pct >= 0.5, plain }];
       }));
       const weakest = Object.entries(comps).sort((a, b) => a[1].pct - b[1].pct)[0];
-      return { task: t.task, n: t.components?.completion?.n ?? t.sum?.n, sum: t.sum ? { pct: pct0(t.sum.pct), ci: t.sum.ci ? t.sum.ci.map(pct0) : null } : null, components: comps, weakest: weakest ? { key: weakest[0], ...weakest[1] } : null };
+      return { task: t.task, n: t.components?.completion?.n ?? t.sum?.n, sum: t.sum ? scoreFacts(t.sum) : null, components: comps, weakest: weakest ? { key: weakest[0], ...weakest[1] } : null };
     }),
   }));
   const caveats = [...(result.qa?.warnings ?? [])].map((w) => w.message);
