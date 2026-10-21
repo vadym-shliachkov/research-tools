@@ -2,6 +2,15 @@
 // explainer chart. Every number comes from the result; nothing is recomputed here.
 import { esc, page, bars } from '../../../scripts/lib/html.mjs';
 
+// Ukrainian noun forms after a number: 1 помилка, 2–4 помилки, 5+ (and 11–14) помилок.
+function uaPlural(n, one, few, many) {
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
+
 const L = {
   en: {
     title: 'SUM report', completion: 'Completion', errors: 'Error-free rate', time: 'Time on task', satisfaction: 'Satisfaction',
@@ -15,7 +24,8 @@ const L = {
     samples: 'samples', seed: 'seed', of: 'of', finished: 'finished', geo: 'typical', vs: 'vs', passed: 'passed all four',
     threshold: 'threshold', on: 'on', from: 'from', alpha: 'Cronbach alpha',
     barsKey: 'Bars show each component as a percentage: 50% (the middle line) is exactly on target; green is at or above it, red below. Whiskers show the 95% range.',
-    s: 's', dec: '.', vsTarget: 'vs target',
+    s: 's', dec: '.', vsTarget: 'vs target', overallPlain: 'Overall score',
+    mistakes: (e, n) => `${e} mistake${e === 1 ? '' : 's'} in ${n} chances`,
   },
   ua: {
     title: 'Звіт SUM', completion: 'Частка успішного виконання', errors: 'Частка дій без помилок', time: 'Час на завдання', satisfaction: 'Задоволеність',
@@ -29,7 +39,8 @@ const L = {
     samples: 'вибірок', seed: 'зерно', of: 'з', finished: 'виконали', geo: 'типово', vs: 'проти', passed: 'пройшли всі чотири умови',
     threshold: 'поріг', on: 'за шкалою', from: 'з', alpha: 'альфа Кронбаха',
     barsKey: 'Смуги показують кожну складову у відсотках: 50% (лінія посередині) означає рівно ціль; зелений колір — на рівні цілі або вище, червоний — нижче. Вуса показують 95% діапазон.',
-    s: 'с', dec: ',', vsTarget: 'при цілі',
+    s: 'с', dec: ',', vsTarget: 'при цілі', overallPlain: 'Загальна оцінка',
+    mistakes: (e, n) => `${e} ${uaPlural(e, 'помилка', 'помилки', 'помилок')} з ${n} можливих`,
   },
 };
 
@@ -109,7 +120,8 @@ export function buildReportMd(result, lang = 'en') {
   return out.join('\n');
 }
 
-function taskChart(t, l, us) {
+// plain: wording for a broad audience (the explainer); otherwise the team report's technical labels.
+function taskChart(t, l, us, plain = false) {
   const rows = [];
   for (const k of ORDER) {
     const c = t.components?.[k];
@@ -119,11 +131,11 @@ function taskChart(t, l, us) {
     else if (k === 'completion') sub = `${c.x} ${l.of} ${c.n} ${l.finished}`;
     else if (k === 'time') sub = `${sec(c.log ? c.geoMean : c.mean, l)} ${l.vsTarget} ${sec(c.target, l)}`;
     else if (k === 'satisfaction') sub = `${num(c.mean, l)} ${l.vsTarget} ${num(c.target, l)}`;
-    else if (k === 'errors') sub = `${c.errors} / ${c.opportunities}`;
+    else if (k === 'errors') sub = plain ? l.mistakes(c.errors, c.opportunities) : `${c.errors} / ${c.opportunities}`;
     const ci = (us || (k === 'completion' && c.benchmark === undefined)) && c.ci ? c.ci : null;
     rows.push({ label: l[k], sub, pct: c.pct, ci });
   }
-  if (t.sum) rows.push({ label: us ? l.usability : l.sum, sub: us ? l.passed : '', pct: t.sum.pct, ci: t.sum.ci ?? null });
+  if (t.sum) rows.push({ label: plain ? l.overallPlain : us ? l.usability : l.sum, sub: us ? l.passed : '', pct: t.sum.pct, ci: t.sum.ci ?? null });
   return rows;
 }
 
@@ -132,11 +144,11 @@ export function explainerChart(result, lang = 'en') {
   const us = isUs(result);
   const g = result.groups?.[0];
   if (!g) return [];
-  if (result.groups.length === 1 && g.tasks.length === 1) return taskChart(g.tasks[0], l, us);
+  if (result.groups.length === 1 && g.tasks.length === 1) return taskChart(g.tasks[0], l, us, true);
   const rows = [];
   for (const grp of result.groups) {
     for (const t of grp.tasks) if (t.sum) rows.push({ label: `${grp.group !== null ? `${grp.group} · ` : ''}${t.task}`, pct: t.sum.pct, ci: t.sum.ci ?? null });
-    if (grp.product) rows.push({ label: `${grp.group !== null ? `${grp.group} · ` : ''}${us ? l.overallUs : l.overall}`, pct: grp.product.pct, ci: grp.product.ci ?? null });
+    if (grp.product) rows.push({ label: `${grp.group !== null ? `${grp.group} · ` : ''}${l.overallPlain}`, pct: grp.product.pct, ci: grp.product.ci ?? null });
   }
   return rows;
 }

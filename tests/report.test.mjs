@@ -130,6 +130,14 @@ describe('SUM reports', () => {
     assert.match(md, /3,7 проти 4/);
     const chart = explainerChart(RESULT, 'ua');
     assert.equal(chart.find((r) => r.label === 'Задоволеність').sub, '3,7 при цілі 4');
+    assert.equal(chart.at(-1).label, 'Загальна оцінка');
+  });
+
+  test('the explainer chart avoids jargon; the team report keeps technical labels', () => {
+    const chart = explainerChart(RESULT, 'en');
+    assert.equal(chart.at(-1).label, 'Overall score');
+    assert.equal(chart.find((r) => r.label === 'Error-free rate').sub, '4 mistakes in 50 chances');
+    assert.match(buildReportHtml(RESULT, 'en'), /<div class="label">SUM<\/div>/);
   });
 
   test('report.html is self-contained with bars and intervals', () => {
