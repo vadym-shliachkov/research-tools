@@ -161,6 +161,20 @@ describe('profile', () => {
     }
   });
 
+  test('single-task studies, abbreviated names and scales written in headers', () => {
+    const p = profile(table([
+      ['Respondent', 'Task', 'Time', 'Sat (1-5)'],
+      ['U1', 'Checkout', '0:00:42', '5'], ['U2', 'Checkout', '0:01:10', '3'], ['U3', 'Checkout', '', '4'],
+    ]));
+    const col = (n) => p.columns.find((c) => c.name === n);
+    assert.equal(col('Task').roles[0].role, 'task_id');
+    assert.ok(col('Task').roles[0].confidence >= 0.9);
+    assert.equal(col('Sat (1-5)').roles[0].role, 'satisfaction');
+    assert.deepEqual(col('Sat (1-5)').scaleHint, [1, 5]);
+    assert.ok(!p.mustAsk.some((a) => a.topic === 'time-format'), 'h:mm:ss needs no question');
+    assert.match(p.mustAsk.find((a) => a.topic === 'scale-range').question, /header says 1–5/);
+  });
+
   test('decimal comma numbers are recognised', () => {
     const p = profile(table([['t'], ['63,5'], ['40'], ['12,25']]));
     assert.equal(p.columns[0].type, 'number');

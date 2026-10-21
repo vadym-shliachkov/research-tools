@@ -22,7 +22,7 @@ const ROLE_NAMES = [
   ['perceived_time', /perceiv|how long|felt|expected time|faster|slower|відчут/i],
   ['seq', /\bseq\b|single ease/i],
   ['ease', /ease|easy|difficult|легк|складн/i],
-  ['satisfaction', /satisf|задовол/i],
+  ['satisfaction', /satisf|\bsat\b|задовол/i],
   ['time_s', /time|duration|seconds|\bsec\b|elapsed|час|тривал/i],
   ['group', /group|variant|version|condition|design|cohort|arm|груп|варіант|верс/i],
 ];
@@ -48,7 +48,7 @@ function roleScores(col, nRows) {
   const binary = col.type === 'integer' && col.distinct <= 2 && col.min >= 0 && col.max <= 1;
   const fits = {
     participant_id: col.distinct > 1,
-    task_id: col.distinct > 1 && col.distinct < nRows,
+    task_id: col.distinct >= 1 && (col.distinct < nRows || nRows === 1),
     success: binary || col.type === 'boolean' || (col.type === 'text' && col.distinct <= 8),
     time_s: numeric || col.type === 'duration',
     errors: col.type === 'integer' && col.min >= 0,
@@ -98,6 +98,8 @@ export function profile({ header, rows }) {
       col.min = Math.min(...nums);
       col.max = Math.max(...nums);
     }
+    const hint = /[([]\s*(\d+)\s*[-–—]\s*(\d+)\s*[)\]]/.exec(name);
+    if (hint) col.scaleHint = [Number(hint[1]), Number(hint[2])];
     col.roles = roleScores(col, rows.length);
     return col;
   });
@@ -114,12 +116,15 @@ export function profile({ header, rows }) {
   const time = top('time_s');
   if (time) {
     const unitInName = /\b(?:ms|s|sec|secs|seconds|min|mins|minutes|с|сек|хв)\b|\((?:s|ms|min)\)/i.test(time.name);
-    if (time.type === 'duration') ask('time-format', [time], `Values in "${time.name}" look like ${time.top[0]?.value}. Is that minutes:seconds or hours:minutes?`);
-    else if (!unitInName) ask('time-format', [time], `What unit is "${time.name}" in: seconds, milliseconds or minutes?`);
+    // h:mm:ss (three parts, as Excel writes time cells) is unambiguous; m:ss vs h:mm is not.
+    const twoPart = time.top.some((t) => /^\d+:\d{2}(?:[.,]\d+)?$/.test(t.value));
+    if (time.type === 'duration') {
+      if (twoPart) ask('time-format', [time], `Values in "${time.name}" look like ${time.top[0]?.value}. Is that minutes:seconds or hours:minutes?`);
+    } else if (!unitInName) ask('time-format', [time], `What unit is "${time.name}" in: seconds, milliseconds or minutes?`);
   }
   const ratings = columns.filter((c) => RATING_ROLES.has(c.roles[0]?.role) || c.roles[0]?.role === 'rating');
   if (ratings.length) {
-    ask('scale-range', ratings, `What is the full scale of ${ratings.map((c) => `"${c.name}" (seen ${c.min}–${c.max})`).join(', ')}? The highest possible answer may not appear in the data.`);
+    ask('scale-range', ratings, `What is the full scale of ${ratings.map((c) => `"${c.name}" (seen ${c.min}–${c.max}${c.scaleHint ? `; the header says ${c.scaleHint.join('–')}` : ''})`).join(', ')}? The highest possible answer may not appear in the data.`);
     ask('scale-direction', ratings, `For ${ratings.map((c) => `"${c.name}"`).join(', ')}: is the highest number the best answer (very easy, very satisfied)?`);
     if (ratings.length > 1) ask('satisfaction-construct', ratings, 'Which rating questions make up satisfaction: one of them, or an average of several?');
   }
