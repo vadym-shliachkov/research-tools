@@ -1,0 +1,16 @@
+{
+  "name": "uxr",
+  "version": "0.1.0",
+  "description": "UX research metrics with plain-language conclusions: Single Usability Metric (SUM) with autopilot method choice, any-format data intake, HTML report and an explainer PDF.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "UX Research",
+    "shortDescription": "Turn usability study data into defensible conclusions",
+    "developerName": "Vadym Shliachkov",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Calculate the Single Usability Metric for my study data",
+      "Which SUM method fits my benchmark, and why?"
+    ]
+  }
+}

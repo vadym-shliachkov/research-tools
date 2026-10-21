@@ -1,0 +1,18 @@
+{
+  "name": "research-tools",
+  "owner": {
+    "name": "Vadym Shliachkov",
+    "email": "vadim@xivic.com"
+  },
+  "metadata": {
+    "description": "UX research tools that turn study data into defensible conclusions.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "uxr",
+      "source": "./plugins/uxr",
+      "description": "UX research metrics with plain-language conclusions: Single Usability Metric (SUM) with autopilot method choice, any-format data intake, HTML report and an explainer PDF."
+    }
+  ]
+}

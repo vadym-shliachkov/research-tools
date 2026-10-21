@@ -1,0 +1,12 @@
+{
+  "name": "research-tools",
+  "interface": { "displayName": "Research Tools" },
+  "plugins": [
+    {
+      "name": "uxr",
+      "source": { "source": "local", "path": "./plugins/uxr" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

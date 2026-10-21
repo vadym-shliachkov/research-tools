@@ -1,0 +1,13 @@
+{
+  "name": "uxr",
+  "version": "0.1.0",
+  "description": "UX research metrics with plain-language conclusions: Single Usability Metric (SUM) with autopilot method choice, any-format data intake, HTML report and an explainer PDF.",
+  "author": {
+    "name": "Vadym Shliachkov",
+    "email": "vadim@xivic.com"
+  },
+  "homepage": "https://github.com/vadym-shliachkov/research-tools",
+  "repository": "https://github.com/vadym-shliachkov/research-tools",
+  "license": "MIT",
+  "keywords": ["ux-research", "usability", "sum", "single-usability-metric", "benchmark", "statistics"]
+}
