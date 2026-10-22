@@ -63,9 +63,9 @@ describe('readability', () => {
 
   test('Ukrainian: jargon and untranslated English words are flagged', () => {
     const doc = { ...structuredClone(EXPLAINER), lang: 'ua', title: 'Як зрозуміти ваші результати' };
-    doc.headline = { value: '67%', label: 'Загальна оцінка зручності', sentence: 'Оформлення замовлення працює для більшості людей.' };
+    doc.headline = { value: '67%', label: 'Загальна оцінка юзабіліті', sentence: 'Оформлення замовлення працює для більшості людей.' };
     doc.sections = doc.sections.map((s) => ({ ...s, heading: 'Розділ', paragraphs: ['Десять людей спробували оплатити замовлення.'] }));
-    doc.glossary = [{ term: 'Оцінка зручності', definition: 'Одне число від 0 до 100.' }];
+    doc.glossary = [{ term: 'Оцінка юзабіліті', definition: 'Одне число від 0 до 100.' }];
     assert.deepEqual(checkReadability(doc).issues, []);
     doc.sections[2].paragraphs = ['Стандартне відхилення велике, а completion rate низький.'];
     const codes = checkReadability(doc).issues.map((i) => i.code);
@@ -197,13 +197,13 @@ describe('SUM reports', () => {
 
   test('a method that does not apply says why in Ukrainian too', () => {
     const md = buildReportMd(RESULT, 'ua');
-    assert.match(md, /microsoft \| не застосовний: для оцінки зручності бракує оцінок: відчуття часу, легкість/);
+    assert.match(md, /microsoft \| не застосовний: для оцінки юзабіліті бракує оцінок: відчуття часу, легкість/);
     assert.doesNotMatch(md, /Usability Score needs/);
     assert.match(buildReportMd(RESULT, 'en'), /The Usability Score needs perceived_time, ease/);
     // A result.json written before the error carried params is still translated.
     const old = structuredClone(RESULT);
     for (const s of old.sensitivity) delete s.params;
-    assert.match(buildReportMd(old, 'ua'), /не застосовний: для оцінки зручності бракує оцінок: відчуття часу, легкість/);
+    assert.match(buildReportMd(old, 'ua'), /не застосовний: для оцінки юзабіліті бракує оцінок: відчуття часу, легкість/);
   });
 
   test('the explainer chart avoids jargon; the team report keeps technical labels', () => {
@@ -269,7 +269,7 @@ describe('Usability Score reports', () => {
     assert.match(gated, /Pass mark 50\.0%/);
     assert.match(gated, /^# Usability Score report: Gate/m);
     assert.match(gated, /6 of 10 people passed every task/);
-    assert.match(buildReportMd(result({}), 'ua'), /^# Звіт: оцінка зручності/m);
+    assert.match(buildReportMd(result({}), 'ua'), /^# Звіт: оцінка юзабіліті/m);
     assert.deepEqual(explainerFacts(result({}), 'en').overall.passed, { x: 6, n: 10 });
   });
 

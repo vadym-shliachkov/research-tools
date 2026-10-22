@@ -22,12 +22,12 @@ const UA_WARNINGS = {
   'previous-differs': ({ list }) => `Контракт відрізняється від попередньої хвилі (${list}), тож хвилі не можна порівнювати напряму.`,
   'gate-ignores-time': ({ timeTargets, satTarget }) => {
     const unused = [timeTargets ? 'цілі за часом' : null, satTarget ? 'ціль задоволеності' : null].filter(Boolean);
-    return `Оцінка зручності враховує, хто виконав завдання й оцінив відчуття часу, легкість і задоволеність не нижче порогів. Виміряний час на завдання в неї не входить${unused.length ? `, як і ${unused.join(' та ')} (їх використано лише для порівняння з іншими методами)` : ''}.`;
+    return `Оцінка юзабіліті враховує, хто виконав завдання й оцінив відчуття часу, легкість і задоволеність не нижче порогів. Виміряний час на завдання в неї не входить${unused.length ? `, як і ${unused.join(' та ')} (їх використано лише для порівняння з іншими методами)` : ''}.`;
   },
   'mixed-design': ({ shared, group, vs }) => `${shared} ${uaPlural(shared, 'учасник брав', 'учасники брали', 'учасників брали')} участь і в ${vs}, і в ${group}, решта — лише в одній групі. Різниця враховує результати кожної людини разом; перевірте, що дослідження проводили саме так.`,
   'completion-extreme': ({ pct, x, n }) => `Частка успіху ${pct}% (${x}/${n}); її z-оцінка нескінченна. Оберіть згладжування (laplace) або усереднення відсотків.`,
   'errors-extreme': ({ pct }) => `Частка дій без помилок ${pct}%; її z-оцінка нескінченна. Оберіть згладжування (laplace) або усереднення відсотків.`,
-  'missing-columns': ({ missing }) => `Для оцінки зручності бракує оцінок: ${uaColumns(missing)}.`,
+  'missing-columns': ({ missing }) => `Для оцінки юзабіліті бракує оцінок: ${uaColumns(missing)}.`,
 };
 
 const UA_REASONS = {
@@ -67,7 +67,7 @@ const UA_COLUMNS = { success: 'успіх', perceived_time: 'відчуття ч
 const uaColumns = (missing = []) => missing.map((c) => UA_COLUMNS[c] ?? c).join(', ');
 
 const UA_NOT_APPLICABLE = {
-  'missing-columns': ({ missing }) => `для оцінки зручності бракує оцінок: ${uaColumns(missing)}`,
+  'missing-columns': ({ missing }) => `для оцінки юзабіліті бракує оцінок: ${uaColumns(missing)}`,
   'no-error-data': () => 'немає даних про помилки',
   'errors-not-predefined': () => 'можливі помилки не визначили до дослідження',
   'no-benchmark': () => 'немає орієнтира успішності',

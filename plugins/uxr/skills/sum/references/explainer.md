@@ -63,7 +63,8 @@ Write `explainer.ua.draft.json` (`"lang": "ua"`) from the **edited** English tex
 | English | Українською |
 |---|---|
 | How to understand your results | Як зрозуміти ваші результати |
-| Usability score / SUM | Оцінка зручності (SUM) |
+| Usability | Юзабіліті (not «зручність»; indeclinable, neuter: «саме юзабіліті не змінилося») |
+| Usability score / SUM | Оцінка юзабіліті (SUM) |
 | Completion / completion rate | Частка успішного виконання |
 | Time on task | Час на завдання |
 | Satisfaction | Задоволеність |
