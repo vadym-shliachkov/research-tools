@@ -22,14 +22,14 @@ The time z is inverted so that faster is better. SD is the sample SD (Excel `STD
 
 The two give different numbers on the same data: on the source report's checkout example, 67.4% vs 63.7% with four components, and 55.3% vs 54.2% with three.
 
-**Several tasks.** Each task gets its own SUM. The overall score is Φ(mean of the task z-scores) for `z-mean`, and the mean of the task percentages for `pct-mean` and the Usability Score.
+**Several tasks.** Each task gets its own SUM. The overall score is Φ(mean of the task z-scores) for `z-mean`, and the mean of the task percentages for `pct-mean`. The overall Usability Score counts people: the share of participants who passed every check in every task they tried, with an adjusted-Wald range, so it matches a pass mark stated in people.
 
 **Uncertainty.**
 - Completion: adjusted-Wald 95% interval (Sauro & Lewis 2005).
 - Time: t-interval on log times, reported as a geometric-mean range.
 - Satisfaction: t-interval on the mean.
 - SUM: participant-level bootstrap, 2000 samples, seeded and reproducible. Resamples that hit 0% or 100% are Laplace-smoothed rather than dropped, because dropping them would cut off the extreme samples and bias the range. A resample whose score is undefined for another reason (in a tiny study, every time or rating in the resample can be identical) is dropped and counted; above 5% dropped, a warning says the range is approximate. MeasuringU's calculator also reports SUM intervals, but its method is not published; the bootstrap is this skill's own choice.
-- Groups: each group is bootstrapped on its own. The difference between a group and the first one gets a range from pairing the two groups' independent samples (`result.comparison`); a range that excludes 0 means one design is clearly better.
+- Groups: each group is bootstrapped on its own. The difference between a group and the first one (`result.comparison`) depends on who took part (`design`): with different people per group (`independent`), the two groups' independent samples are paired draw by draw; with the same people in both (`paired`), or some in both (`mixed`, with a warning), people are resampled once and each person's results in both groups stay together. A range that excludes 0 means one design is clearly better.
 
 ## Presets
 

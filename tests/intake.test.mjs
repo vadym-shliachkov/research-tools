@@ -209,6 +209,11 @@ describe('profile', () => {
     assert.match(p.mustAsk.find((a) => a.topic === 'scale-range').question, /"легкість" \(in every task\) \(seen 3–6\)/);
   });
 
+  test('with groups, it asks whether people saw one design or all, and counts who saw more than one', () => {
+    const p = profile(table([['Participant', 'Task', 'Design', 'Success'], ['P1', 'A', 'old', '1'], ['P1', 'A', 'new', '1'], ['P2', 'A', 'old', '0']]));
+    assert.match(p.mustAsk.find((a) => a.topic === 'group-design').question, /1 participant\(s\) appear in more than one group/);
+  });
+
   test('decimal comma numbers are recognised', () => {
     const p = profile(table([['t'], ['63,5'], ['40'], ['12,25']]));
     assert.equal(p.columns[0].type, 'number');

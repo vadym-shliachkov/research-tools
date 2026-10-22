@@ -41,7 +41,7 @@ If the user gave no study name, ask for one in your first message, offering one 
 
 1. `UXR profile "<OUT>/raw.csv" --out "<OUT>/profile.json"`.
 2. Draft `<OUT>/mapping.json` from the profile, following `references/mapping.md`. If an earlier run of the same study exists in `uxr-results/`, start from its `mapping.json`.
-3. Show the user the mapping as a table: source column → meaning → conversion. Ask for one confirmation of the confident rows. **Ask every `mustAsk` item explicitly**, and these even when `mustAsk` misses them: success codes, time unit and format, scale range and direction, what blanks mean, rows to exclude, which ratings form satisfaction, and, in a wide layout, the pairing and each task's name (`wide.taskNames`). Duplicates stop `normalize`, which then asks. Never fill these in yourself.
+3. Show the user the mapping as a table: source column → meaning → conversion. Ask for one confirmation of the confident rows. **Ask every `mustAsk` item explicitly**, and these even when `mustAsk` misses them: success codes, time unit and format, scale range and direction, what blanks mean, rows to exclude, which ratings form satisfaction, in a wide layout, the pairing and each task's name (`wide.taskNames`), and, with groups, whether each person saw one design or all of them. Duplicates stop `normalize`, which then asks. Never fill these in yourself.
 4. Write the confirmed `mapping.json`.
 
 **If the user cannot confirm what the data means** ("you decide", "I don't know how it was coded"): do not pick for them. Stop, and list exactly what they need to find out and from whom (for example, the moderator's codebook for success values, or the questionnaire for a scale). Continue when they come back.
@@ -56,7 +56,7 @@ On `needs-input` (an unmapped code, a success value other than 0/1, a value outs
 
 1. `SUM init-contract "<OUT>/data.csv" --mapping "<OUT>/mapping.json" --study "<study>" --out "<OUT>/contract.json"`. It returns `toFill`: the decisions still open.
 2. Fill what the user already said; ask for the rest in one message. `references/method-chooser.md` explains each choice and its defaults. Leave a time target empty only when the user agrees that autopilot may derive it from satisfied users. Write rates as proportions (78% is `0.78`); the scripts refuse 78.
-   - **Pass/fail gate:** when the goal is `gate`, ask for the pass mark: the share of people who must pass everything (`gate_threshold`, for example `0.8`). Without one, the Usability Score is reported as a plain share with its range and no target, never against an assumed 50%.
+   - **Pass/fail gate:** when the goal is `gate`, ask for the pass mark: the share of participants who must pass every check in every task they try (`gate_threshold`, for example `0.8`). The overall Usability Score counts exactly that, so the two match. Without a pass mark, the score is reported as a plain share with its range and no target, never against an assumed 50%. Tell the user that measured time and the time and satisfaction targets do not enter the Usability Score; they feed only the comparison with other methods.
 3. Set `decided_at` to the current time and save. From now on, if anything in the contract changes, tell the user and record why in `contract.json` under `changes`.
 4. **Earlier wave.** Look for an earlier `result.json` of the same study (the same study name, or the user confirms it is the same test) in `uxr-results/` next to the new file and in the working folder. If the user says this is a repeat wave and you find none, ask where the earlier results are. Pass `--previous "<that result.json>"` to `choose`, `run` and `compare`. It reuses the method, carries over every target and scale the new contract leaves empty, and freezes each task's time target. If the new contract changes any of them, the run warns that the waves are not directly comparable: tell the user, and record the reason under `changes`.
 
@@ -74,7 +74,7 @@ On `needs-input` (an unmapped code, a success value other than 0/1, a value outs
 ## 8. "How to understand your results" PDF
 
 1. `SUM facts "<OUT>/result.json" --out "<OUT>/facts.json"`: plain numbers, each task's weakest component, caveats, and how much the method matters.
-2. Write `<OUT>/explainer.draft.json` (lang `en`) from `facts.json`, following the schema and writing guide in `references/explainer.md`. Use only numbers from `facts.json`. Copy `facts.overall.verdict` into the draft's `verdict`: the checks hold the headline and the result section to it. With several groups, `facts.overall` is empty; write from `facts.groups` and `facts.comparison` instead.
+2. Write `<OUT>/explainer.draft.json` (lang `en`) from `facts.json`, following the schema and writing guide in `references/explainer.md`. Use only numbers from `facts.json`. Copy `facts.overall.verdict` into the draft's `verdict` and `facts.taskVerdicts` into `taskVerdicts`: the checks hold the headline and the result section to them, a sentence that names a task to that task's verdict. With several groups, `facts.overall` is empty; write from `facts.groups` and `facts.comparison` instead.
 3. **Editor first, before anything is rendered.** Start one subagent:
    - Claude Code: the Agent tool with `subagent_type` `uxr:plain-language-editor`. If that type is not available, use `general-purpose` with the content of `<PLUGIN_ROOT>/agents/plain-language-editor.md` as its brief.
    - Codex: `spawn_agent` whose task is the content of `<PLUGIN_ROOT>/agents/plain-language-editor.md`.
@@ -87,7 +87,7 @@ On `needs-input` (an unmapped code, a success value other than 0/1, a value outs
 ## 9. Answer in the chat
 
 Write in the user's language, in five to eight lines:
-- the score with its range; whether it is clearly above or below target, not yet clear, or has no target to compare with (`facts.overall.verdict`); and the chosen method in one plain sentence. With several groups: each group's score, and the difference with its range (`facts.comparison`)
+- the score with its range; whether it is clearly above or below target, not yet clear, or has no target to compare with (`facts.overall.verdict`); and the chosen method in one plain sentence. With several groups: each group's score, and the difference with its range (`facts.comparison`; say whether the same people tried both designs)
 - the weakest component and what to look at first
 - whether the verdict depends on the method, if the sensitivity check says so
 - the most important caveat

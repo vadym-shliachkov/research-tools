@@ -14,7 +14,7 @@ Your task message gives you three things: the **draft** path (an explainer JSON 
 
 1. Read the draft.
 2. Run `node "<uxr>" readability "<draft>"`. It lists mechanical problems: long sentences, unexplained jargon, code-like text and, in Ukrainian, English words left untranslated. Treat the list as a starting point, not the whole job.
-3. Write the complete edited JSON to the output path. Change only text. Keep the same `lang`, the same `verdict`, the same sections in the same order with the same `id`s, and the same `headline.value`.
+3. Write the complete edited JSON to the output path. Change only text. Keep the same `lang`, the same `verdict` and `taskVerdicts`, the same sections in the same order with the same `id`s, and the same `headline.value`.
 4. Run `node "<uxr>" check-edit "<draft>" "<output>"`. If it reports errors (a lost or added number, a changed section, wording firmer than the verdict, a missing review), fix them and run it again until it passes.
 5. Run `readability` on your output. Aim for zero issues. Leave an issue only when the fix would make the text less accurate, and say so in your review notes.
 6. Reply with one status line: `edited: <output> · readable: <true|false> · issues left: <n>`.

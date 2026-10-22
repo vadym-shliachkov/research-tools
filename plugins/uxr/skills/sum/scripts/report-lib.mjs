@@ -1,6 +1,7 @@
 // Turns a SUM result.json into report.md, report.html, the facts the explainer draft is written from, and the
 // explainer chart. Every number comes from the result; nothing is recomputed here.
 import { esc, page, bars } from '../../../scripts/lib/html.mjs';
+import { warningText, whereText, reasonText, suggestionText, notApplicableText, timeSourceText } from './report-text.mjs';
 
 // Ukrainian noun forms after a number: 1 помилка, 2–4 помилки, 5+ (and 11–14) помилок.
 function uaPlural(n, one, few, many) {
@@ -13,7 +14,8 @@ function uaPlural(n, one, few, many) {
 
 const L = {
   en: {
-    title: 'SUM report', completion: 'Completion', errors: 'Error-free rate', time: 'Time on task', satisfaction: 'Satisfaction',
+    title: 'SUM report', titleUs: 'Usability Score report', passedAll: (x, n) => `${x} of ${n} people passed every task`,
+    paired: 'same people in both groups', mixedDesign: 'some people in both groups', completion: 'Completion', errors: 'Error-free rate', time: 'Time on task', satisfaction: 'Satisfaction',
     perceived_time: 'Perceived time', ease: 'Ease', sum: 'SUM', usability: 'Usability Score', overall: 'Overall SUM',
     overallUs: 'Overall Usability Score', task: 'Task', n: 'n', group: 'Group', range: '95% range', method: 'Method',
     why: 'Why this method', suggestions: 'Suggestions', sens: 'How much the method matters', chosen: 'chosen',
@@ -29,7 +31,8 @@ const L = {
     mistakes: (e, n) => `${e} mistake${e === 1 ? '' : 's'} in ${n} chances`,
   },
   ua: {
-    title: 'Звіт SUM', completion: 'Частка успішного виконання', errors: 'Частка дій без помилок', time: 'Час на завдання', satisfaction: 'Задоволеність',
+    title: 'Звіт SUM', titleUs: 'Звіт: оцінка зручності', passedAll: (x, n) => `${x} з ${n} учасників пройшли всі завдання`,
+    paired: 'ті самі учасники в обох групах', mixedDesign: 'частина учасників в обох групах', completion: 'Частка успішного виконання', errors: 'Частка дій без помилок', time: 'Час на завдання', satisfaction: 'Задоволеність',
     perceived_time: 'Відчуття часу', ease: 'Легкість', sum: 'SUM', usability: 'Оцінка зручності (Microsoft)', overall: 'Загальний SUM',
     overallUs: 'Загальна оцінка зручності', task: 'Завдання', n: 'n', group: 'Група', range: '95% діапазон', method: 'Метод',
     why: 'Чому цей метод', suggestions: 'Пропозиції', sens: 'Наскільки результат залежить від методу', chosen: 'обраний',
@@ -76,7 +79,7 @@ export function buildReportMd(result, lang = 'en') {
   const l = L[lang] ?? L.en;
   const us = isUs(result);
   const study = result.contract?.study ?? '';
-  const out = [`# ${l.title}${study ? `: ${study}` : ''}`, ''];
+  const out = [`# ${us ? l.titleUs : l.title}${study ? `: ${study}` : ''}`, ''];
   const tasksN = result.groups?.[0]?.tasks.length ?? 0;
   out.push(`${l.generated} ${String(result.generated_at ?? '').slice(0, 10)} · ${l.method}: **${result.method.preset}** \`${result.method.string}\` · ${l.data}: ${tasksN} ${l.tasks}`, '');
 
@@ -90,15 +93,15 @@ export function buildReportMd(result, lang = 'en') {
       out.push(`| ${t.task} | ${n} | ${keys.map((k) => cell(k, t.components?.[k], l, us)).join(' | ')} | ${t.sum ? `**${pct1(t.sum.pct)}** (${range(t.sum.ci)})` : '—'} |`);
     }
     out.push('');
-    if (g.product) out.push(`**${us ? l.overallUs : l.overall}: ${pct1(g.product.pct)}** (${l.range} ${range(g.product.ci)})${us ? ` · ${g.product.targetPct ? `${l.gate} ${pct1(g.product.targetPct)}` : l.noGate}` : ''}`, '');
+    if (g.product) out.push(`**${us ? l.overallUs : l.overall}: ${pct1(g.product.pct)}** (${l.range} ${range(g.product.ci)})${us && g.product.x !== undefined ? ` · ${l.passedAll(g.product.x, g.product.n)}` : ''}${us ? ` · ${g.product.targetPct ? `${l.gate} ${pct1(g.product.targetPct)}` : l.noGate}` : ''}`, '');
   }
   for (const c of result.comparison ?? []) {
-    out.push(`**${l.diff} ${c.group} ${l.vsGroup} ${c.vs}: ${points(c.diff, l)}** (${l.range} ${c.ci ? c.ci.map((x) => points(x, l)).join(' … ') : '—'})`, '');
+    out.push(`**${l.diff} ${c.group} ${l.vsGroup} ${c.vs}: ${points(c.diff, l)}** (${l.range} ${c.ci ? c.ci.map((x) => points(x, l)).join(' … ') : '—'})${c.design === 'paired' ? ` · ${l.paired}` : c.design === 'mixed' ? ` · ${l.mixedDesign}` : ''}`, '');
   }
 
   if (result.choice) {
-    out.push(`## ${l.why}`, '', ...result.choice.reasons.map((r) => `- **${r.decision}**: ${r.why}`), '');
-    if (result.choice.suggestions?.length) out.push(`**${l.suggestions}:**`, '', ...result.choice.suggestions.map((s) => `- ${s}`), '');
+    out.push(`## ${l.why}`, '', ...result.choice.reasons.map((r) => `- **${r.decision}**: ${reasonText(r, lang)}`), '');
+    if (result.choice.suggestions?.length) out.push(`**${l.suggestions}:**`, '', ...result.choice.suggestions.map((s) => `- ${suggestionText(s, lang)}`), '');
   }
 
   if (result.sensitivity) {
@@ -106,14 +109,14 @@ export function buildReportMd(result, lang = 'en') {
     const chosen = result.groups.map((g) => pct1(g.product?.pct)).join(' / ');
     out.push(`| **${result.method.preset}** (${l.chosen}) | **${chosen}** |`);
     for (const s of result.sensitivity) {
-      out.push(`| ${s.preset} | ${s.status === 'ok' ? s.products.map((p) => pct1(p.pct)).join(' / ') : `${l.notApplicable}: ${s.reason}`} |`);
+      out.push(`| ${s.preset} | ${s.status === 'ok' ? s.products.map((p) => pct1(p.pct)).join(' / ') : `${l.notApplicable}: ${notApplicableText(s, lang)}`} |`);
     }
     out.push('', `> ${result.methodDependent ? l.dependent : l.stable}`, '');
   }
 
   out.push(`## ${l.qa}`, '');
   const qa = [...(result.qa?.errors ?? []), ...(result.qa?.warnings ?? [])];
-  out.push(...(qa.length ? qa.map((w) => `- ${w.where ? `${w.where}: ` : ''}${w.message}`) : [l.none]), '');
+  out.push(...(qa.length ? qa.map((w) => `- ${w.where ? `${whereText(w, lang)}: ` : ''}${warningText(w, lang)}`) : [l.none]), '');
 
   out.push(`## ${l.details}`, '', `- ${l.method}: \`${result.method.string}\``);
   for (const g of result.groups ?? []) {
@@ -126,7 +129,7 @@ export function buildReportMd(result, lang = 'en') {
         out.push(`- ${where}: ${l.passBar} ${bars.join(', ')} · ${t.sum?.targetPct ? `${l.gate} ${pct1(t.sum.targetPct)}` : l.noGate}`);
         continue;
       }
-      if (c.time) out.push(`- ${where}: ${l.timeTarget} ${sec(c.time.target, l)} (${c.time.targetSource})`);
+      if (c.time) out.push(`- ${where}: ${l.timeTarget} ${sec(c.time.target, l)} (${timeSourceText(c.time.targetSource, lang)})`);
       if (c.satisfaction) out.push(`- ${where}: ${l.satTarget} ${num(c.satisfaction.target, l)} ${l.on} ${c.satisfaction.scale.join('–')} (${l.from} ${c.satisfaction.from.join(' + ')})${c.satisfaction.alpha !== undefined ? `, ${l.alpha} ${num(c.satisfaction.alpha, l)}` : ''}`);
       if (c.completion?.benchmark !== undefined) out.push(`- ${where}: ${l.benchmark} ${pct1(c.completion.benchmark)}`);
     }
@@ -187,8 +190,9 @@ export function buildReportHtml(result, lang = 'en') {
     : '';
   const charts = (result.groups ?? []).map((g) => g.tasks.map((t) => `<h3>${esc(g.group !== null ? `${g.group} · ` : '')}${esc(t.task)}</h3>${bars(taskChart(t, l, us))}`).join('')).join('')
     + `<p class="bars-key">${esc(l.barsKey)}</p>`;
-  const body = `${head}<div class="content"><section><h2>${esc(l.sum)}</h2>${charts}</section>${mdToHtml(md.split('\n').slice(4).join('\n'))}</div>`;
-  return page({ lang, title: `${l.title}${result.contract?.study ? `: ${result.contract.study}` : ''}`, bandTitle: l.title, bandMeta: [result.contract?.study ?? '', String(result.generated_at ?? '').slice(0, 10)], body });
+  const body = `${head}<div class="content"><section><h2>${esc(us ? l.usability : l.sum)}</h2>${charts}</section>${mdToHtml(md.split('\n').slice(4).join('\n'))}</div>`;
+  const docTitle = us ? l.titleUs : l.title;
+  return page({ lang, title: `${docTitle}${result.contract?.study ? `: ${result.contract.study}` : ''}`, bandTitle: docTitle, bandMeta: [result.contract?.study ?? '', String(result.generated_at ?? '').slice(0, 10)], body });
 }
 
 // Just enough Markdown for the report's own output: headings, tables, bullets, quotes, bold and code.
@@ -259,7 +263,8 @@ function componentPlain(k, c, us) {
 function groupFacts(g, result, gi, l, us) {
   return {
     group: g.group,
-    overall: g.product ? scoreFacts(g.product) : null,
+    // For the Usability Score, the people behind the overall share: x of n passed every task they tried.
+    overall: g.product ? { ...scoreFacts(g.product), ...(us && g.product.x !== undefined ? { passed: { x: g.product.x, n: g.product.n } } : {}) } : null,
     tasks: g.tasks.map((t) => {
       // onTarget is null for a part without a target (completion without a benchmark, the error-free rate and the
       // Usability Score's pass rates): report its number, not a verdict.
@@ -279,8 +284,8 @@ function reading(result, us) {
   if (!us) return 'Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target.';
   const marks = unique((result.groups ?? []).map((g) => g.product?.targetPct ?? null));
   return marks.length === 1 && marks[0] !== null
-    ? `The score is the share of people who passed every check. The team agreed that at least ${pct0(marks[0])}% must pass.`
-    : 'The score is the share of people who passed every check. No pass mark was agreed, so the score is not above or below a target.';
+    ? `The overall score is the share of people who passed every check in every task they tried. The team agreed that at least ${pct0(marks[0])}% must pass.`
+    : 'The overall score is the share of people who passed every check in every task they tried. No pass mark was agreed, so the score is not above or below a target.';
 }
 
 export function explainerFacts(result, lang = 'en') {
@@ -294,12 +299,14 @@ export function explainerFacts(result, lang = 'en') {
   const comparison = (result.comparison ?? []).map((c) => {
     const ci = c.ci ? c.ci.map(pct0) : null;
     const verdict = !c.ci ? 'no-range' : c.ci[0] > 0 ? 'higher' : c.ci[1] < 0 ? 'lower' : 'uncertain';
-    return { group: c.group, vs: c.vs, diffPoints: pct0(c.diff), ci, verdict };
+    return { group: c.group, vs: c.vs, diffPoints: pct0(c.diff), ci, verdict, design: c.design ?? 'independent' };
   });
+  // Per-task verdicts, so a sentence about one task is checked against that task, not the overall score.
+  const taskVerdicts = single ? Object.fromEntries(groups[0].tasks.filter((t) => t.sum).map((t) => [t.task, t.sum.verdict])) : {};
   return {
     lang, study: result.contract?.study ?? null,
     method: { preset: result.method.preset, plain: PLAIN_METHOD[result.method.preset] ?? result.method.string, string: result.method.string },
-    overall: single ? groups[0].overall : null, groups, tasks: single ? groups[0].tasks : [],
+    overall: single ? groups[0].overall : null, taskVerdicts, groups, tasks: single ? groups[0].tasks : [],
     ...(comparison.length ? { comparison } : {}),
     sensitivity: single ? groups[0].sensitivity : [],
     methodDependent: result.methodDependent ?? false,

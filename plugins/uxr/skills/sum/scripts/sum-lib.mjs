@@ -171,13 +171,13 @@ function timeTarget(rows, tc, config, src, fixed) {
       const k = tc.expert_multiplier ?? 3;
       return { value: tc.expert_time_s * k, source: `expert time ${tc.expert_time_s} s × ${k}` };
     }
-    return { needs: 'a time target (time_target_s, or expert_time_s with expert_multiplier)' };
+    return { needs: { code: 'time-target', text: 'a time target (time_target_s, or expert_time_s with expert_multiplier)' } };
   }
-  if (tc.sat_target === undefined || !src.cols) return { needs: 'a satisfaction target, to find satisfied users for the empirical time target' };
+  if (tc.sat_target === undefined || !src.cols) return { needs: { code: 'empirical-needs-sat-target', text: 'a satisfaction target, to find satisfied users for the empirical time target' } };
   const satisfied = rows.filter((r) => r.success === 1 && r.time_s !== null && (satValue(r, src.cols) ?? -Infinity) >= tc.sat_target).map((r) => r.time_s);
   if (satisfied.length >= 4) return { value: quantile(satisfied, 0.8), source: `empirical: 80th percentile of ${satisfied.length} satisfied successful users` };
   if (tc.cutoff_s) return { value: 0.75 * tc.cutoff_s, source: `empirical fallback: 75% of the ${tc.cutoff_s} s cutoff (${satisfied.length} satisfied successful users)` };
-  return { needs: `a time target: only ${satisfied.length} satisfied successful users and no cutoff_s for the empirical fallback` };
+  return { needs: { code: 'empirical-time-impossible', params: { n: satisfied.length }, text: `an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found ${satisfied.length} and no cutoff)` } };
 }
 
 export function computeTask(rows, tc, config, header, fixed = {}) {
@@ -185,7 +185,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
   const components = {};
   const attempts = rows.filter((r) => r.success !== null && r.success !== undefined);
   const n = attempts.length;
-  if (n < 8) qa.warnings.push({ code: 'small-n', message: `Only ${n} attempt(s); every component has a wide uncertainty range.` });
+  if (n < 8) qa.warnings.push({ code: 'small-n', params: { n }, message: `Only ${n} attempt(s); every component has a wide uncertainty range.` });
 
   if (config.kind === 'usability-score') return microsoftTask(rows, tc, header, qa);
 
@@ -195,7 +195,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
   for (const comp of config.components) {
     if (comp === 'completion') {
       if (!n) { qa.errors.push({ code: 'no-completion-data', message: 'No success values for this task.' }); continue; }
-      if (config.completion !== 'original' && tc.completion_benchmark === undefined) { qa.needs.push(`a completion benchmark (completion_benchmark) for the ${config.completion} correction`); continue; }
+      if (config.completion !== 'original' && tc.completion_benchmark === undefined) { qa.needs.push({ code: 'completion-benchmark', params: { mode: config.completion }, text: `a completion benchmark (completion_benchmark) for the ${config.completion} correction` }); continue; }
       const x = attempts.filter((r) => r.success === 1).length;
       let c = completionComponent({ x, n }, { mode: config.completion, benchmark: tc.completion_benchmark, smoothing: config.smoothing });
       if (!Number.isFinite(c.z) && fixed.rescueExtremes) {
@@ -204,7 +204,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       }
       if (config.completion !== 'original') c.benchmark = tc.completion_benchmark;
       if (!Number.isFinite(c.z) && config.agg === 'z-mean') {
-        qa.errors.push({ code: 'completion-extreme', message: `Completion is ${Math.round(c.p * 100)}% (${x}/${n}); its z-score is infinite. Choose smoothing (laplace) or percentage averaging.` });
+        qa.errors.push({ code: 'completion-extreme', params: { pct: Math.round(c.p * 100), x, n }, message: `Completion is ${Math.round(c.p * 100)}% (${x}/${n}); its z-score is infinite. Choose smoothing (laplace) or percentage averaging.` });
       }
       components.completion = c;
     }
@@ -218,7 +218,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       let qUse = config.smoothing === 'laplace' ? (N - E + 0.5) / (N + 1) : q;
       if (!Number.isFinite(inv(qUse)) && fixed.rescueExtremes) { qUse = (N - E + 0.5) / (N + 1); fixed.smoothed = true; }
       const z = inv(qUse);
-      if (!Number.isFinite(z) && config.agg === 'z-mean') qa.errors.push({ code: 'errors-extreme', message: `Error-free rate is ${Math.round(q * 100)}%; its z-score is infinite. Choose smoothing (laplace) or percentage averaging.` });
+      if (!Number.isFinite(z) && config.agg === 'z-mean') qa.errors.push({ code: 'errors-extreme', params: { pct: Math.round(q * 100) }, message: `Error-free rate is ${Math.round(q * 100)}%; its z-score is infinite. Choose smoothing (laplace) or percentage averaging.` });
       components.errors = { errors: E, opportunities: N, rate: E / N, quality: q, ...(qUse !== q ? { smoothed: qUse } : {}), z, pct: qUse, targetPct: null };
     }
     if (comp === 'time') {
@@ -227,9 +227,9 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       let times = attempts.filter((r) => r.success === 1 && r.time_s !== null).map((r) => r.time_s);
       const failed = attempts.filter((r) => r.success === 0).length;
       if (config.failedTime === 'cutoff') {
-        if (!tc.cutoff_s) { qa.needs.push('a task cutoff (cutoff_s) to count failed attempts at the cutoff time'); continue; }
+        if (!tc.cutoff_s) { qa.needs.push({ code: 'cutoff', text: 'a task cutoff (cutoff_s) to count failed attempts at the cutoff time' }); continue; }
         times = [...times, ...Array(failed).fill(tc.cutoff_s)];
-      } else if (failed) qa.warnings.push({ code: 'failed-time-excluded', message: `${failed} failed attempt(s) are left out of time; time describes successful users only.` });
+      } else if (failed) qa.warnings.push({ code: 'failed-time-excluded', params: { failed }, message: `${failed} failed attempt(s) are left out of time; time describes successful users only.` });
       if (times.length < 2) { qa.errors.push({ code: 'too-few-times', message: 'Fewer than two task times.' }); continue; }
       const tr = config.timeLog ? times.map(Math.log) : times;
       const m = mean(tr);
@@ -245,7 +245,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
       };
     }
     if (comp === 'satisfaction') {
-      if (tc.sat_target === undefined) { qa.needs.push('a satisfaction target (sat_target)'); continue; }
+      if (tc.sat_target === undefined) { qa.needs.push({ code: 'sat-target', text: 'a satisfaction target (sat_target)' }); continue; }
       const vals = rows.map((r) => satValue(r, src.cols)).filter((v) => v !== null);
       if (vals.length < 2) { qa.errors.push({ code: 'too-few-ratings', message: 'Fewer than two satisfaction ratings.' }); continue; }
       const m = mean(vals);
@@ -262,7 +262,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
   }
 
   if (qa.errors.length || qa.needs.length) return { components, sum: null, qa };
-  if (config.shift) qa.warnings.push({ code: 'sigma-shift', message: `A ${config.shift} sigma shift is applied; scores are not comparable with unshifted SUM.` });
+  if (config.shift) qa.warnings.push({ code: 'sigma-shift', params: { shift: config.shift }, message: `A ${config.shift} sigma shift is applied; scores are not comparable with unshifted SUM.` });
   if (config.smoothing === 'laplace') qa.warnings.push({ code: 'smoothing', message: 'Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.' });
   const parts = config.components.map((k) => ({ ...components[k], weight: config.weights ? config.weights[k] ?? 0 : 1 }));
   return { components, sum: { ...aggregate(parts, config), targetPct: 0.5 }, qa };
@@ -275,11 +275,11 @@ function microsoftTask(rows, tc, header, qa) {
   let th = tc.thresholds;
   if (!th) {
     const fivePoint = ['perceived_time', 'ease', 'satisfaction'].every((c) => tc.scales?.[c]?.join('-') === '1-5');
-    if (!fivePoint) { qa.needs.push('thresholds for perceived_time, ease and satisfaction (the defaults 3/4/4 assume 5-point scales)'); return { components: {}, sum: null, qa }; }
+    if (!fivePoint) { qa.needs.push({ code: 'thresholds', text: 'thresholds for perceived_time, ease and satisfaction (the defaults 3/4/4 assume 5-point scales)' }); return { components: {}, sum: null, qa }; }
     th = MS_DEFAULT_THRESHOLDS;
   }
   const complete = rows.filter((r) => need.every((c) => r[c] !== null));
-  if (complete.length < rows.length) qa.warnings.push({ code: 'incomplete-rows', message: `${rows.length - complete.length} row(s) lack one of the four answers and are left out.` });
+  if (complete.length < rows.length) qa.warnings.push({ code: 'incomplete-rows', params: { n: rows.length - complete.length }, message: `${rows.length - complete.length} row(s) lack one of the four answers and are left out.` });
   const n = complete.length;
   if (!n) { qa.errors.push({ code: 'no-data', message: 'No complete rows.' }); return { components: {}, sum: null, qa }; }
   // Each pass rate has no target of its own. The score's target is the pass rate the team agreed (gate_threshold);
@@ -294,8 +294,11 @@ function microsoftTask(rows, tc, header, qa) {
     ease: { ...share((r) => r.ease >= th.ease), threshold: th.ease },
     satisfaction: { ...share((r) => r.satisfaction >= th.satisfaction), threshold: th.satisfaction },
   };
-  const all = share((r) => r.success === 1 && r.perceived_time >= th.perceived_time && r.ease >= th.ease && r.satisfaction >= th.satisfaction);
-  return { components, sum: { pct: all.pct, z: all.z, x: all.x, n, ci: all.ci, targetPct: tc.gate_threshold ?? null }, qa };
+  const passed = (r) => r.success === 1 && r.perceived_time >= th.perceived_time && r.ease >= th.ease && r.satisfaction >= th.satisfaction;
+  const all = share(passed);
+  // Who passed, per person, so the study-level score can count people who passed every task they tried.
+  const passes = complete.map((r) => ({ pid: r.participant_id, pass: passed(r) }));
+  return { components, sum: { pct: all.pct, z: all.z, x: all.x, n, ci: all.ci, targetPct: tc.gate_threshold ?? null }, passes, qa };
 }
 
 // ---------- whole study ----------
@@ -303,10 +306,16 @@ function microsoftTask(rows, tc, header, qa) {
 function productOf(tasks, config) {
   const ok = tasks.filter((t) => t.sum);
   if (!ok.length) return null;
+  // The study-level Usability Score counts people: the share who passed every check in every task they tried. That
+  // is what a pass mark ("at least 80% of people must pass") is about; a mean of task pass rates is not a share of
+  // anyone.
   if (config.kind === 'usability-score') {
     const targets = unique(ok.map((t) => t.sum.targetPct));
-    const pct = mean(ok.map((t) => t.sum.pct));
-    return { pct, z: inv(pct), targetPct: targets.length === 1 ? targets[0] : null };
+    const byPerson = new Map();
+    for (const t of ok) for (const p of t.passes ?? []) byPerson.set(p.pid, (byPerson.get(p.pid) ?? true) && p.pass);
+    const n = byPerson.size;
+    const x = [...byPerson.values()].filter(Boolean).length;
+    return { pct: x / n, z: inv(x / n), x, n, unit: 'person', ci: adjustedWald(x, n), targetPct: targets.length === 1 ? targets[0] : null };
   }
   if (config.agg === 'pct-mean') {
     const pct = mean(ok.map((t) => t.sum.pct));
@@ -325,6 +334,15 @@ function scoreGroup(records, contract, config, header, fixed = {}) {
   return { tasks, product: productOf(tasks, config) };
 }
 
+// A person drawn twice counts as two people, so per-person scores see the resample's size.
+const drawPerson = (byPerson, p, i) => (byPerson.get(p) ?? []).map((r) => ({ ...r, participant_id: `${r.participant_id}#${i}` }));
+const rowsByPerson = (records) => {
+  const m = new Map();
+  for (const r of records) m.set(r.participant_id, [...(m.get(r.participant_id) ?? []), r]);
+  return m;
+};
+const rescue = (fixed) => Object.fromEntries(Object.entries(fixed).map(([k, v]) => [k, { ...v, rescueExtremes: true }]));
+
 function bootstrapGroup(records, contract, config, header, fixed, B, seed) {
   const rand = rng(seed);
   const people = unique(records.map((r) => r.participant_id));
@@ -335,10 +353,10 @@ function bootstrapGroup(records, contract, config, header, fixed, B, seed) {
   let smoothedSamples = 0;
   for (let b = 0; b < B; b++) {
     const sample = [];
-    for (let i = 0; i < people.length; i++) sample.push(...byPerson.get(people[Math.floor(rand() * people.length)]));
+    for (let i = 0; i < people.length; i++) sample.push(...drawPerson(byPerson, people[Math.floor(rand() * people.length)], i));
     // A resample that hits 0% or 100% gets Laplace smoothing rather than being dropped: dropping it would cut off
     // exactly the best (or worst) samples and bias the interval.
-    const perTask = Object.fromEntries(Object.entries(fixed).map(([k, v]) => [k, { ...v, rescueExtremes: true }]));
+    const perTask = rescue(fixed);
     const g = scoreGroup(sample, contract, config, header, perTask);
     if (Object.values(perTask).some((v) => v.smoothed)) smoothedSamples++;
     if (!g.product || !Number.isFinite(g.product.pct)) { skipped++; continue; }
@@ -356,6 +374,29 @@ function differenceCi(a, b) {
   if (n < 20) return null;
   const d = Array.from({ length: n }, (_, i) => a[i] - b[i]);
   return [quantile(d, 0.025), quantile(d, 0.975)];
+}
+
+// Range of a difference when people took part in both groups (within-subject): resample people once and keep each
+// person's rows in both groups together, so the difference reflects within-person change.
+function pairedDifferenceCi(a, b, contract, config, header, B, seed) {
+  const rand = rng(seed);
+  const people = unique([...a.records, ...b.records].map((r) => r.participant_id));
+  const rowsA = rowsByPerson(a.records);
+  const rowsB = rowsByPerson(b.records);
+  const d = [];
+  for (let k = 0; k < B; k++) {
+    const sa = [];
+    const sb = [];
+    for (let i = 0; i < people.length; i++) {
+      const p = people[Math.floor(rand() * people.length)];
+      sa.push(...drawPerson(rowsA, p, i));
+      sb.push(...drawPerson(rowsB, p, i));
+    }
+    const ga = scoreGroup(sa, contract, config, header, rescue(a.fixed));
+    const gb = scoreGroup(sb, contract, config, header, rescue(b.fixed));
+    if (Number.isFinite(ga.product?.pct) && Number.isFinite(gb.product?.pct)) d.push(gb.product.pct - ga.product.pct);
+  }
+  return d.length >= 20 ? [quantile(d, 0.025), quantile(d, 0.975)] : null;
 }
 
 export function runSum(table, contract, opts = {}) {
@@ -377,47 +418,77 @@ export function runSum(table, contract, opts = {}) {
   const groupNames = table.header.includes('group') ? unique(records.map((r) => r.group)) : [null];
 
   const qa = { errors: [], warnings: [] };
-  const needs = new Set();
+  const needs = new Map();
   const groups = groupNames.map((group) => {
     const recs = group === null ? records : records.filter((r) => r.group === group);
     const g = scoreGroup(recs, contract, config, table.header);
     for (const t of g.tasks) {
-      const where = `${group ? `group ${group}, ` : ''}task ${t.task}`;
-      for (const e of t.qa.errors) qa.errors.push({ ...e, where });
-      for (const w of t.qa.warnings) qa.warnings.push({ ...w, where });
-      for (const nd of t.qa.needs) needs.add(nd);
+      // group and task stay separate from the English "where", so reports can name them in their own language.
+      const at = { where: `${group ? `group ${group}, ` : ''}task ${t.task}`, group, task: t.task };
+      for (const e of t.qa.errors) qa.errors.push({ ...e, ...at });
+      for (const w of t.qa.warnings) qa.warnings.push({ ...w, ...at });
+      for (const nd of t.qa.needs) {
+        const text = groupNames.length > 1 ? `${nd.text} (group ${group})` : nd.text;
+        needs.set(text, { ...nd, text, group });
+      }
+      delete t.passes;
     }
     return { group, ...g, records: recs };
   });
+  for (const g of groups) {
+    g.fixed = Object.fromEntries(g.tasks.map((t) => [t.task, t.components.time ? { time: { value: t.components.time.target, source: t.components.time.targetSource } } : {}]));
+  }
 
   const status = needs.size ? 'needs-input' : qa.errors.length ? 'error' : 'ok';
+  if (status === 'ok' && config.kind === 'usability-score') {
+    const d = contract.defaults ?? {};
+    const timeTargets = d.time_target_s !== undefined || d.expert_time_s !== undefined;
+    const satTarget = d.sat_target !== undefined;
+    const unused = [timeTargets ? 'time targets' : null, satTarget ? 'the satisfaction target' : null].filter(Boolean);
+    qa.warnings.push({
+      code: 'gate-ignores-time', params: { timeTargets, satTarget }, where: 'all tasks',
+      message: `The Usability Score counts who finished and rated perceived time, ease and satisfaction at or above their thresholds. Measured time on task does not enter it${unused.length ? `, and neither do ${unused.join(' and ')} (they are used only in the comparison with other methods)` : ''}.`,
+    });
+  }
   const draws = [];
   if (status === 'ok' && bootstrap > 0) {
     groups.forEach((g, gi) => {
-      const fixed = Object.fromEntries(g.tasks.map((t) => [t.task, t.components.time ? { time: { value: t.components.time.target, source: t.components.time.targetSource } } : {}]));
-      const bs = bootstrapGroup(g.records, contract, config, table.header, fixed, bootstrap, seed + gi);
-      g.product.ci = bs.product;
+      const bs = bootstrapGroup(g.records, contract, config, table.header, g.fixed, bootstrap, seed + gi);
+      // The Usability Score's study-level share already has its exact binomial range.
+      g.product.ci = g.product.ci ?? bs.product;
       draws[gi] = bs.productDraws;
       for (const t of g.tasks) t.sum.ci = t.sum.ci ?? bs.tasks[t.task] ?? null;
       g.bootstrap = { B: bs.B, skipped: bs.skipped, smoothedSamples: bs.smoothedSamples, seed: seed + gi, unit: 'participant' };
-      if (bs.skipped / bs.B > 0.05) qa.warnings.push({ code: 'bootstrap-skips', message: `${bs.skipped} of ${bs.B} bootstrap samples gave an undefined score; the interval is approximate.`, where: g.group ? `group ${g.group}` : 'all tasks' });
+      if (bs.skipped / bs.B > 0.05) qa.warnings.push({ code: 'bootstrap-skips', params: { skipped: bs.skipped, B: bs.B }, message: `${bs.skipped} of ${bs.B} bootstrap samples gave an undefined score; the interval is approximate.`, where: g.group ? `group ${g.group}` : 'all tasks', group: g.group });
     });
   }
-  for (const g of groups) delete g.records;
-  const prevDiff = contract.previous?.differences ?? [];
-  if (prevDiff.length) qa.warnings.push({ code: 'previous-differs', message: `The contract differs from the previous wave (${prevDiff.join('; ')}), so the waves are not directly comparable.`, where: 'contract' });
-
-  // Every group against the first one, so a comparison of designs reports the difference and how sure it is.
+  // Every group against the first one, so a comparison of designs reports the difference and how sure it is. Who took
+  // part decides the range: different people per group (independent), the same people in both (paired), or a mix.
   const comparison = status === 'ok' && groups.length > 1
-    ? groups.slice(1).map((g, i) => ({ group: g.group, vs: groups[0].group, diff: g.product.pct - groups[0].product.pct, ci: draws.length ? differenceCi(draws[i + 1], draws[0]) : null }))
+    ? groups.slice(1).map((g, i) => {
+      const a = groups[0];
+      const idsA = new Set(a.records.map((r) => r.participant_id));
+      const idsB = new Set(g.records.map((r) => r.participant_id));
+      const shared = [...idsB].filter((p) => idsA.has(p)).length;
+      const design = shared === 0 ? 'independent' : shared === idsA.size && shared === idsB.size ? 'paired' : 'mixed';
+      if (design === 'mixed') qa.warnings.push({ code: 'mixed-design', params: { shared, group: g.group, vs: a.group }, where: `group ${g.group}`, group: g.group, message: `${shared} people took part in both ${a.group} and ${g.group}, others in only one. The difference keeps each person's results together; confirm that is how the study was run.` });
+      const ci = bootstrap > 0
+        ? design === 'independent' ? differenceCi(draws[i + 1], draws[0]) : pairedDifferenceCi(a, g, contract, config, table.header, bootstrap, seed + 100 + i)
+        : null;
+      return { group: g.group, vs: a.group, diff: g.product.pct - a.product.pct, ci, design, shared };
+    })
     : null;
+  for (const g of groups) { delete g.records; delete g.fixed; }
+  const prevDiff = contract.previous?.differences ?? [];
+  if (prevDiff.length) qa.warnings.push({ code: 'previous-differs', params: { list: prevDiff.join('; ') }, message: `The contract differs from the previous wave (${prevDiff.join('; ')}), so the waves are not directly comparable.`, where: 'contract' });
 
+  const missing = [...needs.values()];
   const result = {
     status, version: VERSION,
     method: { preset: resolved.preset, string: resolved.string, config },
     ...(choice ? { choice: { reasons: choice.reasons, suggestions: choice.suggestions } } : {}),
     groups, ...(comparison ? { comparison } : {}), qa,
-    ...(needs.size ? { question: `The contract is missing: ${[...needs].join('; ')}.`, message: `Missing: ${[...needs].join('; ')}` } : {}),
+    ...(missing.length ? { missing, question: `The contract is missing: ${missing.map((m) => m.text).join('; ')}.`, message: `Missing: ${missing.map((m) => m.text).join('; ')}` } : {}),
   };
 
   if (status === 'ok' && sensitivity) {
@@ -434,11 +505,12 @@ export function compareMethods(table, contract, { exclude = null, smoothing = 'n
   for (const preset of Object.keys(PRESETS)) {
     if (preset === exclude) continue;
     const header = table.header;
+    // code (and missing or params) let a report give the reason in its own language; reason is the English text.
     let why = null;
-    if (preset === 'sum4' && !(header.includes('errors') && header.includes('error_opportunities'))) why = 'no error data';
-    else if (preset === 'sum4' && !contract.defaults?.error_opportunities_predefined) why = 'error opportunities were not defined before the study';
-    else if (preset === 'pearson' && contract.defaults?.completion_benchmark === undefined) why = 'no completion benchmark';
-    if (why) { out.push({ preset, status: 'not-applicable', reason: why }); continue; }
+    if (preset === 'sum4' && !(header.includes('errors') && header.includes('error_opportunities'))) why = { code: 'no-error-data', reason: 'no error data' };
+    else if (preset === 'sum4' && !contract.defaults?.error_opportunities_predefined) why = { code: 'errors-not-predefined', reason: 'error opportunities were not defined before the study' };
+    else if (preset === 'pearson' && contract.defaults?.completion_benchmark === undefined) why = { code: 'no-benchmark', reason: 'no completion benchmark' };
+    if (why) { out.push({ preset, status: 'not-applicable', ...why }); continue; }
     const r = runSum(table, contract, { method: preset, modifiers: preset === 'microsoft' || smoothing === 'none' ? {} : { smoothing }, bootstrap, ...(seed !== undefined ? { seed } : {}), sensitivity: false });
     out.push(r.status === 'ok'
       ? {
@@ -446,7 +518,9 @@ export function compareMethods(table, contract, { exclude = null, smoothing = 'n
         products: r.groups.map((g) => ({ group: g.group, pct: g.product.pct, ...(bootstrap ? { ci: g.product.ci ?? null } : {}) })),
         ...(bootstrap ? { warnings: r.qa.warnings.map((w) => `${w.where}: ${w.message}`) } : {}),
       }
-      : { preset, status: 'not-applicable', reason: r.message ?? r.qa?.errors?.[0]?.message ?? r.status });
+      : r.missing
+        ? { preset, status: 'not-applicable', code: 'needs', missing: r.missing, reason: `needs ${r.missing.map((m) => m.text).join('; ')}` }
+        : { preset, status: 'not-applicable', code: r.qa?.errors?.[0]?.code ?? 'error', params: r.qa?.errors?.[0]?.params, reason: r.message ?? r.qa?.errors?.[0]?.message ?? r.status });
   }
   return out;
 }
@@ -464,14 +538,15 @@ export function choose(table, contract, modifiers = {}) {
   const d = contract.defaults ?? {};
   const reasons = [];
   const suggestions = [];
-  const say = (rule, decision, why) => reasons.push({ rule, decision, why });
+  // params: what a report needs to say the reason in another language.
+  const say = (rule, decision, why, params) => reasons.push({ rule, decision, why, ...(params ? { params } : {}) });
   const invalid = contractErrors(contract);
   if (invalid.length) return { status: 'error', message: invalid.join(' '), reasons, suggestions };
 
   if (contract.previous?.method?.config) {
     const prev = contract.previous.method;
     const diff = contract.previous.differences ?? [];
-    say('previous-run', `reuse ${prev.preset}`, `A previous wave of this study exists. Reusing its method and targets keeps the waves comparable.${diff.length ? ` But the contract differs from it (${diff.join('; ')}), so the waves are not directly comparable.` : ''}`);
+    say('previous-run', `reuse ${prev.preset}`, `A previous wave of this study exists. Reusing its method and targets keeps the waves comparable.${diff.length ? ` But the contract differs from it (${diff.join('; ')}), so the waves are not directly comparable.` : ''}`, { preset: prev.preset, differences: diff.join('; ') });
     return { status: 'ok', preset: prev.preset, config: prev.config, string: methodString(prev.config), reasons, suggestions };
   }
 
@@ -494,13 +569,14 @@ export function choose(table, contract, modifiers = {}) {
   const errorsUsable = header.includes('errors') && header.includes('error_opportunities') && d.error_opportunities_predefined === true;
   let config = structuredClone(errorsUsable ? PRESETS.sum4 : PRESETS.sum3);
   const base = errorsUsable ? 'sum4' : 'sum3';
+  const errorCase = errorsUsable ? 'usable' : header.includes('errors') ? 'not-predefined' : 'none';
   say('errors', base, errorsUsable
     ? 'Error opportunities were defined before the study, so errors can be counted reliably.'
-    : header.includes('errors') ? 'Errors are present but their opportunities were not defined before the study, so errors are left out (Microsoft and Autodesk found them unreliable).' : 'No error data; the three-component SUM is used.');
+    : header.includes('errors') ? 'Errors are present but their opportunities were not defined before the study, so errors are left out (Microsoft and Autodesk found them unreliable).' : 'No error data; the three-component SUM is used.', { case: errorCase });
 
   if (d.completion_benchmark !== undefined) {
     config.completion = 'piecewise';
-    say('completion-benchmark', 'completion=piecewise', `A completion benchmark (${Math.round(d.completion_benchmark * 100)}%) is set; Pearson's correction makes that benchmark the neutral 50% point.`);
+    say('completion-benchmark', 'completion=piecewise', `A completion benchmark (${Math.round(d.completion_benchmark * 100)}%) is set; Pearson's correction makes that benchmark the neutral 50% point.`, { pct: Math.round(d.completion_benchmark * 100) });
   }
 
   const lacking = tasks.filter((t) => { const tc = taskContract(contract, t); return !tc.time_target_s && !tc.expert_time_s; });
@@ -545,7 +621,7 @@ export function choose(table, contract, modifiers = {}) {
         options: ['--smoothing laplace', '--agg pct-mean', '--method <preset>'], flag: 'rerun with the chosen modifier',
       };
     }
-    say('extremes', fix, `Task(s) ${extreme.join(', ')} have 0% or 100% on a proportion, whose z-score is infinite. ${fix === 'smoothing=laplace' ? 'Laplace smoothing was chosen; it keeps the score finite and is labelled.' : 'Percentage averaging was chosen; it needs no z-score for proportions.'}`);
+    say('extremes', fix, `Task(s) ${extreme.join(', ')} have 0% or 100% on a proportion, whose z-score is infinite. ${fix === 'smoothing=laplace' ? 'Laplace smoothing was chosen; it keeps the score finite and is labelled.' : 'Percentage averaging was chosen; it needs no z-score for proportions.'}`, { tasks: extreme.join(', ') });
   }
 
   if (tasks.length >= 10 && records.length >= 100 && contract.goal === 'diagnose') {

@@ -127,6 +127,13 @@ describe('explainer structure and the editor guard', () => {
     assert.deepEqual(edit('Схоже, результат вищий за ціль, але дослідження ще не може це підтвердити.', 'ua'), []);
     assert.deepEqual(verdictErrors({ lang: 'en', headline: { sentence: 'The score is above target.' } }, 'above'), []);
     assert.equal(verdictErrors({ lang: 'en', headline: { sentence: 'The score is below target.' } }, 'above').length, 1);
+    // A sentence about one task is held to that task's verdict; known hedges let a careful claim through.
+    const tasks = { 'Find a store': 'above', Checkout: 'uncertain' };
+    const doc = (sentence) => ({ lang: 'en', headline: { sentence } });
+    assert.deepEqual(verdictErrors(doc('Find a store is clearly above its target.'), 'uncertain', tasks), []);
+    assert.deepEqual(verdictErrors(doc('Finding a store scored 75%, and even the low end of its range is above target.'), 'uncertain', tasks), []);
+    assert.equal(verdictErrors(doc('Checkout is above its target.'), 'uncertain', tasks).length, 1);
+    assert.deepEqual(verdictErrors(doc('The study is too small to say for sure that we beat our target.'), 'uncertain'), []);
     const changed = { ...structuredClone(draft), verdict: 'above', review: { readable: true, notes: [] } };
     assert.match(checkEdit(draft, changed).errors.join(), /verdict changed/);
   });
@@ -156,6 +163,15 @@ describe('SUM reports', () => {
     assert.match(md, /depends on the method/i);
     assert.match(md, /expert time 20 s × 3/);
     assert.match(md, /failed attempt/i);
+  });
+
+  test('the Ukrainian report says the calculator\'s reasons, warnings and sources in Ukrainian', () => {
+    const md = buildReportMd(RESULT, 'ua');
+    assert.match(md, /Можливі помилки визначили до дослідження/);
+    assert.match(md, /час експерта 20 с × 3/);
+    assert.match(md, /завдання checkout: 2 невдалі спроби не враховано в часі/);
+    assert.doesNotMatch(md, /Error opportunities were defined|failed attempt|expert time/);
+    assert.match(buildReportMd(RESULT, 'en'), /Error opportunities were defined/);
   });
 
   test('report in Ukrainian uses Ukrainian labels', () => {
@@ -228,7 +244,12 @@ describe('Usability Score reports', () => {
       assert.match(md, lang === 'en' ? /pass at Perceived time ≥ 3, Ease ≥ 4, Satisfaction ≥ 4 · no pass mark agreed/ : /прохід від .*прохідну частку не погоджено/);
       assert.match(buildReportHtml(result({ gate_threshold: 0.5 }), lang), /class="bars"/);
     }
-    assert.match(buildReportMd(result({ gate_threshold: 0.5 }), 'en'), /Pass mark 50\.0%/);
+    const gated = buildReportMd(result({ gate_threshold: 0.5 }), 'en');
+    assert.match(gated, /Pass mark 50\.0%/);
+    assert.match(gated, /^# Usability Score report: Gate/m);
+    assert.match(gated, /6 of 10 people passed every task/);
+    assert.match(buildReportMd(result({}), 'ua'), /^# Звіт: оцінка зручності/m);
+    assert.deepEqual(explainerFacts(result({}), 'en').overall.passed, { x: 6, n: 10 });
   });
 
   test('without a pass mark there is no target and no verdict; with one, the range is judged against it', () => {

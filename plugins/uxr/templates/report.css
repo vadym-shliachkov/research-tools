@@ -76,7 +76,7 @@ section > h2 { break-inside: avoid; }
 
 .glance { padding: 8mm 0 0; }
 .glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
-.score { flex: none; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
 .score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
 .score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
 .score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
@@ -99,7 +99,7 @@ section > h2 { break-inside: avoid; }
 .ci::before { left: 0; }
 .ci::after { right: 0; }
 .bars .value { text-align: right; font-weight: 600; color: var(--ink); }
-.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; break-before: avoid; }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
 
 /* ---- Boxes ---- */
 .callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }

@@ -143,6 +143,12 @@ test('the next wave: earlier targets carry over, and a changed one is flagged', 
   assert.equal(same.json.groups[0].tasks[0].sum.pct, 55.3);
   assert.ok(!same.json.qa.warnings.some((w) => /previous wave/.test(w)));
 
+  // The same scales in another key order are the same contract.
+  fs.writeFileSync(c1, JSON.stringify({ version: 1, defaults: { scales: { satisfaction: [1, 5], seq: [1, 7] }, satisfaction_from: 'satisfaction', sat_target: 4, expert_time_s: 20 } }));
+  run('run', data, '--contract', c1, '--method', 'sum3', '--bootstrap', '0', '--out', wave1);
+  fs.writeFileSync(c2, JSON.stringify({ version: 1, defaults: { scales: { seq: [1, 7], satisfaction: [1, 5] }, satisfaction_from: 'satisfaction' } }));
+  assert.ok(!run('run', data, '--contract', c2, '--previous', wave1, '--bootstrap', '0').json.qa.warnings.some((w) => /previous wave/.test(w)));
+
   fs.writeFileSync(c2, JSON.stringify({ version: 1, defaults: { satisfaction_from: 'satisfaction', sat_target: 3.5 } }));
   const changed = run('run', data, '--contract', c2, '--previous', wave1, '--bootstrap', '0');
   assert.match(changed.json.qa.warnings.join(), /sat_target was 4, now 3\.5.*not directly comparable/);

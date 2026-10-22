@@ -168,7 +168,15 @@ export function profile({ header, rows }) {
     const dups = [...seen.values()].filter((v) => v.length > 1);
     if (dups.length) ask('duplicates', [pid, tid], `Some participant × task pairs appear more than once (rows ${dups.map((d) => d.join('+')).join(', ')}). Keep the first, the last, or check them?`);
   }
-  if (wide) ask('wide-pairing', [], `Each row seems to be one participant with columns per task (tasks ${wide.tasks.join(', ')}; fields ${wide.fields.join(', ')}). Is that right, which field is which, and what is each task called (for the reports)?`);
+  // Different people per group, or the same people in every group, decides how the difference between groups is judged.
+  const group = top('group');
+  if (group) {
+    const groupsOf = new Map();
+    if (pid) for (const r of rows) groupsOf.set(r[pid.index], new Set([...(groupsOf.get(r[pid.index]) ?? []), r[group.index]]));
+    const both = [...groupsOf.values()].filter((g) => g.size > 1).length;
+    ask('group-design', [group], `Did each participant see only one of the ${quoted(group)} values (different people per group), or all of them (the same people in each)?${both ? ` ${both} participant(s) appear in more than one group.` : ''} It decides how the difference between groups is judged.`);
+  }
+  if (wide) ask('wide-pairing', [],`Each row seems to be one participant with columns per task (tasks ${wide.tasks.join(', ')}; fields ${wide.fields.join(', ')}). Is that right, which field is which, and what is each task called (for the reports)?`);
 
   return { rows: rows.length, layout: wide ? 'wide' : 'long', ...(wide ? { wide } : {}), columns, mustAsk, suspectRows };
 }

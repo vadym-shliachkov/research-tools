@@ -73,31 +73,46 @@ const CLAIMS = {
   en: {
     up: /(?:\b(?:is|are|was|were|lands?|sits?|scores?|scored)\s+|^\s*)(?:clearly\s+|well\s+|already\s+|now\s+|comfortably\s+|just\s+|slightly\s+)?(?:above|over|beyond)\s+(?:the\s+|our\s+|its\s+|your\s+|this\s+)?(?:target|goal|pass mark)\b|\b(?:beats?|beat|exceeds?|exceeded|surpass(?:es|ed)?|meets|met|reache[sd]|hits?)\s+(?:the\s+|our\s+|its\s+|your\s+)?(?:target|goal|pass mark)\b/gi,
     down: /(?:\b(?:is|are|was|were|lands?|sits?|scores?|scored|falls?|fell)\s+|^\s*)(?:clearly\s+|well\s+|already\s+|now\s+|just\s+|slightly\s+)?(?:below|under|short of)\s+(?:the\s+|our\s+|its\s+|your\s+|this\s+)?(?:target|goal|pass mark)\b|\b(?:misses|missed)\s+(?:the\s+|our\s+|its\s+|your\s+)?(?:target|goal|pass mark)\b/gi,
-    hedge: /\b(?:whether|if|not|n't|cannot|looks?|seems?|appears?|may|might|could|probably|likely)\b/i,
+    hedge: /\b(?:whether|if|not|n't|cannot|unclear|unsure|looks?|seems?|appears?|may|might|could|would|probably|likely|too (?:small|few|early)|for sure|for certain|yet to)\b/i,
   },
   ua: {
     up: /(?<!\p{L})(?:вищ(?:ий|а|е|і)\s+за\s+(?:ціль|прохідн\p{L}*)|вище\s+(?:цілі|прохідн\p{L}*)|перевищ\p{L}*\s+(?:ціль|прохідн\p{L}*)|досяг\p{L}*\s+(?:цілі|прохідн\p{L}*))/giu,
     down: /(?<!\p{L})(?:нижч(?:ий|а|е|і)\s+за\s+(?:ціль|прохідн\p{L}*)|нижче\s+(?:цілі|прохідн\p{L}*)|не\s+досяг\p{L}*\s+(?:цілі|прохідн\p{L}*))/giu,
-    hedge: /(?<!\p{L})(?:чи|не можемо|ще не|невідомо|схоже|здається|можливо|ймовірно|мабуть)(?!\p{L})/iu,
+    hedge: /(?<!\p{L})(?:чи|не можемо|ще не|невідомо|незрозуміло|схоже|здається|можливо|ймовірно|мабуть|напевно|напевне|точно сказати|замало|зарано)(?!\p{L})/iu,
   },
 };
 const UNSUPPORTED = { above: ['down'], below: ['up'], uncertain: ['up', 'down'], 'no-range': ['up', 'down'], 'no-target': ['up', 'down'] };
 
-// The headline and the result section must state the overall verdict no more firmly than facts.overall.verdict.
+// The headline and the result section must state each verdict no more firmly than the facts do. A sentence that
+// names one task is held to that task's verdict (taskVerdicts, from facts); any other sentence to the overall one.
 // A claim is allowed when the same sentence hedges it before the claim ("we cannot tell whether it is above target").
-export function verdictErrors(doc, verdict) {
-  const kinds = UNSUPPORTED[verdict];
-  if (!kinds) return [];
+export function verdictErrors(doc, verdict, taskVerdicts = {}) {
   const rules = CLAIMS[doc.lang] ?? CLAIMS.en;
+  const tasks = Object.keys(taskVerdicts ?? {});
+  // A task is named when each of its words of 3+ letters starts some word of the sentence, compared on the first 4
+  // letters: "Finding a store" names "Find a store", and Ukrainian case endings ("реєстрації") still match.
+  const words = (text) => apostrophes(String(text)).toLowerCase().match(/[\p{L}\p{N}']+/gu) ?? [];
+  const stem = (w) => w.slice(0, 4);
+  const names = (sentence, task) => {
+    const said = words(sentence).map(stem);
+    const key = words(task).filter((w) => w.length >= 3 || /\d/.test(w));
+    return key.length > 0 && key.every((w) => said.includes(stem(w)));
+  };
+  const verdictOf = (sentence) => {
+    const named = tasks.filter((t) => names(sentence, t));
+    if (named.length > 1) return null;
+    return named.length ? taskVerdicts[named[0]] : verdict;
+  };
   const result = (doc.sections ?? []).find((s) => s.id === 'result');
   const texts = [doc.headline?.sentence, ...(result?.paragraphs ?? []), ...(result?.items ?? []).map((i) => i.text)].filter(Boolean);
   const errors = [];
   for (const text of texts) {
     for (const sentence of text.split(/(?<=[.!?])\s+/)) {
-      for (const kind of kinds) {
+      const v = verdictOf(sentence);
+      for (const kind of UNSUPPORTED[v] ?? []) {
         for (const m of sentence.matchAll(rules[kind])) {
           if (rules.hedge.test(sentence.slice(0, m.index))) continue;
-          errors.push(`"${sentence.trim()}" says the result ${kind === 'up' ? 'reaches or exceeds' : 'falls short of'} its target, but the verdict is "${verdict}". Say only what the verdict supports.`);
+          errors.push(`"${sentence.trim()}" says the result ${kind === 'up' ? 'reaches or exceeds' : 'falls short of'} its target, but the verdict is "${v}". Say only what the verdict supports.`);
         }
       }
     }
@@ -122,7 +137,8 @@ export function checkEdit(draft, edited) {
   const known = new Set([...digits(before), ...numberWords(before)]);
   const added = [...digits(after)].filter((n) => !known.has(n));
   if (added.length) errors.push(`numbers added by the edit: ${added.join(', ')}; use only numbers from the draft`);
-  errors.push(...verdictErrors(edited, draft.verdict));
+  if (JSON.stringify(draft.taskVerdicts ?? null) !== JSON.stringify(edited.taskVerdicts ?? null)) errors.push('taskVerdicts changed; keep them as in the draft');
+  errors.push(...verdictErrors(edited, draft.verdict, draft.taskVerdicts));
   if (typeof edited.review?.readable !== 'boolean' || !Array.isArray(edited.review?.notes)) errors.push('review { readable: boolean, notes: [] } is missing');
   return { errors };
 }

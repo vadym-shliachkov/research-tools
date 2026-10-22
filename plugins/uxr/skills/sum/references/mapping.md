@@ -87,3 +87,4 @@ The profile proposes a pattern when it sees task-numbered columns. The pattern n
 | Duplicates | Which attempt counts |
 | Which ratings form satisfaction | Defines the construct |
 | Wide-layout pairing | A wrong pairing means wrong data |
+| With groups: did each person see one design, or all of them? | Decides how the difference between designs is judged (independent or paired) |

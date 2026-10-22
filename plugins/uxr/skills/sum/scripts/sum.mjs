@@ -68,7 +68,9 @@ function dropNulls(v) {
 // the previous one; values that differ are listed, so the run can warn that the waves are not comparable.
 const CARRIED = ['scales', 'satisfaction_from', 'sat_target', 'time_target_s', 'expert_time_s', 'expert_multiplier', 'cutoff_s',
   'completion_benchmark', 'error_opportunities_predefined', 'thresholds', 'gate_threshold'];
-const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+// Order of keys does not matter: {seq, ease} and {ease, seq} are the same scales.
+const canonical = (v) => (Array.isArray(v) ? v.map(canonical) : v && typeof v === 'object' ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, canonical(v[k])])) : v);
+const same = (a, b) => JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
 
 function carryPrevious(contract, prev) {
   const differences = [];
@@ -130,7 +132,7 @@ function summary(r) {
         components: Object.fromEntries(Object.entries(t.components).map(([k, c]) => [k, { pct: pct(c.pct), z: Number.isFinite(c.z) ? Math.round(c.z * 1000) / 1000 : c.z }])),
       })),
     })),
-    comparison: r.comparison?.map((c) => ({ group: c.group, vs: c.vs, diffPoints: pct(c.diff), ci: c.ci?.map(pct) ?? null })),
+    comparison: r.comparison?.map((c) => ({ group: c.group, vs: c.vs, diffPoints: pct(c.diff), ci: c.ci?.map(pct) ?? null, design: c.design })),
     sensitivity: r.sensitivity?.map((s) => (s.status === 'ok' ? `${s.preset}: ${s.products.map((p) => `${p.group ? `${p.group} ` : ''}${pct(p.pct)}%`).join(', ')}` : `${s.preset}: not applicable (${s.reason})`)),
     methodDependent: r.methodDependent,
     qa: r.qa && { errors: r.qa.errors.map((e) => `${e.where}: ${e.message}`), warnings: r.qa.warnings.map((w) => `${w.where}: ${w.message}`) },
@@ -166,7 +168,7 @@ const COMMANDS = {
     ];
     if (table.header.includes('errors')) toFill.push({ key: 'defaults.error_opportunities_predefined', question: 'Were the possible errors for each task listed before the study started (yes/no)?' });
     if (['success', 'perceived_time', 'ease', 'satisfaction'].every((c) => table.header.includes(c))) {
-      toFill.push({ key: 'defaults.gate_threshold', question: 'If the goal is a pass/fail gate: what share of people must pass everything (finish, and rate time, ease and satisfaction good enough) for the product to pass, for example 80% (written 0.8)? Leave empty to report the share without a target.' });
+      toFill.push({ key: 'defaults.gate_threshold', question: 'If the goal is a pass/fail gate: what share of participants must pass every check in every task they try (finish, and rate perceived time, ease and satisfaction good enough) for the product to pass, for example 80% (written 0.8)? Leave empty to report the share without a target.' });
     }
     for (const missing of Object.keys(scales).length ? [] : ratings) toFill.push({ key: `defaults.scales.${missing}`, question: `What is the scale of ${missing} (for example 1–5)?` });
     if (opt.out) write(opt.out, contract);
@@ -232,7 +234,7 @@ const DOC_COMMANDS = {
     const result = readJson(opt.result);
     // The verdict is judged here against the result itself, so wording that overstates it cannot reach the PDF.
     const facts = REPORT.explainerFacts(result, doc.lang);
-    const overstated = verdictErrors(doc, facts.overall?.verdict);
+    const overstated = verdictErrors(doc, facts.overall?.verdict, facts.taskVerdicts);
     if (overstated.length) return { status: 'error', message: overstated.join('; '), errors: overstated };
     const html = renderExplainerHtml(doc, { chart: REPORT.explainerChart(result, doc.lang) });
     const warnings = [];

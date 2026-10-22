@@ -14,6 +14,12 @@
   - **Next wave:** every target and scale carries over, time targets are frozen, and a changed one is flagged as not comparable.
   - **Compare mode** shows each method's range and whether the verdict depends on the method, and can save `compare.json`.
   - **Smaller fixes:** a relative `--out-dir` prints the PDF; `--help` shows the usage; the results folder uses the local date; `report.html` works on a phone; better contrast; clearer instructions for a missing study name, a user who cannot confirm the data, the no-data template and hosts without Node.
+- `/uxr:sum`, after a second QA pass:
+  - **Gate score in people:** the overall Usability Score is now the share of participants who passed every check in every task they tried (7 of 10 = 70%), not the mean of task pass rates, so it matches the pass mark. Reports say how many people passed and that measured time does not enter the score.
+  - **Same people, both designs:** when people tried more than one design, the difference between designs gets a paired range, which is narrower and correct for that design; a partial overlap warns. The intake now asks who saw which design.
+  - **Verdict check:** a sentence about one task is judged against that task's verdict, and careful wording such as "too small to say for sure" is no longer refused.
+  - **Ukrainian team report:** reasons, suggestions, warnings and why a method does not apply are now in Ukrainian, and a Usability Score report has its own title.
+  - **Smaller fixes:** the next wave no longer warns when only the order of keys differs; the Autodesk row says an empirical time target is missing; the chart no longer drags its caption to the next page, and long score labels wrap.
 
 ## 0.1.0 (2026-10-21)
 

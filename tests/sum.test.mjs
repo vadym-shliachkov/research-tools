@@ -99,6 +99,24 @@ describe('golden numbers from the literature', () => {
     assert.equal(gate.groups[0].product.targetPct, 0.8);
   });
 
+  test('overall Usability Score counts people who passed every task, not the mean of task pass rates', () => {
+    const rows = [];
+    for (let i = 1; i <= 10; i++) {
+      const p = `P${i}`;
+      rows.push([p, 'sign-up', i <= 7 ? 1 : 0, 4, 4, 4], [p, 'profile', i <= 8 ? 1 : 0, 4, 4, 4]);
+    }
+    const data = T(['participant_id', 'task_id', 'success', 'perceived_time', 'ease', 'satisfaction'], rows);
+    const scales = { perceived_time: [1, 5], ease: [1, 5], satisfaction: [1, 5] };
+    const r = SUM.runSum(data, { version: 1, defaults: { scales, gate_threshold: 0.7, time_target_s: 60 } }, { method: 'microsoft', bootstrap: 0 });
+    assert.deepEqual(r.groups[0].tasks.map((t) => t.sum.pct), [0.7, 0.8]);
+    const p = r.groups[0].product;
+    assert.deepEqual([p.pct, p.x, p.n, p.unit], [0.7, 7, 10, 'person']);
+    assert.ok(p.ci[0] < 0.7 && p.ci[1] > 0.7);
+    assert.ok(!('passes' in r.groups[0].tasks[0]));
+    // Time on task and the time target do not enter the score; the result says so.
+    assert.match(r.qa.warnings.find((w) => w.code === 'gate-ignores-time').message, /time targets/);
+  });
+
   test('proportions in the contract must be written as 0.78, not 78', () => {
     const bad = { ...CHECKOUT_CONTRACT, defaults: { ...CHECKOUT_CONTRACT.defaults, completion_benchmark: 78 } };
     const r = SUM.runSum(CHECKOUT, bad, { method: 'pearson', bootstrap: 0 });
@@ -261,6 +279,27 @@ describe('product level, groups and uncertainty', () => {
     assert.equal(SUM.runSum(CHECKOUT, CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 0 }).comparison, undefined);
   });
 
+  test('the same people in both groups get a paired range, which is narrower; a partial overlap warns', () => {
+    // Everyone is a bit slower on A than on B, but people differ a lot from each other.
+    const rows = CHECKOUT.rows.flatMap((r) => [
+      [r[0], r[1], r[2], r[3] === null ? null : r[3] * 1.3, r[4], r[5], r[6], 'A'],
+      [r[0], r[1], r[2], r[3], r[4], r[5], r[6], 'B'],
+    ]);
+    const header = [...CHECKOUT.header, 'group'];
+    const paired = SUM.runSum(T(header, rows), CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 400, seed: 2 }).comparison[0];
+    assert.equal(paired.design, 'paired');
+    assert.ok(paired.ci[0] < paired.diff && paired.diff < paired.ci[1]);
+    const apart = rows.map((r) => (r[7] === 'B' ? [`${r[0]}b`, ...r.slice(1)] : r));
+    const independent = SUM.runSum(T(header, apart), CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 400, seed: 2 }).comparison[0];
+    assert.equal(independent.design, 'independent');
+    near(independent.diff, paired.diff, 1e-12);
+    assert.ok(paired.ci[1] - paired.ci[0] < independent.ci[1] - independent.ci[0]);
+    const some = rows.map((r, i) => (r[7] === 'B' && i > 10 ? [`${r[0]}b`, ...r.slice(1)] : r));
+    const mixed = SUM.runSum(T(header, some), CHECKOUT_CONTRACT, { method: 'sum3', bootstrap: 100, seed: 2 });
+    assert.equal(mixed.comparison[0].design, 'mixed');
+    assert.ok(mixed.qa.warnings.some((w) => w.code === 'mixed-design'));
+  });
+
   test('targets: SUM parts at 50%, completion without a benchmark and the error-free rate have none', () => {
     const t = task0(SUM.runSum(CHECKOUT, CHECKOUT_CONTRACT, { method: 'sum4', bootstrap: 0 }));
     assert.equal(t.components.completion.targetPct, null);
@@ -369,6 +408,15 @@ describe('autopilot', () => {
     assert.ok(Array.isArray(sum3.warnings));
     assert.equal(SUM.dependsOnMethod([[0.5, 0.7], [0.55, 0.72]]), false);
     assert.equal(SUM.dependsOnMethod([[0.5], [0.62]]), true);
+  });
+
+  test('a method that cannot run says what it lacks, with a code reports can translate', () => {
+    const methods = SUM.compareMethods(CHECKOUT, { version: 1, defaults: { scales: { satisfaction: [1, 5] }, satisfaction_from: 'satisfaction', sat_target: 5, time_target_s: 60 } });
+    const autodesk = methods.find((m) => m.preset === 'autodesk');
+    assert.equal(autodesk.code, 'needs');
+    assert.match(autodesk.reason, /^needs an empirical time target/);
+    assert.equal(autodesk.missing[0].code, 'empirical-time-impossible');
+    assert.equal(methods.find((m) => m.preset === 'pearson').code, 'no-benchmark');
   });
 
   test('auto run shows sensitivity across applicable presets and flags method dependence', () => {
