@@ -1,0 +1,176 @@
+/* Long-form guide layout, on top of the uxr design system (plugins/uxr/templates/report.css): same tokens, type and
+   colours, with the parts a teaching document needs and a report does not.
+   - Grid: a 34 mm rail and a 128 mm text column (about 75 characters a line, inside the 45–90 range for body text).
+     The rail holds what labels the text beside it: section numbers, worked-example steps, callout types, "Excel".
+     Labels sit next to what they label, not above it, so the text column stays clean. Tables and figures run full
+     width.
+   - Chapters start on a new page under a ruler that marks where the chapter sits in the document; the running header
+     names the chapter, so a printed page is never anonymous.
+   - Callouts carry meaning by colour, as in the reports: green recommends, red warns, navy is the point to remember,
+     tint is a note on how to read something. A worked calculation is one block with a rule on its left.
+   - Rhythm on the 4 pt grid, each level clearly larger than the one below it: 8 pt between paragraphs, 16 pt between
+     blocks, 28 pt above a step, 40 pt above a section, a page above a chapter. A heading sits much closer to its text
+     than to what came before, and stays on the page with it. */
+
+:root {
+  --rail: 34mm;
+  --gutter: 8mm;
+  --indent: calc(var(--rail) + var(--gutter));
+  --mono: "IBM Plex Mono", Consolas, monospace;
+  --rule: #d5dbe4;
+  --calc-rule: color-mix(in srgb, var(--accent) 30%, #ffffff);
+}
+
+@page {
+  size: A4; margin: 24mm 20mm 20mm;
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin: 0; @bottom-right { content: none; } }
+
+body { line-height: 1.55; orphans: 3; widows: 3; }
+p { margin: 0 0 8pt; max-width: none; }
+ul, ol { max-width: none; margin: 0 0 8pt; padding-left: 14pt; }
+li { margin: 0 0 4pt; }
+li::marker { color: var(--accent); }
+ol > li::marker { font-weight: 600; }
+code { font-family: var(--mono); font-size: 8.5pt; padding: 0.5pt 3pt; color: var(--ink); }
+em { color: var(--ink); }
+
+/* ---- Cover ---- */
+.cover { break-after: page; }
+/* The cover is one page whatever the number of chapters: the contents run in two columns, top to bottom. */
+.cover-band { background: var(--accent); color: #fff; padding: 12mm 20mm 6mm; }
+.cover-top { display: flex; justify-content: space-between; font-size: var(--t-sm); opacity: 0.78; margin: 0; }
+.cover h1 { font-family: var(--serif); font-size: 40pt; line-height: 1.04; color: #fff; margin: 11mm 0 4mm; max-width: 150mm; }
+.cover-sub { font-family: var(--serif); font-weight: 400; font-size: 15pt; line-height: 1.35; margin: 0; max-width: 140mm; opacity: 0.9; }
+.cover-curve { display: block; width: 100%; height: auto; margin-top: 5mm; }
+.cover-body { padding: 9mm 20mm 0; }
+.cover-body h2 { font-size: var(--t-lg); margin: 0 0 var(--sp-3); }
+.toc { list-style: none; padding: 0; margin: 0 0 9mm; display: grid; grid-auto-flow: column; grid-template-columns: 1fr 1fr; column-gap: 8mm; border-top: 1px solid var(--line); }
+.toc li { display: grid; grid-template-columns: 9mm 1fr; column-gap: 3mm; align-items: baseline; padding: 6pt 0; border-bottom: 1px solid var(--line); margin: 0; }
+.toc .n { font-family: var(--serif); font-size: 15pt; font-weight: 600; color: var(--accent); line-height: 1; }
+.toc .t { font-family: var(--serif); font-weight: 600; font-size: 10.5pt; color: var(--ink); line-height: 1.3; }
+.toc .s { display: block; font-family: var(--sans); font-weight: 400; font-size: var(--t-sm); color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm 5mm; }
+.legend div { padding: 6pt 9pt; border-radius: var(--radius); font-size: 8.5pt; line-height: 1.4; }
+.legend b { display: block; font-weight: 600; font-size: var(--t-sm); margin-bottom: 1pt; }
+.legend .tip { background: var(--good-soft); } .legend .tip b { color: var(--good); }
+.legend .warning { background: var(--bad-soft); } .legend .warning b { color: var(--bad); }
+.legend .important { background: var(--accent); color: #fff; } .legend .important b { color: #fff; }
+.legend .note { background: var(--accent-soft); } .legend .note b { color: var(--accent); }
+.legend .recipe-key { background: var(--surface); } .legend .recipe-key b { font-family: var(--mono); font-weight: 400; color: var(--muted); }
+.legend .calc-key { border-left: 1.5pt solid var(--calc-rule); border-radius: 0; }
+
+/* ---- Chapters ---- */
+.chapter { break-before: page; }
+.chapter > * { margin-left: var(--indent); }
+.chapter > .chapter-head, .chapter > h3, .chapter > table.wide, .chapter > .figure { margin-left: 0; }
+.chapter-head { display: grid; grid-template-columns: var(--rail) 1fr; column-gap: var(--gutter); margin-bottom: 24pt; break-after: avoid; }
+.chapter-num { font-family: var(--serif); font-size: 46pt; font-weight: 600; line-height: 0.82; color: var(--accent); }
+.chapter-head h2 { margin: 0; font-size: 24pt; line-height: 1.12; }
+.chapter-sub { margin: 6pt 0 0; font-family: var(--serif); font-size: 13pt; line-height: 1.35; color: var(--muted); }
+.ruler { grid-column: 1 / -1; display: block; width: 100%; height: auto; margin-top: 14pt; }
+.chapter > p.lead { font-size: 11.5pt; line-height: 1.55; color: var(--ink); margin-bottom: 12pt; }
+
+/* Sections: a hairline across the whole width, the number in the rail. */
+.chapter > h3 { position: relative; margin: 40pt 0 8pt; padding: 12pt 0 0 var(--indent); border-top: 0.75pt solid var(--rule); font-size: 14.5pt; line-height: 1.25; break-inside: avoid; }
+.chapter > h3 .num { position: absolute; left: 0; top: 17.5pt; font-family: var(--sans); font-size: 9pt; font-weight: 600; color: var(--accent); }
+.chapter > h3 code { font-size: 0.85em; }
+/* Right under the chapter ruler a second rule would double it. */
+.chapter > .chapter-head + h3 { margin-top: 0; padding-top: 0; border-top: 0; }
+.chapter > .chapter-head + h3 .num { top: 5.5pt; }
+/* Worked-example steps: the step number in the rail. */
+.chapter > h4 { position: relative; margin: 28pt 0 8pt var(--indent); font-family: var(--serif); font-size: 12pt; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--ink); }
+.chapter > h4 .num { position: absolute; left: calc(-1 * var(--indent)); top: 4pt; font-family: var(--sans); font-size: 8.5pt; color: var(--muted); }
+
+.rail { position: absolute; left: calc(-1 * var(--indent)); top: 0; width: var(--rail); font-family: var(--sans); font-size: 8.5pt; font-weight: 600; line-height: 1.3; }
+
+/* ---- Callouts ---- */
+.chapter > .callout { position: relative; max-width: none; margin: 16pt 0 16pt var(--indent); padding: 12pt 16pt; border-radius: var(--radius); background: var(--accent-soft); break-inside: avoid; }
+.callout p { margin: 0 0 6pt; }
+.callout > :last-child { margin-bottom: 0; }
+.callout .rail { top: 15pt; color: var(--accent); }
+.callout.tip { background: var(--good-soft); }
+.callout.tip .rail { color: var(--good); }
+.callout.warning, .callout.caution { background: var(--bad-soft); }
+.callout.warning .rail, .callout.caution .rail { color: var(--bad); }
+.callout.important { background: var(--accent); color: #fff; padding: 14pt 18pt; }
+.callout.important .rail { top: 18pt; }
+.callout.important p { font-family: var(--serif); font-size: 11.5pt; line-height: 1.45; }
+.callout.important strong, .callout.important em { color: #fff; }
+.callout.important code { background: rgba(255, 255, 255, 0.16); color: #fff; }
+
+/* A quoted question or remark: serif, with the quotation mark hung in the rail. */
+.chapter > blockquote.quote { position: relative; margin: 16pt 0 16pt var(--indent); padding: 0; font-family: var(--serif); font-size: 13pt; line-height: 1.42; color: var(--ink); break-inside: avoid; }
+.quote p { margin: 0 0 4pt; }
+.quote strong { font-weight: 600; }
+.quote .rail { top: -8pt; padding-right: 3mm; text-align: right; font-family: var(--serif); font-size: 42pt; font-weight: 600; line-height: 1; color: var(--calc-rule); }
+
+/* ---- Calculations: formulas and the short words between them read as one block. ---- */
+.chapter > .calc { margin: 8pt 0 12pt var(--indent); padding: 1pt 0 1pt 14pt; border-left: 1.5pt solid var(--calc-rule); break-inside: avoid; }
+.calc p { margin: 5pt 0 2pt; color: var(--muted); font-size: var(--t-sm); break-after: avoid; }
+.math-block { margin: 4pt 0; break-inside: avoid; }
+.chapter > .math-block { margin: 8pt 0 12pt var(--indent); }
+.katex { font-size: 1.1em; color: var(--ink); }
+.katex-display { margin: 0; text-align: left; }
+.katex-display > .katex { text-align: left; }
+/* A boxed formula is a result: accent frame and accent ink. KaTeX draws the frame as a layer above the formula, so
+   it cannot take a fill. */
+.chapter .katex .fbox { border: 1.4pt solid var(--accent) !important; border-radius: 3pt; }
+.chapter .katex-display:has(.fbox) .base { color: var(--accent); }
+
+/* ---- Spreadsheet recipes: the formula, then its result under a dashed line. ---- */
+.chapter > .recipe { position: relative; margin: 8pt 0 12pt var(--indent); background: var(--surface); border-radius: var(--radius); break-inside: avoid; }
+.recipe pre { margin: 0; padding: 8pt 12pt; font-family: var(--mono); font-size: 8.5pt; line-height: 1.5; color: var(--ink); white-space: pre-wrap; background: none; }
+.recipe pre code { background: none; padding: 0; font-size: inherit; }
+.recipe .out { padding: 5pt 12pt 6pt; border-top: 1px dashed var(--rule); font-family: var(--mono); font-size: 8.5pt; font-weight: 600; color: var(--accent); }
+.recipe .out code { background: none; padding: 0; color: inherit; }
+.recipe .rail { top: 9pt; font-family: var(--mono); font-weight: 400; color: var(--muted); }
+
+/* ---- Tables: a few columns sit in the text column, wider ones run full width. ---- */
+.chapter > table { width: auto; min-width: 70mm; margin-top: 12pt; margin-bottom: 16pt; font-size: 9pt; }
+.chapter > table.wide { width: 100%; }
+/* Sentence-case headers: column names here include formulas such as ln(t), which capitals would change. */
+th { padding: 0 var(--sp-5) var(--sp-2) 0; font-size: 8.5pt; text-transform: none; letter-spacing: 0; color: var(--muted); }
+table:not(.wide) td { padding-right: var(--sp-5); }
+table:not(.wide) td:last-child { padding-right: 0; }
+td { padding: 6pt var(--sp-3) 6pt 0; }
+th[align="right"], td[align="right"] { text-align: right; }
+th:last-child, td:last-child { padding-right: 0; }
+tbody td:first-child { color: var(--ink); }
+table.wide tbody td:first-child { font-weight: 600; width: 30mm; }
+
+/* ---- Figures ---- */
+.chapter > .figure { margin: 16pt 0 24pt; display: flex; justify-content: center; break-inside: avoid; }
+.figure svg { max-width: 100%; max-height: 210mm; width: auto; height: auto; }
+.figure .node rect { fill: #ffffff !important; stroke: #aab3c2 !important; }
+.figure .node polygon { fill: var(--accent-soft) !important; stroke: var(--accent) !important; }
+.figure .edgeLabel, .figure .edgeLabel rect { background: #ffffff !important; fill: #ffffff !important; }
+
+/* ---- Between blocks and across pages ---- */
+/* Two blocks in a row get a full block gap, so a card under a calculation reads as a separate thing. */
+.chapter > :is(.calc, .recipe, .callout, .quote, table, .figure) + :is(.calc, .recipe, .callout, .quote, table, .figure) { margin-top: 16pt; }
+/* A heading stays with its first lines, a lead-in ("For example:") with what it introduces, a short table whole. */
+.chapter > :is(h3, h4) + :is(p, ul, ol) { break-after: avoid; }
+.chapter > p.leadin { break-after: avoid; }
+.chapter > table:not(:has(tbody > tr:nth-child(6))) { break-inside: avoid; }
+
+/* ---- Literature: one entry per source. The number in the rail; the citation with the title in serif italic; the
+   links as small labels that stay clickable in the PDF; the access note muted; then why to read it. ---- */
+.chapter > ol.refs { list-style: none; padding: 0; margin: 8pt 0 0 var(--indent); }
+.refs > li { position: relative; margin: 0; padding: 14pt 0 12pt; border-top: 0.75pt solid var(--rule); break-inside: avoid; }
+/* The number is a rail label like a section number, not a display figure. */
+.refs > li::before { content: counter(list-item); position: absolute; left: calc(-1 * var(--indent)); top: 16pt; font-family: var(--sans); font-size: 9pt; font-weight: 600; line-height: 1.3; color: var(--accent); }
+.refs p { margin: 0 0 6pt; }
+.refs .cite { color: var(--ink); }
+.refs .cite em { font-family: var(--serif); font-size: 10.5pt; }
+.refs .links { display: flex; flex-wrap: wrap; gap: 4pt; margin-bottom: 8pt; }
+.refs .links a { font-size: 8pt; line-height: 1.4; padding: 1.5pt 6pt; border-radius: 3pt; background: var(--accent-soft); color: var(--accent); text-decoration: none; }
+.refs .access { font-size: var(--t-sm); color: var(--muted); }
+.refs .why strong { color: var(--ink); }
+
+/* Citations in the text: the number in accent ink, linked to its entry; white on a navy callout. */
+.chapter a[href^="#ref-"] { color: var(--accent); font-weight: 600; text-decoration: none; }
+.callout.important a[href^="#ref-"] { color: #fff; }

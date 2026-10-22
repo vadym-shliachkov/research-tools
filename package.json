@@ -6,6 +6,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test \"tests/**/*.test.mjs\"",
-    "check": "node tools/check.mjs"
+    "check": "node tools/check.mjs",
+    "guides": "node tools/guide-pdf.mjs guides/sum-research.md guides/sum-research.ua.md"
   }
 }
