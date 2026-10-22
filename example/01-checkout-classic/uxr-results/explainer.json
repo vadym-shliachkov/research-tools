@@ -1,0 +1,104 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Checkout",
+  "verdict": "no-target",
+  "taskVerdicts": {
+    "Add to cart & checkout": "no-target",
+    "Find nearest store": "no-target",
+    "Start a return": "no-target"
+  },
+  "headline": {
+    "value": "33%",
+    "label": "Usability score",
+    "sentence": "4 of 12 people passed every check in all three tasks. No pass mark was agreed, so there is nothing to compare this with yet."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "12 people tried three tasks in the online shop. They checked out an item, found the nearest store and started a return.",
+        "For each task, we noted whether the person finished it. Each person also rated how easy the task was, how quick it felt and how satisfied they were."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The usability score is 33%. It is the share of people who passed every check in every task they tried. Here, 4 of 12 people passed everything.",
+        "A person passes a task only when they finish it and rate ease, speed and satisfaction high enough. One low rating in one task is enough to fail.",
+        "No pass mark was agreed for this score, so it is not above or below any target. The true share is most likely between 14% and 61%."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task has its own score, built from four checks. The checks have no targets of their own, so we report the plain counts.",
+        "Finding the nearest store scored 75%. Checking out scored 58%. Starting a return scored 42%."
+      ],
+      "items": [
+        { "label": "Add to cart & checkout", "value": "58%", "text": "10 of 12 people finished. 7 of 12 rated ease 4 or higher. 10 of 12 rated speed 3 or higher. 9 of 12 rated satisfaction 4 or higher." },
+        { "label": "Find nearest store", "value": "75%", "text": "11 of 12 people finished. 10 of 12 rated ease 4 or higher. 11 of 12 rated speed 3 or higher. 10 of 12 rated satisfaction 4 or higher." },
+        { "label": "Start a return", "value": "42%", "text": "7 of 12 people finished. 5 of 12 rated ease 4 or higher. 9 of 12 rated speed 3 or higher. 7 of 12 rated satisfaction 4 or higher." }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With only 12 people, the true overall share is most likely between 14% and 61%. That is a wide range.",
+        "The task scores are just as uncertain. For starting a return, the true score is most likely between 19% and 68%.",
+        "Testing with more people would narrow these ranges. That matters most once a pass mark is set and the score has to be judged against it."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "Starting a return is the weakest task. Only 5 of 12 people found it easy enough, and only 7 of 12 finished it.",
+        "In checkout, ease is also the weakest part: 7 of 12 people rated it 4 or higher. Look at where people hesitated in both tasks.",
+        "Finding the nearest store works best. Its weakest part is satisfaction, with 10 of 12 people rating it 4 or higher."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how many people got through everything. It does not say why the others struggled. Watch the recordings to find out.",
+        "The score ignores how long tasks actually took. It uses how quick each task felt, not the stopwatch. The time targets and the satisfaction target are not used either.",
+        "The result covers these three tasks and these 12 people only. Other tasks or other customers may do better or worse.",
+        "The answer also depends on the scoring method, as the next section explains."
+      ]
+    },
+    {
+      "id": "methods",
+      "heading": "Would another method change the answer?",
+      "paragraphs": [
+        "Yes, by a lot. Other methods give partial credit for each part instead of a simple pass or fail, so they score higher.",
+        "The original four-part score, which also counts mistakes, gives 75%. The three-part version, which leaves out mistakes, gives 72%.",
+        "Averaging the percentages of the parts gives 68%. Setting time targets from how long satisfied people took gives 63%.",
+        "This study supports a go or no-go decision, and the pass-or-fail share fits that best. It asks how many people had a good enough experience on every check. A high average cannot hide one failed check.",
+        "Before the next round, agree a pass mark for this share. Then the score can be judged clearly against it."
+      ]
+    }
+  ],
+  "glossary": [
+    { "term": "Usability score", "definition": "The share of people who passed every check in every task they tried." },
+    { "term": "Check", "definition": "One thing a person must get right in a task: finish it, and rate ease, speed and satisfaction high enough." },
+    { "term": "Pass mark", "definition": "The share, agreed in advance, that the score must reach for the product to pass." },
+    { "term": "Range", "definition": "The values the true score most likely falls between, given how few people took part." },
+    { "term": "Partial credit", "definition": "A way of scoring that gives some points for a part done fairly well, instead of only pass or fail." }
+  ],
+  "review": {
+    "readable": true,
+    "notes": [
+      "The draft was already plain; changes are light polish.",
+      "Split the long method-comparison paragraph into shorter ones and made task names consistent (\"Starting a return\").",
+      "Reworded \"Measured time does not enter this score\" so it reads naturally.",
+      "Added a glossary entry for \"partial credit\".",
+      "The rating scales (for example, what 3 or 4 means for speed) are not described in the draft; a researcher may want to add that."
+    ]
+  }
+}

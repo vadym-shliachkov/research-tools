@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to understand your results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">How to understand your results</h1><p class="band-meta"><span>Checkout</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">33%</span><span class="score-of"></span><span class="score-label">Usability score</span></div><p class="verdict">4 of 12 people passed every check in all three tasks. No pass mark was agreed, so there is nothing to compare this with yet.</p></div></div><div class="content"><section id="measured"><h2>What we measured</h2><p>12 people tried three tasks in the online shop. They checked out an item, found the nearest store and started a return.</p><p>For each task, we noted whether the person finished it. Each person also rated how easy the task was, how quick it felt and how satisfied they were.</p></section><section id="result"><h2>Your result</h2><p>The usability score is 33%. It is the share of people who passed every check in every task they tried. Here, 4 of 12 people passed everything.</p><p>A person passes a task only when they finish it and rate ease, speed and satisfaction high enough. One low rating in one task is enough to fail.</p><p>No pass mark was agreed for this score, so it is not above or below any target. The true share is most likely between 14% and 61%.</p></section><div class="bars"><div class="label">Add to cart &amp; checkout</div><div class="track"><span class="fill neutral" style="width:58.3%"></span><span class="ci" style="left:31.9%;width:48.8%"></span></div><div class="value">58%</div><div class="label">Find nearest store</div><div class="track"><span class="fill neutral" style="width:75.0%"></span><span class="ci" style="left:46.2%;width:45.6%"></span></div><div class="value">75%</div><div class="label">Start a return</div><div class="track"><span class="fill neutral" style="width:41.7%"></span><span class="ci" style="left:19.3%;width:48.8%"></span></div><div class="value">42%</div><div class="label">Overall score</div><div class="track"><span class="fill neutral" style="width:33.3%"></span><span class="ci" style="left:13.6%;width:47.6%"></span></div><div class="value">33%</div></div><p class="bars-key">Each bar is a score from 0 to 100%. The vertical line marks the target, where there is one. Green means clearly on or above it, red clearly below it, and grey that we cannot tell yet or that there is no target. The thin black line shows the range the true value most likely falls in.</p><section id="components"><h2>What the score is made of</h2><p>Each task has its own score, built from four checks. The checks have no targets of their own, so we report the plain counts.</p><p>Finding the nearest store scored 75%. Checking out scored 58%. Starting a return scored 42%.</p><ul><li><strong>Add to cart &amp; checkout (58%):</strong> 10 of 12 people finished. 7 of 12 rated ease 4 or higher. 10 of 12 rated speed 3 or higher. 9 of 12 rated satisfaction 4 or higher.</li><li><strong>Find nearest store (75%):</strong> 11 of 12 people finished. 10 of 12 rated ease 4 or higher. 11 of 12 rated speed 3 or higher. 10 of 12 rated satisfaction 4 or higher.</li><li><strong>Start a return (42%):</strong> 7 of 12 people finished. 5 of 12 rated ease 4 or higher. 9 of 12 rated speed 3 or higher. 7 of 12 rated satisfaction 4 or higher.</li></ul></section><section id="range"><h2>How sure we are</h2><p>With only 12 people, the true overall share is most likely between 14% and 61%. That is a wide range.</p><p>The task scores are just as uncertain. For starting a return, the true score is most likely between 19% and 68%.</p><p>Testing with more people would narrow these ranges. That matters most once a pass mark is set and the score has to be judged against it.</p></section><section id="fix-first"><h2>What to fix first</h2><p>Starting a return is the weakest task. Only 5 of 12 people found it easy enough, and only 7 of 12 finished it.</p><p>In checkout, ease is also the weakest part: 7 of 12 people rated it 4 or higher. Look at where people hesitated in both tasks.</p><p>Finding the nearest store works best. Its weakest part is satisfaction, with 10 of 12 people rating it 4 or higher.</p></section><section id="limits"><h2>What this number cannot tell you</h2><p>The score shows how many people got through everything. It does not say why the others struggled. Watch the recordings to find out.</p><p>The score ignores how long tasks actually took. It uses how quick each task felt, not the stopwatch. The time targets and the satisfaction target are not used either.</p><p>The result covers these three tasks and these 12 people only. Other tasks or other customers may do better or worse.</p><p>The answer also depends on the scoring method, as the next section explains.</p></section><section id="methods"><h2>Would another method change the answer?</h2><p>Yes, by a lot. Other methods give partial credit for each part instead of a simple pass or fail, so they score higher.</p><p>The original four-part score, which also counts mistakes, gives 75%. The three-part version, which leaves out mistakes, gives 72%.</p><p>Averaging the percentages of the parts gives 68%. Setting time targets from how long satisfied people took gives 63%.</p><p>This study supports a go or no-go decision, and the pass-or-fail share fits that best. It asks how many people had a good enough experience on every check. A high average cannot hide one failed check.</p><p>Before the next round, agree a pass mark for this share. Then the score can be judged clearly against it.</p></section><section id="glossary"><h2>Glossary</h2><dl class="glossary"><dt>Usability score</dt><dd>The share of people who passed every check in every task they tried.</dd><dt>Check</dt><dd>One thing a person must get right in a task: finish it, and rate ease, speed and satisfaction high enough.</dd><dt>Pass mark</dt><dd>The share, agreed in advance, that the score must reach for the product to pass.</dd><dt>Range</dt><dd>The values the true score most likely falls between, given how few people took part.</dd><dt>Partial credit</dt><dd>A way of scoring that gives some points for a part done fairly well, instead of only pass or fail.</dd></dl></section></div>
+</body>
+</html>

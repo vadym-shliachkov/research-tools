@@ -1,0 +1,168 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Enterprise program",
+  "verdict": "uncertain",
+  "taskVerdicts": {
+    "T01": "uncertain",
+    "T02": "uncertain",
+    "T03": "uncertain",
+    "T04": "uncertain",
+    "T05": "uncertain",
+    "T06": "uncertain",
+    "T07": "uncertain",
+    "T08": "uncertain",
+    "T09": "uncertain",
+    "T10": "uncertain"
+  },
+  "headline": {
+    "value": "44%",
+    "label": "Overall usability score",
+    "sentence": "Across ten tasks the product scores 44%, but we cannot yet tell whether that is above or below the 50% target."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "12 people each tried the same 10 tasks in the enterprise product. We call the tasks T01 to T10. The goal was to find the weakest tasks.",
+        "For each attempt we recorded whether the person finished and how long it took. A task that failed or ran out of time counts as not finished.",
+        "After each task, people gave three ratings from 1 to 5: how easy it was, how satisfied they were, and how long it felt. In this report, satisfaction means the average of those three ratings."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 44%. On this scale, 50% means exactly on target, and higher is better.",
+        "The score looks a little under target, but we cannot yet be sure. Its range runs from 23% to 70%, and the 50% target sits inside it.",
+        "The task scores run from 37% for T07 to 51% for T02. For each task on its own, we cannot yet tell whether it is above or below its target."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three equal parts: how many people finished, how fast they were, and how satisfied they felt.",
+        "Satisfaction was the weakest part on every task. People mostly got through the tasks in good time, but they did not come away happy."
+      ],
+      "items": [
+        {
+          "label": "Completion",
+          "value": "5 to 8 of 12",
+          "text": "Between 5 and 8 of 12 people finished each task. T08 and T09 had the fewest finishers, 5 of 12 each. There is no agreed target for this part."
+        },
+        {
+          "label": "Time on task",
+          "value": "on target except T03",
+          "text": "On most tasks, the typical time was faster than the target. For T01, the typical time was 69 seconds against a target of 78 seconds. T03 was the only task slower than its target: 155 seconds against 143 seconds."
+        },
+        {
+          "label": "Satisfaction",
+          "value": "2.72 to 3.19 of 5",
+          "text": "Average satisfaction was between 2.72 and 3.19 out of 5, against a target of 4. It fell short of the target on every task."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With only 12 people, the true overall score is most likely between 23% and 70%. That range is wide, because a small study leaves a lot of room for chance.",
+        "The ranges for single tasks are even wider. For T07, the range runs from 17% to 87%. For T10, it runs from 7% to 60%.",
+        "The task ranges overlap a lot, so treat the order of the tasks as a strong hint, not a firm ranking. More participants would narrow the ranges and make the order clearer."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "Three tasks scored lowest: T07, T10 and T06. On each of them, only 6 of 12 people finished, and satisfaction was the weakest part.",
+        "People were fast enough on these tasks, but they did not enjoy them. Start by watching the attempts that failed or ran out of time. Then ask people what felt hard.",
+        "Look at T08 and T09 next. They had the fewest finishers of all, 5 of 12 each."
+      ],
+      "items": [
+        {
+          "label": "T07",
+          "value": "37%",
+          "text": "Average satisfaction was 2.72 out of 5, against a target of 4. The typical time was 252 seconds, against a target of 273 seconds."
+        },
+        {
+          "label": "T10",
+          "value": "39%",
+          "text": "Average satisfaction was 2.75 out of 5, against a target of 4. The typical time was 332 seconds, against a target of 371 seconds."
+        },
+        {
+          "label": "T06",
+          "value": "41%",
+          "text": "Average satisfaction was 2.97 out of 5, against a target of 4. The typical time was 233 seconds, against a target of 241 seconds."
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows where people struggled, not why. It covers only these ten tasks and these 12 people.",
+        "Time comes only from people who finished. On every task, attempts that failed or ran out of time are left out of the time part.",
+        "We recorded mistakes but did not use them, because the possible mistakes were not listed before the study. We also recorded each person's role, admin or agent, but did not split the results by role.",
+        "The study also checked whether each task worked with a screen reader. That check is not part of the score. Report it separately, as its own accessibility pass or fail."
+      ]
+    },
+    {
+      "id": "methods",
+      "heading": "Would another method change the answer?",
+      "paragraphs": [
+        "We used the standard three-part score, where finishing, speed and satisfaction count equally. It fits the goal, because it shows which part pulls each task down.",
+        "Averaging the three parts the way a widely used online calculator does gives 43%, almost the same answer.",
+        "A stricter method counts only people who had a good experience on every task they tried. It gives 0%, because no participant passed every check on every task. That method has no agreed pass mark, so we do not compare 0% with the 50% target.",
+        "So the answer depends on the method. The averages sit near the target, yet nobody had a fully good experience across all tasks.",
+        "Another method lets the data decide how much each task counts, which could help rank the ten tasks. We did not run it for this report."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Usability score",
+      "definition": "One number from 0 to 100% that sums up how well people managed a task. 50% means exactly on target."
+    },
+    {
+      "term": "Task score",
+      "definition": "The usability score for one task, built from completion, time on task and satisfaction in equal parts."
+    },
+    {
+      "term": "Target",
+      "definition": "The level agreed before the study: a time for each task, and an average rating of 4 out of 5."
+    },
+    {
+      "term": "Range",
+      "definition": "The values the true score most likely falls between. A wider range means we are less sure."
+    },
+    {
+      "term": "Completion",
+      "definition": "How many people finished a task, out of everyone who tried it."
+    },
+    {
+      "term": "Time on task",
+      "definition": "How long people who finished took to do the task."
+    },
+    {
+      "term": "Typical time",
+      "definition": "The time of an ordinary attempt among the people who finished."
+    },
+    {
+      "term": "Satisfaction",
+      "definition": "The average of three ratings from 1 to 5: how easy the task was, how satisfied people were, and how long it felt."
+    }
+  ],
+  "review": {
+    "readable": true,
+    "notes": [
+      "The draft was already clear; changes are light: split a few two-idea sentences and turned passive phrasing into active voice.",
+      "Used one name throughout: \"average satisfaction\" instead of switching between \"average rating\" and \"satisfaction\"; wrote \"s\" out as \"seconds\".",
+      "Added one plain consequence sentence in the components section: people got through in good time but did not come away happy (restates the draft's own findings).",
+      "Glossary now also defines task score, completion, time on task and typical time.",
+      "Check that \"typical time\" matches how the time was summarised (for example the middle value); the draft does not name the method."
+    ]
+  }
+}

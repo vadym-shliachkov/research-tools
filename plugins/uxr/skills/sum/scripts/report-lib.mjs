@@ -21,7 +21,7 @@ const L = {
     why: 'Why this method', suggestions: 'Suggestions', sens: 'How much the method matters', chosen: 'chosen',
     notApplicable: 'not applicable', dependent: 'The verdict depends on the method: applicable methods differ by more than 10 points. Report the chosen method and say why.',
     stable: 'Applicable methods agree within 10 points; the verdict does not hinge on the method.', qa: 'Quality checks', none: 'No warnings.',
-    details: 'Method details', generated: 'Generated', data: 'Data', participants: 'attempts', tasks: 'tasks', target: 'target',
+    details: 'Method details', generated: 'Generated', data: 'Data', participants: 'attempts', tasks: (n) => `${n} task${n === 1 ? '' : 's'}`, target: 'target',
     timeTarget: 'Time target', satTarget: 'Satisfaction target', benchmark: 'Completion benchmark', bootstrap: 'Ranges come from a participant bootstrap',
     samples: 'samples', seed: 'seed', of: 'of', finished: 'finished', geo: 'typical', vs: 'vs', passed: 'passed all four',
     threshold: 'threshold', on: 'on', from: 'from', alpha: 'Cronbach alpha', gate: 'Pass mark', noGate: 'no pass mark agreed',
@@ -38,7 +38,7 @@ const L = {
     why: 'Чому цей метод', suggestions: 'Пропозиції', sens: 'Наскільки результат залежить від методу', chosen: 'обраний',
     notApplicable: 'не застосовний', dependent: 'Висновок залежить від методу: застосовні методи розходяться більш ніж на 10 пунктів. Повідомляйте обраний метод і пояснюйте чому.',
     stable: 'Застосовні методи розходяться не більш ніж на 10 пунктів; висновок не залежить від методу.', qa: 'Перевірки якості', none: 'Попереджень немає.',
-    details: 'Деталі методу', generated: 'Створено', data: 'Дані', participants: 'спроб', tasks: 'завдань', target: 'ціль',
+    details: 'Деталі методу', generated: 'Створено', data: 'Дані', participants: 'спроб', tasks: (n) => `${n} ${uaPlural(n, 'завдання', 'завдання', 'завдань')}`, target: 'ціль',
     timeTarget: 'Ціль за часом', satTarget: 'Ціль задоволеності', benchmark: 'Орієнтир успішності', bootstrap: 'Діапазони отримано бутстрепом за учасниками',
     samples: 'вибірок', seed: 'зерно', of: 'з', finished: 'виконали', geo: 'типово', vs: 'проти', passed: 'пройшли всі чотири умови',
     threshold: 'поріг', on: 'за шкалою', from: 'з', alpha: 'альфа Кронбаха', gate: 'Прохідна частка', noGate: 'прохідну частку не погоджено',
@@ -50,11 +50,11 @@ const L = {
 };
 
 const ORDER = ['completion', 'errors', 'time', 'satisfaction', 'perceived_time', 'ease'];
-const pct1 = (x) => (Number.isFinite(x) ? `${(Math.round(x * 1000) / 10).toFixed(1)}%` : '—');
+const pct1 = (x, l = L.en) => (Number.isFinite(x) ? `${(Math.round(x * 1000) / 10).toFixed(1).replace('.', l.dec)}%` : '—');
 const pct0 = (x) => (Number.isFinite(x) ? Math.round(x * 100) : null);
 const sec = (x, l = L.en) => `${Math.round(x)} ${l.s}`;
-const zTxt = (z) => (Number.isFinite(z) ? `z ${z >= 0 ? '+' : '−'}${Math.abs(z).toFixed(2)}` : 'z ∞');
-const range = (ci) => (ci ? `${pct1(ci[0])}–${pct1(ci[1])}` : '—');
+const zTxt = (z, l = L.en) => (Number.isFinite(z) ? `z ${z >= 0 ? '+' : '−'}${Math.abs(z).toFixed(2).replace('.', l.dec)}` : 'z ∞');
+const range = (ci, l = L.en) => (ci ? `${pct1(ci[0], l)}–${pct1(ci[1], l)}` : '—');
 const num = (x, l = L.en) => String(Math.round(x * 100) / 100).replace('.', l.dec);
 const unique = (xs) => [...new Set(xs)];
 const points = (d, l = L.en) => `${d >= 0 ? '+' : '−'}${(Math.round(Math.abs(d) * 1000) / 10).toFixed(1).replace('.', l.dec)} ${l.pts}`;
@@ -65,12 +65,12 @@ const targetOf = (c) => (c?.targetPct === undefined ? 0.5 : c.targetPct);
 
 function cell(key, c, l, us) {
   if (!c) return '—';
-  if (us) return `${pct1(c.pct)} (${c.x}/${c.n}${c.threshold !== undefined ? `, ≥${c.threshold}` : ''})`;
-  if (key === 'completion') return `${pct1(c.p)} (${c.x}/${c.n}) · ${zTxt(c.z)}`;
-  if (key === 'errors') return `${pct1(c.quality)} · ${zTxt(c.z)}`;
-  if (key === 'time') return `${sec(c.log ? c.geoMean : c.mean, l)} ${l.vs} ${sec(c.target, l)} · ${zTxt(c.z)}`;
-  if (key === 'satisfaction') return `${num(c.mean, l)} ${l.vs} ${num(c.target, l)} · ${zTxt(c.z)}`;
-  return pct1(c.pct);
+  if (us) return `${pct1(c.pct, l)} (${c.x}/${c.n}${c.threshold !== undefined ? `, ≥${num(c.threshold, l)}` : ''})`;
+  if (key === 'completion') return `${pct1(c.p, l)} (${c.x}/${c.n}) · ${zTxt(c.z, l)}`;
+  if (key === 'errors') return `${pct1(c.quality, l)} · ${zTxt(c.z, l)}`;
+  if (key === 'time') return `${sec(c.log ? c.geoMean : c.mean, l)} ${l.vs} ${sec(c.target, l)} · ${zTxt(c.z, l)}`;
+  if (key === 'satisfaction') return `${num(c.mean, l)} ${l.vs} ${num(c.target, l)} · ${zTxt(c.z, l)}`;
+  return pct1(c.pct, l);
 }
 
 const presentKeys = (group) => ORDER.filter((k) => group.tasks.some((t) => t.components?.[k]));
@@ -81,7 +81,7 @@ export function buildReportMd(result, lang = 'en') {
   const study = result.contract?.study ?? '';
   const out = [`# ${us ? l.titleUs : l.title}${study ? `: ${study}` : ''}`, ''];
   const tasksN = result.groups?.[0]?.tasks.length ?? 0;
-  out.push(`${l.generated} ${String(result.generated_at ?? '').slice(0, 10)} · ${l.method}: **${result.method.preset}** \`${result.method.string}\` · ${l.data}: ${tasksN} ${l.tasks}`, '');
+  out.push(`${l.generated} ${String(result.generated_at ?? '').slice(0, 10)} · ${l.method}: **${result.method.preset}** \`${result.method.string}\` · ${l.data}: ${l.tasks(tasksN)}`, '');
 
   for (const g of result.groups ?? []) {
     if (g.group !== null) out.push(`## ${l.group} ${g.group}`, '');
@@ -90,10 +90,10 @@ export function buildReportMd(result, lang = 'en') {
     out.push(`|---|---:|${keys.map(() => '---|').join('')}---|`);
     for (const t of g.tasks) {
       const n = t.components?.completion?.n ?? t.sum?.n ?? '';
-      out.push(`| ${t.task} | ${n} | ${keys.map((k) => cell(k, t.components?.[k], l, us)).join(' | ')} | ${t.sum ? `**${pct1(t.sum.pct)}** (${range(t.sum.ci)})` : '—'} |`);
+      out.push(`| ${t.task} | ${n} | ${keys.map((k) => cell(k, t.components?.[k], l, us)).join(' | ')} | ${t.sum ? `**${pct1(t.sum.pct, l)}** (${range(t.sum.ci, l)})` : '—'} |`);
     }
     out.push('');
-    if (g.product) out.push(`**${us ? l.overallUs : l.overall}: ${pct1(g.product.pct)}** (${l.range} ${range(g.product.ci)})${us && g.product.x !== undefined ? ` · ${l.passedAll(g.product.x, g.product.n)}` : ''}${us ? ` · ${g.product.targetPct ? `${l.gate} ${pct1(g.product.targetPct)}` : l.noGate}` : ''}`, '');
+    if (g.product) out.push(`**${us ? l.overallUs : l.overall}: ${pct1(g.product.pct, l)}** (${l.range} ${range(g.product.ci, l)})${us && g.product.x !== undefined ? ` · ${l.passedAll(g.product.x, g.product.n)}` : ''}${us ? ` · ${g.product.targetPct ? `${l.gate} ${pct1(g.product.targetPct, l)}` : l.noGate}` : ''}`, '');
   }
   for (const c of result.comparison ?? []) {
     out.push(`**${l.diff} ${c.group} ${l.vsGroup} ${c.vs}: ${points(c.diff, l)}** (${l.range} ${c.ci ? c.ci.map((x) => points(x, l)).join(' … ') : '—'})${c.design === 'paired' ? ` · ${l.paired}` : c.design === 'mixed' ? ` · ${l.mixedDesign}` : ''}`, '');
@@ -106,10 +106,10 @@ export function buildReportMd(result, lang = 'en') {
 
   if (result.sensitivity) {
     out.push(`## ${l.sens}`, '', `| ${l.method} | ${l.sum} |`, '|---|---:|');
-    const chosen = result.groups.map((g) => pct1(g.product?.pct)).join(' / ');
+    const chosen = result.groups.map((g) => pct1(g.product?.pct, l)).join(' / ');
     out.push(`| **${result.method.preset}** (${l.chosen}) | **${chosen}** |`);
     for (const s of result.sensitivity) {
-      out.push(`| ${s.preset} | ${s.status === 'ok' ? s.products.map((p) => pct1(p.pct)).join(' / ') : `${l.notApplicable}: ${notApplicableText(s, lang)}`} |`);
+      out.push(`| ${s.preset} | ${s.status === 'ok' ? s.products.map((p) => pct1(p.pct, l)).join(' / ') : `${l.notApplicable}: ${notApplicableText(s, lang)}`} |`);
     }
     out.push('', `> ${result.methodDependent ? l.dependent : l.stable}`, '');
   }
@@ -126,12 +126,12 @@ export function buildReportMd(result, lang = 'en') {
       if (us) {
         // Usability Score parts are pass rates: each has a threshold, not a target, scale or source columns.
         const bars = ['perceived_time', 'ease', 'satisfaction'].filter((k) => c[k]?.threshold !== undefined).map((k) => `${l[k]} ≥ ${num(c[k].threshold, l)}`);
-        out.push(`- ${where}: ${l.passBar} ${bars.join(', ')} · ${t.sum?.targetPct ? `${l.gate} ${pct1(t.sum.targetPct)}` : l.noGate}`);
+        out.push(`- ${where}: ${l.passBar} ${bars.join(', ')} · ${t.sum?.targetPct ? `${l.gate} ${pct1(t.sum.targetPct, l)}` : l.noGate}`);
         continue;
       }
       if (c.time) out.push(`- ${where}: ${l.timeTarget} ${sec(c.time.target, l)} (${timeSourceText(c.time.targetSource, lang)})`);
       if (c.satisfaction) out.push(`- ${where}: ${l.satTarget} ${num(c.satisfaction.target, l)} ${l.on} ${c.satisfaction.scale.join('–')} (${l.from} ${c.satisfaction.from.join(' + ')})${c.satisfaction.alpha !== undefined ? `, ${l.alpha} ${num(c.satisfaction.alpha, l)}` : ''}`);
-      if (c.completion?.benchmark !== undefined) out.push(`- ${where}: ${l.benchmark} ${pct1(c.completion.benchmark)}`);
+      if (c.completion?.benchmark !== undefined) out.push(`- ${where}: ${l.benchmark} ${pct1(c.completion.benchmark, l)}`);
     }
     if (g.bootstrap) out.push(`- ${l.bootstrap}: ${g.bootstrap.B} ${l.samples}, ${l.seed} ${g.bootstrap.seed}`);
   }
@@ -183,7 +183,7 @@ export function buildReportHtml(result, lang = 'en') {
   const scored = (result.groups ?? []).filter((g) => g.product);
   const cards = scored.map((g) => `<div class="score"><span class="score-num">${pct0(g.product.pct)}</span><span class="score-of">%</span>`
     + `<span class="score-label">${esc(us ? l.overallUs : l.overall)}${g.group !== null ? ` · ${esc(g.group)}` : ''}</span>`
-    + `<span class="score-range">${esc(l.range)}: ${esc(range(g.product.ci))}</span></div>`).join('');
+    + `<span class="score-range">${esc(l.range)}: ${esc(range(g.product.ci, l))}</span></div>`).join('');
   const head = scored.length
     ? `<div class="glance"><div class="glance-head">${cards}`
       + `<p class="verdict"><span class="meta">${esc(l.method)}: ${esc(result.method.preset)} · <code>${esc(result.method.string)}</code></span></p></div></div>`

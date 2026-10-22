@@ -1,0 +1,333 @@
+{
+  "lang": "en",
+  "study": "Onboarding",
+  "method": {
+    "preset": "sum3",
+    "plain": "Three parts with equal weight: how many finished, how fast, and how satisfied people were.",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1"
+  },
+  "overall": {
+    "pct": 67,
+    "ci": [
+      51,
+      99
+    ],
+    "target": 50,
+    "verdict": "above",
+    "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+  },
+  "taskVerdicts": {
+    "Реєстрація": "uncertain",
+    "Підтвердження email": "above",
+    "Налаштування профілю": "uncertain"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 67,
+        "ci": [
+          51,
+          99
+        ],
+        "target": 50,
+        "verdict": "above",
+        "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+      },
+      "tasks": [
+        {
+          "task": "Реєстрація",
+          "n": 10,
+          "sum": {
+            "pct": 60,
+            "ci": [
+              39,
+              100
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 39% to 100% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 60,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 73,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 68 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 44,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 5.4 on a 1–7 scale against a target of 5.6"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 44,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 5.4 on a 1–7 scale against a target of 5.6"
+          }
+        },
+        {
+          "task": "Підтвердження email",
+          "n": 10,
+          "sum": {
+            "pct": 81,
+            "ci": [
+              63,
+              96
+            ],
+            "target": 50,
+            "verdict": "above",
+            "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 90,
+              "target": null,
+              "onTarget": null,
+              "plain": "9 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 86,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 33 s against a target of 60 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 58,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.89 on a 1–7 scale against a target of 5.6"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 58,
+            "target": 50,
+            "onTarget": true,
+            "plain": "average rating 5.89 on a 1–7 scale against a target of 5.6"
+          }
+        },
+        {
+          "task": "Налаштування профілю",
+          "n": 10,
+          "sum": {
+            "pct": 60,
+            "ci": [
+              28,
+              88
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 28% to 88% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 60,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 80,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 100 s against a target of 150 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 35,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 5 on a 1–7 scale against a target of 5.6"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 35,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 5 on a 1–7 scale against a target of 5.6"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "measuringu",
+          "pct": 64
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task": "Реєстрація",
+      "n": 10,
+      "sum": {
+        "pct": 60,
+        "ci": [
+          39,
+          100
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 39% to 100% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 60,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 10 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 73,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 68 s against a target of 90 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 44,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 5.4 on a 1–7 scale against a target of 5.6"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 44,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 5.4 on a 1–7 scale against a target of 5.6"
+      }
+    },
+    {
+      "task": "Підтвердження email",
+      "n": 10,
+      "sum": {
+        "pct": 81,
+        "ci": [
+          63,
+          96
+        ],
+        "target": 50,
+        "verdict": "above",
+        "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 90,
+          "target": null,
+          "onTarget": null,
+          "plain": "9 of 10 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 86,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 33 s against a target of 60 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 58,
+          "target": 50,
+          "onTarget": true,
+          "plain": "average rating 5.89 on a 1–7 scale against a target of 5.6"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 58,
+        "target": 50,
+        "onTarget": true,
+        "plain": "average rating 5.89 on a 1–7 scale against a target of 5.6"
+      }
+    },
+    {
+      "task": "Налаштування профілю",
+      "n": 10,
+      "sum": {
+        "pct": 60,
+        "ci": [
+          28,
+          88
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 28% to 88% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 60,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 10 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 80,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 100 s against a target of 150 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 35,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 5 on a 1–7 scale against a target of 5.6"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 35,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 5 on a 1–7 scale against a target of 5.6"
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "preset": "measuringu",
+      "pct": 64
+    }
+  ],
+  "methodDependent": false,
+  "caveats": [
+    "task Реєстрація: 4 failed attempt(s) are left out of time; time describes successful users only.",
+    "task Підтвердження email: 1 failed attempt(s) are left out of time; time describes successful users only.",
+    "task Налаштування профілю: 4 failed attempt(s) are left out of time; time describes successful users only."
+  ],
+  "suggestions": [],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

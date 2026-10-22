@@ -60,6 +60,7 @@ test('run with a filled contract: autopilot, result file and readable summary', 
   const saved = JSON.parse(fs.readFileSync(out, 'utf8'));
   assert.equal(saved.method.preset, 'sum4');
   assert.ok(saved.contract && saved.generated_at);
+  assert.equal(saved.data, 'data.csv', 'the data path is relative to the result, so no local folder names leak');
 
   const explicit = run('run', data, '--contract', contract, '--method', 'sum3', '--agg', 'pct-mean', '--bootstrap', '0');
   assert.equal(explicit.json.method, 'SUM3|pctmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1');

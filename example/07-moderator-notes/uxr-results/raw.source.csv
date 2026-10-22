@@ -1,0 +1,13 @@
+Who,Task,Done?,Time,Time (s),How easy,Notes
+Olena,Book a demo,✗,1m 52s,112,2,"asked what ""seat"" means"
+Olena,Invite a teammate,✓,1m 43s,103,4,
+Marco,Book a demo,✓,1m 19s,79,5,smooth
+Marco,Invite a teammate,✓ (hint),41s,41,4,needed a hint about the Team tab
+Priya,Book a demo,✗,2m 39s,159,1,"asked what ""seat"" means"
+Priya,Invite a teammate,✗,3m 34s,214,1,"asked what ""seat"" means"
+Dmytro,Book a demo,✓,2 min,120,4,smooth
+Dmytro,Invite a teammate,✗,1m 25s,85,2,"asked what ""seat"" means"
+Sam,Book a demo,✗,2m 59s,179,2,could not find the button
+Sam,Invite a teammate,✓,1m 22s,82,5,
+Chen,Book a demo,✓,52s,52,5,
+Chen,Invite a teammate,✓,1m 3s,63,5,

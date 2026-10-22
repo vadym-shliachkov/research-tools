@@ -1,0 +1,450 @@
+{
+  "lang": "en",
+  "study": "Mobile banking",
+  "method": {
+    "preset": "sum3",
+    "plain": "Three parts with equal weight: how many finished, how fast, and how satisfied people were.",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|smoothing=laplace|v1"
+  },
+  "overall": null,
+  "taskVerdicts": {},
+  "groups": [
+    {
+      "group": "Current",
+      "overall": {
+        "pct": 53,
+        "ci": [
+          27,
+          74
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 27% to 74% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "tasks": [
+        {
+          "task": "Send money to a friend",
+          "n": 10,
+          "sum": {
+            "pct": 53,
+            "ci": [
+              24,
+              78
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 24% to 78% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 59,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 71,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 66 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 29,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.56 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 29,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.56 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Freeze your card",
+          "n": 10,
+          "sum": {
+            "pct": 77,
+            "ci": [
+              61,
+              93
+            ],
+            "target": 50,
+            "verdict": "above",
+            "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 86,
+              "target": null,
+              "onTarget": null,
+              "plain": "9 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 75,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 23 s against a target of 30 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 67,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.88 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 67,
+            "target": 50,
+            "onTarget": true,
+            "plain": "average rating 5.88 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Find last month's statement",
+          "n": 10,
+          "sum": {
+            "pct": 37,
+            "ci": [
+              3,
+              60
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 3% to 60% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 41,
+              "target": null,
+              "onTarget": null,
+              "plain": "4 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 56,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 58 s against a target of 60 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 18,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.2 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 18,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.2 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Set up a savings goal",
+          "n": 10,
+          "sum": {
+            "pct": 43,
+            "ci": [
+              5,
+              68
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 5% to 68% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 41,
+              "target": null,
+              "onTarget": null,
+              "plain": "4 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 54,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 143 s against a target of 150 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 34,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.67 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 34,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.67 on a 1–7 scale against a target of 5.5"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "measuringu",
+          "pct": 51
+        }
+      ]
+    },
+    {
+      "group": "Redesign",
+      "overall": {
+        "pct": 66,
+        "ci": [
+          54,
+          79
+        ],
+        "target": 50,
+        "verdict": "above",
+        "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+      },
+      "tasks": [
+        {
+          "task": "Send money to a friend",
+          "n": 10,
+          "sum": {
+            "pct": 63,
+            "ci": [
+              43,
+              89
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 43% to 89% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 77,
+              "target": null,
+              "onTarget": null,
+              "plain": "8 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 64,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 79 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 45,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 5.29 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 45,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 5.29 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Freeze your card",
+          "n": 10,
+          "sum": {
+            "pct": 77,
+            "ci": [
+              64,
+              87
+            ],
+            "target": 50,
+            "verdict": "above",
+            "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 95,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 65,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 25 s against a target of 30 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 55,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.6 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 55,
+            "target": 50,
+            "onTarget": true,
+            "plain": "average rating 5.6 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Find last month's statement",
+          "n": 10,
+          "sum": {
+            "pct": 61,
+            "ci": [
+              39,
+              80
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 39% to 80% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 86,
+              "target": null,
+              "onTarget": null,
+              "plain": "9 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 47,
+              "target": 50,
+              "onTarget": false,
+              "plain": "typical time 64 s against a target of 60 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 44,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 5.3 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 44,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 5.3 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "Set up a savings goal",
+          "n": 10,
+          "sum": {
+            "pct": 60,
+            "ci": [
+              32,
+              77
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 32% to 77% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 68,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 10 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 58,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 138 s against a target of 150 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 53,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.56 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 53,
+            "target": 50,
+            "onTarget": true,
+            "plain": "average rating 5.56 on a 1–7 scale against a target of 5.5"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "measuringu",
+          "pct": 61
+        }
+      ]
+    }
+  ],
+  "tasks": [],
+  "comparison": [
+    {
+      "group": "Redesign",
+      "vs": "Current",
+      "diffPoints": 13,
+      "ci": [
+        -10,
+        43
+      ],
+      "verdict": "uncertain",
+      "design": "independent"
+    }
+  ],
+  "sensitivity": [],
+  "methodDependent": false,
+  "caveats": [
+    "group Current, task Send money to a friend: 4 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Current, task Send money to a friend: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Current, task Freeze your card: 1 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Current, task Freeze your card: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Current, task Find last month's statement: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Current, task Find last month's statement: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Current, task Set up a savings goal: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Current, task Set up a savings goal: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Redesign, task Send money to a friend: 2 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Redesign, task Send money to a friend: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Redesign, task Freeze your card: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Redesign, task Find last month's statement: 1 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Redesign, task Find last month's statement: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "group Redesign, task Set up a savings goal: 3 failed attempt(s) are left out of time; time describes successful users only.",
+    "group Redesign, task Set up a savings goal: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+  ],
+  "suggestions": [],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

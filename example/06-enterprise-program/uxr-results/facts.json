@@ -1,0 +1,988 @@
+{
+  "lang": "en",
+  "study": "Enterprise program",
+  "method": {
+    "preset": "sum3",
+    "plain": "Three parts with equal weight: how many finished, how fast, and how satisfied people were.",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1"
+  },
+  "overall": {
+    "pct": 44,
+    "ci": [
+      23,
+      70
+    ],
+    "target": 50,
+    "verdict": "uncertain",
+    "verdictPlain": "The range runs from 23% to 70% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+  },
+  "taskVerdicts": {
+    "T01": "uncertain",
+    "T02": "uncertain",
+    "T03": "uncertain",
+    "T04": "uncertain",
+    "T05": "uncertain",
+    "T06": "uncertain",
+    "T07": "uncertain",
+    "T08": "uncertain",
+    "T09": "uncertain",
+    "T10": "uncertain"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 44,
+        "ci": [
+          23,
+          70
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 23% to 70% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "tasks": [
+        {
+          "task": "T01",
+          "n": 12,
+          "sum": {
+            "pct": 46,
+            "ci": [
+              20,
+              67
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 20% to 67% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 67,
+              "target": null,
+              "onTarget": null,
+              "plain": "8 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 58,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 69 s against a target of 78 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 18,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 18,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T02",
+          "n": 12,
+          "sum": {
+            "pct": 51,
+            "ci": [
+              28,
+              79
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 28% to 79% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 58,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 76,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 95 s against a target of 111 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 21,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.11 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 21,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 3.11 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T03",
+          "n": 12,
+          "sum": {
+            "pct": 44,
+            "ci": [
+              18,
+              64
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 18% to 64% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 67,
+              "target": null,
+              "onTarget": null,
+              "plain": "8 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 44,
+              "target": 50,
+              "onTarget": false,
+              "plain": "typical time 155 s against a target of 143 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 22,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.19 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 22,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 3.19 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T04",
+          "n": 12,
+          "sum": {
+            "pct": 47,
+            "ci": [
+              23,
+              70
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 23% to 70% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 73,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 138 s against a target of 176 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 21,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.81 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 21,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.81 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T05",
+          "n": 12,
+          "sum": {
+            "pct": 45,
+            "ci": [
+              18,
+              65
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 18% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 58,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 60,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 181 s against a target of 208 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 21,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 21,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T06",
+          "n": 12,
+          "sum": {
+            "pct": 41,
+            "ci": [
+              21,
+              75
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 21% to 75% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 57,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 233 s against a target of 241 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 20,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.97 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 20,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.97 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T07",
+          "n": 12,
+          "sum": {
+            "pct": 37,
+            "ci": [
+              17,
+              87
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 17% to 87% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 59,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 252 s against a target of 273 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 12,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.72 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 12,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.72 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T08",
+          "n": 12,
+          "sum": {
+            "pct": 44,
+            "ci": [
+              22,
+              84
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 22% to 84% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 42,
+              "target": null,
+              "onTarget": null,
+              "plain": "5 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 77,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 220 s against a target of 306 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 17,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.86 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 17,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.86 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T09",
+          "n": 12,
+          "sum": {
+            "pct": 45,
+            "ci": [
+              19,
+              80
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 19% to 80% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 42,
+              "target": null,
+              "onTarget": null,
+              "plain": "5 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 76,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 233 s against a target of 338 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 18,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 18,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "T10",
+          "n": 12,
+          "sum": {
+            "pct": 39,
+            "ci": [
+              7,
+              60
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 7% to 60% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 12 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 58,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 332 s against a target of 371 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 15,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 15,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "measuringu",
+          "pct": 43
+        },
+        {
+          "preset": "microsoft",
+          "pct": 0
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task": "T01",
+      "n": 12,
+      "sum": {
+        "pct": 46,
+        "ci": [
+          20,
+          67
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 20% to 67% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 67,
+          "target": null,
+          "onTarget": null,
+          "plain": "8 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 58,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 69 s against a target of 78 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 18,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 18,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T02",
+      "n": 12,
+      "sum": {
+        "pct": 51,
+        "ci": [
+          28,
+          79
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 28% to 79% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 58,
+          "target": null,
+          "onTarget": null,
+          "plain": "7 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 76,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 95 s against a target of 111 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 21,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.11 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 21,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 3.11 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T03",
+      "n": 12,
+      "sum": {
+        "pct": 44,
+        "ci": [
+          18,
+          64
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 18% to 64% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 67,
+          "target": null,
+          "onTarget": null,
+          "plain": "8 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 44,
+          "target": 50,
+          "onTarget": false,
+          "plain": "typical time 155 s against a target of 143 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 22,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.19 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 22,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 3.19 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T04",
+      "n": 12,
+      "sum": {
+        "pct": 47,
+        "ci": [
+          23,
+          70
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 23% to 70% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 73,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 138 s against a target of 176 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 21,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.81 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 21,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.81 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T05",
+      "n": 12,
+      "sum": {
+        "pct": 45,
+        "ci": [
+          18,
+          65
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 18% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 58,
+          "target": null,
+          "onTarget": null,
+          "plain": "7 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 60,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 181 s against a target of 208 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 21,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 21,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 3.03 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T06",
+      "n": 12,
+      "sum": {
+        "pct": 41,
+        "ci": [
+          21,
+          75
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 21% to 75% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 57,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 233 s against a target of 241 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 20,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.97 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 20,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.97 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T07",
+      "n": 12,
+      "sum": {
+        "pct": 37,
+        "ci": [
+          17,
+          87
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 17% to 87% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 59,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 252 s against a target of 273 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 12,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.72 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 12,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.72 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T08",
+      "n": 12,
+      "sum": {
+        "pct": 44,
+        "ci": [
+          22,
+          84
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 22% to 84% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 42,
+          "target": null,
+          "onTarget": null,
+          "plain": "5 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 77,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 220 s against a target of 306 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 17,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.86 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 17,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.86 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T09",
+      "n": 12,
+      "sum": {
+        "pct": 45,
+        "ci": [
+          19,
+          80
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 19% to 80% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 42,
+          "target": null,
+          "onTarget": null,
+          "plain": "5 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 76,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 233 s against a target of 338 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 18,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 18,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "T10",
+      "n": 12,
+      "sum": {
+        "pct": 39,
+        "ci": [
+          7,
+          60
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 7% to 60% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 12 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 58,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 332 s against a target of 371 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 15,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 15,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 2.75 on a 1–5 scale against a target of 4"
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "preset": "measuringu",
+      "pct": 43
+    },
+    {
+      "preset": "microsoft",
+      "pct": 0
+    }
+  ],
+  "methodDependent": true,
+  "caveats": [
+    "task T01: 4 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T02: 5 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T03: 4 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T04: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T05: 5 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T06: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T07: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T08: 7 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T09: 7 failed attempt(s) are left out of time; time describes successful users only.",
+    "task T10: 6 failed attempt(s) are left out of time; time describes successful users only."
+  ],
+  "suggestions": [
+    "With this many tasks, pca-entropy (data-driven weights) could rank tasks against each other. It is planned for v2 and gives dataset-relative scores.",
+    "Accessibility data is present: report it as a separate pass/fail gate next to SUM, not blended into it (SUMA has no validated formula yet)."
+  ],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

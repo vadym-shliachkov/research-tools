@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "participant" },
+    "task_id": { "from": "task" },
+    "success": { "from": "completed", "map": { "1": 1, "0": 0 } },
+    "time_s": { "from": "time_sec", "unit": "s" },
+    "errors": { "from": "errors" },
+    "error_opportunities": { "from": "error_opportunities" },
+    "ease": { "from": "ease_1to5", "scale": [1, 5] },
+    "satisfaction": { "from": "satisfaction_1to5", "scale": [1, 5] },
+    "perceived_time": { "from": "time_rating_1to5", "scale": [1, 5] }
+  },
+  "duplicates": "error"
+}

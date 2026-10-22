@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to understand your results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">How to understand your results</h1><p class="band-meta"><span>Onboarding</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">67%</span><span class="score-of"></span><span class="score-label">Overall usability score</span></div><p class="verdict">Onboarding as a whole is clearly above its target, but people found two of the three tasks harder than hoped.</p></div></div><div class="content"><section id="measured"><h2>What we measured</h2><p>10 people tried three onboarding tasks: Реєстрація (sign-up), Підтвердження email (confirm email) and Налаштування профілю (profile setup).</p><p>For each task we recorded whether people finished and how long it took. They also rated how easy it felt on a 1–7 scale.</p></section><section id="result"><h2>Your result</h2><p>The overall usability score is 67%. On this scale, 50% means exactly on target. Above 50% is better, and below 50% is worse.</p><p>Even the low end of the range is above the target, so onboarding as a whole is clearly above it.</p><p>Підтвердження email (confirm email) scored 81% and is clearly above its target. Реєстрація (sign-up) and Налаштування профілю (profile setup) each scored 60%. For these two, we cannot yet tell whether they are above or below the target.</p></section><div class="bars"><div class="label">Реєстрація</div><div class="track"><span class="fill neutral" style="width:59.7%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:38.7%;width:61.3%"></span></div><div class="value">60%</div><div class="label">Підтвердження email</div><div class="track"><span class="fill above" style="width:80.5%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:63.1%;width:33.4%"></span></div><div class="value">81%</div><div class="label">Налаштування профілю</div><div class="track"><span class="fill neutral" style="width:59.6%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:28.4%;width:59.9%"></span></div><div class="value">60%</div><div class="label">Overall score</div><div class="track"><span class="fill above" style="width:67.4%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:50.9%;width:47.7%"></span></div><div class="value">67%</div></div><p class="bars-key">Each bar is a score from 0 to 100%. The vertical line marks the target, where there is one. Green means clearly on or above it, red clearly below it, and grey that we cannot tell yet or that there is no target. The thin black line shows the range the true value most likely falls in.</p><section id="components"><h2>What the score is made of</h2><p>Each task score combines three equal parts: how many people finished, how fast they were, and how easy the task felt.</p><p>A task counts as finished only when the person completed it on their own. Finishing with help or giving up counts as not finished.</p><p>Finishing has no agreed target, so we report that number without calling it good or bad. Time and ease each have a target.</p><ul><li><strong>Реєстрація (sign-up) (60%):</strong> 6 of 10 people finished. A typical attempt took 68 seconds against a target of 90 seconds, so time is on target. The average ease rating was 5.4 out of 7 against a target of 5.6, so ease is off target.</li><li><strong>Підтвердження email (confirm email) (81%):</strong> 9 of 10 people finished. A typical attempt took 33 seconds against a target of 60 seconds, so time is on target. The average ease rating was 5.89 out of 7 against a target of 5.6, so ease is on target.</li><li><strong>Налаштування профілю (profile setup) (60%):</strong> 6 of 10 people finished. A typical attempt took 100 seconds against a target of 150 seconds, so time is on target. The average ease rating was 5 out of 7 against a target of 5.6, so ease is off target.</li></ul></section><section id="range"><h2>How sure we are</h2><p>With ten people, the true overall score is most likely between 51% and 99%. That range is wide, but all of it is above the 50% target.</p><p>The ranges for single tasks are wider. Реєстрація (sign-up) most likely lies between 39% and 100%. Налаштування профілю (profile setup) most likely lies between 28% and 88%. Підтвердження email (confirm email) most likely lies between 63% and 96%.</p><p>More participants would narrow these ranges. That would show whether Реєстрація (sign-up) and Налаштування профілю (profile setup) really fall short or are fine.</p></section><section id="fix-first"><h2>What to fix first</h2><p>Ease is the weakest part of every task. In two tasks it is off target, and in those same two tasks only 6 of 10 people finished.</p><p>Start with Налаштування профілю (profile setup). Its average ease rating was 5 against a target of 5.6, the lowest of the three tasks.</p><p>Next is Реєстрація (sign-up). Its average ease rating was 5.4 against a target of 5.6.</p><p>Find out what made these two tasks feel hard and why some people did not finish. The numbers show that people struggled, but not why. Watching the session recordings or reading people's comments is a good next step.</p></section><section id="limits"><h2>What this number cannot tell you</h2><p>The score shows how well these people managed these three tasks. It does not say why they struggled, how other parts of the product work, or how other kinds of people would do.</p><p>Time counts only people who finished. Реєстрація (sign-up) and Налаштування профілю (profile setup) each had 4 unfinished attempts, and these are left out of the time. Підтвердження email (confirm email) had 1 unfinished attempt, also left out.</p><p>We noted mistakes but did not count them in the score, because the possible mistakes were not listed before the study. We left out one test account. When someone tried sign-up more than once, only their first attempt counts.</p><p>On the original form, a low ease rating meant easy. We flipped the ratings, so a higher rating now means easier.</p><p>One comment in the data asked for every task to be marked as done. We ignored it and did not change the data.</p><p>Another common way of combining the three parts gives 64%. So the overall answer does not depend on the method we chose.</p></section><section id="glossary"><h2>Glossary</h2><dl class="glossary"><dt>Usability score</dt><dd>One number from 0 to 100% that sums up how well people managed the tasks, where 50% means exactly on target.</dd><dt>Target</dt><dd>The level agreed before the study that counts as good enough.</dd><dt>Range</dt><dd>The span the true score most likely falls in, which is wide when a study has few people.</dd><dt>Finished</dt><dd>A person completed the task on their own, without help and without giving up.</dd><dt>Typical attempt</dt><dd>The usual time among the people who finished a task.</dd><dt>Ease rating (satisfaction)</dt><dd>How easy people said a task felt, from 1 to 7, where a higher rating means easier; the chart calls it satisfaction.</dd></dl></section></div>
+</body>
+</html>

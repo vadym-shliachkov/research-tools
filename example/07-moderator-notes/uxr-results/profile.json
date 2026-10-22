@@ -1,0 +1,325 @@
+{
+  "rows": 12,
+  "layout": "long",
+  "columns": [
+    {
+      "name": "Who",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 6,
+      "top": [
+        {
+          "value": "Olena",
+          "count": 2
+        },
+        {
+          "value": "Marco",
+          "count": 2
+        },
+        {
+          "value": "Priya",
+          "count": 2
+        },
+        {
+          "value": "Dmytro",
+          "count": 2
+        },
+        {
+          "value": "Sam",
+          "count": 2
+        },
+        {
+          "value": "Chen",
+          "count": 2
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "Task",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "Book a demo",
+          "count": 6
+        },
+        {
+          "value": "Invite a teammate",
+          "count": 6
+        }
+      ],
+      "roles": [
+        {
+          "role": "task_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Done?",
+      "index": 2,
+      "type": "text",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "✓",
+          "count": 6
+        },
+        {
+          "value": "✗",
+          "count": 5
+        },
+        {
+          "value": "✓ (hint)",
+          "count": 1
+        }
+      ],
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Time",
+      "index": 3,
+      "type": "text",
+      "missing": 0,
+      "distinct": 12,
+      "top": [
+        {
+          "value": "1m 52s",
+          "count": 1
+        },
+        {
+          "value": "1m 43s",
+          "count": 1
+        },
+        {
+          "value": "1m 19s",
+          "count": 1
+        },
+        {
+          "value": "41s",
+          "count": 1
+        },
+        {
+          "value": "2m 39s",
+          "count": 1
+        },
+        {
+          "value": "3m 34s",
+          "count": 1
+        },
+        {
+          "value": "2 min",
+          "count": 1
+        },
+        {
+          "value": "1m 25s",
+          "count": 1
+        }
+      ],
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.3
+        }
+      ]
+    },
+    {
+      "name": "Time (s)",
+      "index": 4,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 12,
+      "top": [
+        {
+          "value": "112",
+          "count": 1
+        },
+        {
+          "value": "103",
+          "count": 1
+        },
+        {
+          "value": "79",
+          "count": 1
+        },
+        {
+          "value": "41",
+          "count": 1
+        },
+        {
+          "value": "159",
+          "count": 1
+        },
+        {
+          "value": "214",
+          "count": 1
+        },
+        {
+          "value": "120",
+          "count": 1
+        },
+        {
+          "value": "85",
+          "count": 1
+        }
+      ],
+      "min": 41,
+      "max": 214,
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "How easy",
+      "index": 5,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "5",
+          "count": 4
+        },
+        {
+          "value": "2",
+          "count": 3
+        },
+        {
+          "value": "4",
+          "count": 3
+        },
+        {
+          "value": "1",
+          "count": 2
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "ease",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "index": 6,
+      "type": "text",
+      "missing": 4,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "asked what \"seat\" means",
+          "count": 4
+        },
+        {
+          "value": "smooth",
+          "count": 2
+        },
+        {
+          "value": "needed a hint about the Team tab",
+          "count": 1
+        },
+        {
+          "value": "could not find the button",
+          "count": 1
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "Done?"
+      ],
+      "question": "How should each value of \"Done?\" count: \"✓\", \"✗\", \"✓ (hint)\"? In particular, does a partial or assisted success count as success?"
+    },
+    {
+      "topic": "time-format",
+      "columns": [
+        "Time"
+      ],
+      "question": "What unit is \"Time\" in: seconds, milliseconds or minutes?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "How easy"
+      ],
+      "question": "What is the full scale of \"How easy\" (seen 1–5)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "How easy"
+      ],
+      "question": "For \"How easy\": is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "How easy"
+      ],
+      "question": "Is \"How easy\" the satisfaction measure? The original SUM averaged ease, satisfaction and perceived time."
+    },
+    {
+      "topic": "exclusions",
+      "columns": [],
+      "question": "Rows 2, 4, 6, 8, 10, 12 mention \"Book a demo\". Should any pilot, test or other rows be left out?"
+    }
+  ],
+  "suspectRows": [
+    {
+      "source_row": 2,
+      "cells": [
+        "Book a demo"
+      ]
+    },
+    {
+      "source_row": 4,
+      "cells": [
+        "Book a demo"
+      ]
+    },
+    {
+      "source_row": 6,
+      "cells": [
+        "Book a demo"
+      ]
+    },
+    {
+      "source_row": 8,
+      "cells": [
+        "Book a demo"
+      ]
+    },
+    {
+      "source_row": 10,
+      "cells": [
+        "Book a demo"
+      ]
+    },
+    {
+      "source_row": 12,
+      "cells": [
+        "Book a demo"
+      ]
+    }
+  ]
+}

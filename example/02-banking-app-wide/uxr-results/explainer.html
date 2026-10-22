@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to understand your results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">How to understand your results</h1><p class="band-meta"><span>Mobile banking</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">+13 points</span><span class="score-of"></span><span class="score-label">Redesign compared with Current</span></div><p class="verdict">The Redesign scored 13 points higher than the Current design, but we cannot yet tell which design is better.</p></div></div><div class="content"><section id="measured"><h2>What we measured</h2><p>We tested two designs of the mobile banking app: Current and Redesign. Ten people tried each design, and each person saw only one of them. Everyone did the same four tasks: send money to a friend, freeze a card, find last month's statement, and set up a savings goal.</p><p>For each task we recorded whether the person finished, how long it took, and how easy they found it. After each task, people rated how easy it was from 1 to 7. A task counted as finished only when the person completed all of it on their own. Tasks left half done, or finished with help, counted as not finished.</p></section><section id="result"><h2>Your result</h2><p>Each design gets one usability score from 0 to 100%. A score of 50% means exactly on target. Above 50% is better than the target, and below 50% is worse.</p><p>The Redesign scored 66%, and its range runs from 54% to 79%. Even the low end of that range is above the target, so the Redesign is clearly above target.</p><p>The Current design scored 53%, with a range from 27% to 74%. That range includes the 50% target, so we cannot yet tell whether the Current design is above or below it.</p><p>The Redesign scored 13 points higher than the Current design. The true difference most likely lies between 10 points lower and 43 points higher. That range includes no difference at all, so we cannot yet tell which design is better.</p></section><div class="bars"><div class="label">Current · Send money to a friend</div><div class="track"><span class="fill neutral" style="width:52.8%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:23.8%;width:53.9%"></span></div><div class="value">53%</div><div class="label">Current · Freeze your card</div><div class="track"><span class="fill above" style="width:76.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:60.8%;width:32.4%"></span></div><div class="value">77%</div><div class="label">Current · Find last month's statement</div><div class="track"><span class="fill neutral" style="width:36.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:2.6%;width:57.0%"></span></div><div class="value">37%</div><div class="label">Current · Set up a savings goal</div><div class="track"><span class="fill neutral" style="width:42.7%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:5.3%;width:62.7%"></span></div><div class="value">43%</div><div class="label">Current · Overall score</div><div class="track"><span class="fill neutral" style="width:52.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:26.5%;width:47.8%"></span></div><div class="value">53%</div><div class="label">Redesign · Send money to a friend</div><div class="track"><span class="fill neutral" style="width:62.6%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:43.1%;width:46.1%"></span></div><div class="value">63%</div><div class="label">Redesign · Freeze your card</div><div class="track"><span class="fill above" style="width:76.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:64.1%;width:23.3%"></span></div><div class="value">77%</div><div class="label">Redesign · Find last month's statement</div><div class="track"><span class="fill neutral" style="width:61.4%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:38.9%;width:41.4%"></span></div><div class="value">61%</div><div class="label">Redesign · Set up a savings goal</div><div class="track"><span class="fill neutral" style="width:59.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:32.2%;width:44.9%"></span></div><div class="value">60%</div><div class="label">Redesign · Overall score</div><div class="track"><span class="fill above" style="width:65.5%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:53.9%;width:24.8%"></span></div><div class="value">66%</div></div><p class="bars-key">Each bar is a score from 0 to 100%. The vertical line marks the target, where there is one. Green means clearly on or above it, red clearly below it, and grey that we cannot tell yet or that there is no target. The thin black line shows the range the true value most likely falls in.</p><section id="components"><h2>What the score is made of</h2><p>Each task score has three equal parts: how many people finished, how fast they were, and how easy they found it. Each task has its own time target. The ease target was an average rating of 5.5 out of 7. Finishing had no required rate, so it has no target.</p><p>Freezing a card scored 77% in both designs, clearly above target in each. The other three tasks each scored higher in the Redesign. For those three, we cannot yet tell whether either design is above or below target.</p><ul><li><strong>Send money to a friend (Current 53%, Redesign 63%):</strong> In the Current design, 6 of 10 people finished, in a typical 66 seconds against a target of 90 seconds. The average ease rating was 4.56, below the 5.5 target. In the Redesign, 8 of 10 finished, in a typical 79 seconds, still within target. Ease was 5.29, still below target.</li><li><strong>Freeze your card (Current 77%, Redesign 77%):</strong> In the Current design, 9 of 10 people finished, in a typical 23 seconds against a target of 30 seconds. Ease was 5.88, which meets the target. In the Redesign, all 10 of 10 finished, in a typical 25 seconds. Ease was 5.6, which also meets the target.</li><li><strong>Find last month's statement (Current 37%, Redesign 61%):</strong> In the Current design, only 4 of 10 people finished, in a typical 58 seconds against a target of 60 seconds. Ease was 4.2, below target. In the Redesign, 9 of 10 finished. But a typical attempt took 64 seconds, just over the target, and ease was 5.3, below target.</li><li><strong>Set up a savings goal (Current 43%, Redesign 60%):</strong> In the Current design, 4 of 10 people finished, in a typical 143 seconds against a target of 150 seconds. Ease was 4.67, below target. In the Redesign, 7 of 10 finished, in a typical 138 seconds. Ease was 5.56, which meets the target.</li></ul></section><section id="range"><h2>How sure we are</h2><p>With ten people per design, every score comes with a wide range. The true score for the Current design most likely lies between 27% and 74%. For the Redesign, it most likely lies between 54% and 79%.</p><p>The two ranges overlap a lot. That is why a 13-point lead is not yet enough to call the Redesign better. Testing more people per design would narrow the ranges and show whether the lead is real.</p></section><section id="fix-first"><h2>What to fix first</h2><p>In both designs, the weakest part of every task was how easy people found it. In the Current design, ease was below target for every task except freezing a card. The lowest rating was 4.2, for finding last month's statement.</p><p>The Current design also lost many people before the end. Only 4 of 10 found last month's statement, and only 4 of 10 set up a savings goal. Start with the recordings of these two tasks.</p><p>In the Redesign, ease was still below target for sending money (5.29) and for finding the statement (5.3). Finding the statement also took a little longer than its target. Look into these two tasks next in the Redesign.</p></section><section id="limits"><h2>What this number cannot tell you</h2><p>The scores show where people struggled, not why. To find the reasons, watch the session recordings or talk to participants. The results also cover only these four tasks and the people who took part.</p><p>Time counts only the people who finished a task. People who gave up are left out, so the times can look better than the experience really was.</p><p>Ease ratings come only from the people who were asked the ease question. Where we did not ask it, we left the rating blank and did not count it.</p><p>Every Redesign participant froze their card. A perfect result like that cannot be placed on the scoring scale as it is. So we applied a small standard correction to every finish rate in the study. It counts each result as if half a success and half a failure were added.</p><p>This nudges every finish rate slightly toward the middle: 10 of 10 counts as 95%, and 6 of 10 as 59%. We chose this before anyone saw the scores. Because of it, the scores differ slightly from what the original method would give.</p><p>We left out one pilot session, because it was a trial run and not part of the study. Another common way of scoring gives a similar picture: 51% for the Current design and 61% for the Redesign.</p></section><section id="glossary"><h2>Glossary</h2><dl class="glossary"><dt>Usability score</dt><dd>One number from 0 to 100% that sums up how many people finished, how fast, and how easy they found it. 50% means exactly on target.</dd><dt>Target</dt><dd>The level agreed before the study: a time for each task and an average ease rating of 5.5 out of 7.</dd><dt>Range</dt><dd>The span in which the true value most likely lies; testing fewer people gives a wider range.</dd><dt>Ease rating</dt><dd>The answer to a question asked after each task about how easy it was, from 1 (very hard) to 7 (very easy).</dd><dt>Typical time</dt><dd>A middle value for how long people who finished took, so one unusually fast or slow person does not distort it.</dd><dt>Finish rate</dt><dd>The share of people who fully finished a task on their own, for example 6 of 10.</dd><dt>Small correction (Laplace smoothing)</dt><dd>A standard adjustment that counts every result as if half a success and half a failure were added. It lets a perfect 10 of 10 be scored and moves every finish rate slightly toward the middle.</dd></dl></section></div>
+</body>
+</html>

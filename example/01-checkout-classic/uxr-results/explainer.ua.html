@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Як зрозуміти ваші результати</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">Як зрозуміти ваші результати</h1><p class="band-meta"><span>Checkout</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">33%</span><span class="score-of"></span><span class="score-label">Оцінка зручності</span></div><p class="verdict">4 з 12 учасників пройшли всі перевірки в усіх трьох завданнях. Прохідну частку ще не погодили, тож цей результат поки нема з чим порівняти.</p></div></div><div class="content"><section id="measured"><h2>Що ми вимірювали</h2><p>12 учасників виконали три завдання в інтернет-магазині. Вони оформили покупку, знайшли найближчий магазин і почали оформлювати повернення.</p><p>Для кожного завдання ми фіксували, чи учасник його завершив. Також кожен оцінив три речі: наскільки завдання було легким, наскільки швидким воно здалося і наскільки він задоволений. Ці оцінки ми називаємо легкістю, відчуттям часу і задоволеністю.</p></section><section id="result"><h2>Ваш результат</h2><p>Оцінка зручності становить 33%. Це частка учасників, які пройшли всі перевірки в кожному своєму завданні. Тут усе пройшли 4 з 12 учасників.</p><p>Учасник проходить завдання, лише коли завершує його і достатньо високо оцінює легкість, відчуття часу і задоволеність. Досить однієї низької оцінки в одному завданні, щоб не пройти.</p><p>Прохідну частку для цієї оцінки не погодили, тож порівняти результат поки нема з чим. Справжня частка найімовірніше лежить між 14% і 61%.</p></section><div class="bars"><div class="label">Add to cart &amp; checkout</div><div class="track"><span class="fill neutral" style="width:58.3%"></span><span class="ci" style="left:31.9%;width:48.8%"></span></div><div class="value">58%</div><div class="label">Find nearest store</div><div class="track"><span class="fill neutral" style="width:75.0%"></span><span class="ci" style="left:46.2%;width:45.6%"></span></div><div class="value">75%</div><div class="label">Start a return</div><div class="track"><span class="fill neutral" style="width:41.7%"></span><span class="ci" style="left:19.3%;width:48.8%"></span></div><div class="value">42%</div><div class="label">Загальна оцінка</div><div class="track"><span class="fill neutral" style="width:33.3%"></span><span class="ci" style="left:13.6%;width:47.6%"></span></div><div class="value">33%</div></div><p class="bars-key">Кожна смуга показує оцінку від 0 до 100%. Вертикальна лінія позначає ціль, якщо вона є. Зелений означає, що результат явно на рівні цілі або вище, червоний — явно нижче, сірий — що ми ще не можемо сказати напевно або що цілі немає. Тонка чорна лінія показує діапазон, у якому найімовірніше лежить справжнє значення.</p><section id="components"><h2>З чого складається оцінка</h2><p>Кожне завдання має власну оцінку з чотирьох перевірок. Окремих цілей для перевірок немає, тому ми просто наводимо кількість учасників.</p><p>Пошук найближчого магазину отримав 75%. Оформлення покупки отримало 58%. Оформлення повернення отримало 42%.</p><ul><li><strong>Оформлення покупки (58%):</strong> 10 з 12 учасників завершили. 7 з 12 оцінили легкість на 4 або вище. 10 з 12 оцінили відчуття часу на 3 або вище. 9 з 12 оцінили задоволеність на 4 або вище.</li><li><strong>Пошук найближчого магазину (75%):</strong> 11 з 12 учасників завершили. 10 з 12 оцінили легкість на 4 або вище. 11 з 12 оцінили відчуття часу на 3 або вище. 10 з 12 оцінили задоволеність на 4 або вище.</li><li><strong>Оформлення повернення (42%):</strong> 7 з 12 учасників завершили. 5 з 12 оцінили легкість на 4 або вище. 9 з 12 оцінили відчуття часу на 3 або вище. 7 з 12 оцінили задоволеність на 4 або вище.</li></ul></section><section id="range"><h2>Наскільки ми впевнені</h2><p>Учасників лише 12, тому справжня загальна частка найімовірніше лежить між 14% і 61%. Це широкий діапазон.</p><p>Оцінки окремих завдань так само неточні. Для оформлення повернення справжня оцінка найімовірніше лежить між 19% і 68%.</p><p>Більше учасників звузило б ці діапазони. Це найважливіше тоді, коли прохідну частку вже погоджено і результат треба порівняти з нею.</p></section><section id="fix-first"><h2>Що виправити насамперед</h2><p>Найслабше завдання — оформлення повернення. Лише 5 з 12 учасників визнали його достатньо легким, і лише 7 з 12 його завершили.</p><p>В оформленні покупки найслабша частина теж легкість: 7 з 12 учасників оцінили її на 4 або вище. Подивіться, де учасники вагалися в обох завданнях.</p><p>Найкраще працює пошук найближчого магазину. Його найслабша частина — задоволеність: 10 з 12 учасників оцінили її на 4 або вище.</p></section><section id="limits"><h2>Чого це число не скаже</h2><p>Оцінка показує, скільки учасників пройшли все. Вона не пояснює, чому інші мали труднощі. Щоб це з’ясувати, перегляньте записи сесій.</p><p>Оцінка не враховує справжній час на завдання. Вона спирається на відчуття часу, тобто на те, наскільки швидким завдання здалося. Цілі для часу на завдання і ціль задоволеності теж не використовуються.</p><p>Результат стосується лише цих трьох завдань і цих 12 учасників. Інші завдання чи інші клієнти можуть дати кращий або гірший результат.</p><p>Відповідь також залежить від способу підрахунку, як пояснено в наступному розділі.</p></section><section id="methods"><h2>Чи змінить відповідь інший метод?</h2><p>Так, і суттєво. Інші методи дають часткові бали за кожну частину замість простого «пройшов або не пройшов», тож їхні оцінки вищі.</p><p>Початковий спосіб із чотирьох частин, який враховує ще й частку дій без помилок, дає 75%. Варіант із трьох частин, без помилок, дає 72%.</p><p>Середнє з відсотків окремих частин дає 68%. Якщо цілі для часу на завдання визначати за тим, скільки часу знадобилося задоволеним учасникам, виходить 63%.</p><p>Це дослідження потрібне для рішення «запускаємо чи ні». Для нього найкраще підходить частка тих, хто пройшов усе. Вона показує, скільки учасників мали достатньо добрий досвід за кожною перевіркою. Одну провалену перевірку не сховає високе середнє.</p><p>Перед наступним раундом погодьте прохідну частку для цієї оцінки. Тоді результат можна буде чітко порівняти з нею.</p></section><section id="glossary"><h2>Словник</h2><dl class="glossary"><dt>Оцінка зручності</dt><dd>Частка учасників, які пройшли всі перевірки в кожному своєму завданні.</dd><dt>Перевірка</dt><dd>Одна умова, яку учасник має виконати в завданні: завершити його або достатньо високо оцінити легкість, відчуття часу чи задоволеність.</dd><dt>Відчуття часу</dt><dd>Оцінка учасника того, наскільки швидким йому здалося завдання, без вимірювання секундоміром.</dd><dt>Прохідна частка</dt><dd>Частка, погоджена заздалегідь, якої має досягти оцінка, щоб продукт пройшов.</dd><dt>Діапазон</dt><dd>Найімовірніший діапазон значень, між якими лежить справжня оцінка, з огляду на невелику кількість учасників.</dd><dt>Часткові бали</dt><dd>Спосіб підрахунку, що дає частину балів за частину завдання, виконану досить добре, а не лише «пройшов або не пройшов».</dd></dl></section></div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+{
+  "rows": 56,
+  "layout": "long",
+  "columns": [
+    {
+      "name": "pid",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 14,
+      "top": [
+        {
+          "value": "S01",
+          "count": 4
+        },
+        {
+          "value": "S02",
+          "count": 4
+        },
+        {
+          "value": "S03",
+          "count": 4
+        },
+        {
+          "value": "S04",
+          "count": 4
+        },
+        {
+          "value": "S05",
+          "count": 4
+        },
+        {
+          "value": "S06",
+          "count": 4
+        },
+        {
+          "value": "S07",
+          "count": 4
+        },
+        {
+          "value": "S08",
+          "count": 4
+        }
+      ],
+      "roles": [
+        {
+          "role": "participant_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "find-product",
+          "count": 14
+        },
+        {
+          "value": "filter-by-price",
+          "count": 14
+        },
+        {
+          "value": "compare-two",
+          "count": 14
+        },
+        {
+          "value": "return-policy",
+          "count": 14
+        }
+      ],
+      "roles": [
+        {
+          "role": "task_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "outcome",
+      "index": 2,
+      "type": "text",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "success",
+          "count": 42
+        },
+        {
+          "value": "fail",
+          "count": 10
+        },
+        {
+          "value": "abandoned",
+          "count": 4
+        }
+      ],
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "duration_ms",
+      "index": 3,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 54,
+      "top": [
+        {
+          "value": "240000",
+          "count": 3
+        },
+        {
+          "value": "33278",
+          "count": 1
+        },
+        {
+          "value": "53317",
+          "count": 1
+        },
+        {
+          "value": "92447",
+          "count": 1
+        },
+        {
+          "value": "31132",
+          "count": 1
+        },
+        {
+          "value": "18122",
+          "count": 1
+        },
+        {
+          "value": "56080",
+          "count": 1
+        },
+        {
+          "value": "139559",
+          "count": 1
+        }
+      ],
+      "min": 15142,
+      "max": 240000,
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "q1_easy",
+      "index": 4,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 6,
+      "top": [
+        {
+          "value": "6",
+          "count": 21
+        },
+        {
+          "value": "5",
+          "count": 18
+        },
+        {
+          "value": "4",
+          "count": 7
+        },
+        {
+          "value": "7",
+          "count": 5
+        },
+        {
+          "value": "3",
+          "count": 4
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 2,
+      "max": 7,
+      "roles": [
+        {
+          "role": "ease",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "q2_satisfied",
+      "index": 5,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 6,
+      "top": [
+        {
+          "value": "6",
+          "count": 21
+        },
+        {
+          "value": "5",
+          "count": 18
+        },
+        {
+          "value": "4",
+          "count": 10
+        },
+        {
+          "value": "7",
+          "count": 3
+        },
+        {
+          "value": "3",
+          "count": 3
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 2,
+      "max": 7,
+      "roles": [
+        {
+          "role": "satisfaction",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "q3_confident",
+      "index": 6,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 6,
+      "top": [
+        {
+          "value": "6",
+          "count": 20
+        },
+        {
+          "value": "5",
+          "count": 18
+        },
+        {
+          "value": "4",
+          "count": 12
+        },
+        {
+          "value": "7",
+          "count": 4
+        },
+        {
+          "value": "3",
+          "count": 1
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 2,
+      "max": 7,
+      "roles": [
+        {
+          "role": "rating",
+          "confidence": 0.4
+        }
+      ]
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "outcome"
+      ],
+      "question": "How should each value of \"outcome\" count: \"success\", \"fail\", \"abandoned\"? In particular, does a partial or assisted success count as success?"
+    },
+    {
+      "topic": "time-format",
+      "columns": [
+        "duration_ms"
+      ],
+      "question": "What unit is \"duration_ms\" in: seconds, milliseconds or minutes?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "q1_easy",
+        "q2_satisfied",
+        "q3_confident"
+      ],
+      "question": "What is the full scale of \"q1_easy\" (seen 2–7), \"q2_satisfied\" (seen 2–7), \"q3_confident\" (seen 2–7)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "q1_easy",
+        "q2_satisfied",
+        "q3_confident"
+      ],
+      "question": "For \"q1_easy\", \"q2_satisfied\", \"q3_confident\": is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "q1_easy",
+        "q2_satisfied",
+        "q3_confident"
+      ],
+      "question": "Which rating questions make up satisfaction: one of them, or an average of several?"
+    }
+  ],
+  "suspectRows": []
+}

@@ -56,6 +56,8 @@ const [command, dataPath] = positionals;
 
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 const write = (p, obj) => { fs.mkdirSync(path.dirname(path.resolve(p)), { recursive: true }); fs.writeFileSync(p, JSON.stringify(obj, null, 2)); };
+// The data file as seen from the output's folder ("data.csv"), not an absolute path that names the user's folders.
+const dataFrom = (out) => path.relative(path.dirname(path.resolve(out)), path.resolve(dataPath)).split(path.sep).join('/');
 
 // null in a contract means "not decided"; the calculator treats only defined values as decisions.
 function dropNulls(v) {
@@ -185,7 +187,7 @@ const COMMANDS = {
       bootstrap: opt.bootstrap !== undefined ? Number(opt.bootstrap) : 2000,
       ...(opt.seed !== undefined ? { seed: Number(opt.seed) } : {}),
     });
-    if (opt.out && r.groups) write(opt.out,{ ...r, contract, data: path.resolve(dataPath), generated_at: new Date().toISOString() });
+    if (opt.out && r.groups) write(opt.out, { ...r, contract, data: dataFrom(opt.out), generated_at: new Date().toISOString() });
     return { ...summary(r), out: opt.out ?? null };
   },
   compare(table) {
@@ -202,7 +204,7 @@ const COMMANDS = {
       methods: methods.map((s) => ({ ...s, products: s.products?.map((p) => ({ group: p.group, pct: pct(p.pct), ci: p.ci?.map(pct) ?? null })) })),
       methodDependent: SUM.dependsOnMethod(ok.map((s) => s.products.map((p) => p.pct))),
     };
-    if (opt.out) write(opt.out, { ...out, contract, data: path.resolve(dataPath), generated_at: new Date().toISOString() });
+    if (opt.out) write(opt.out, { ...out, contract, data: dataFrom(opt.out), generated_at: new Date().toISOString() });
     return { ...out, out: opt.out ?? null };
   },
 };

@@ -1,0 +1,366 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "microsoft",
+    "string": "USABILITY-SCORE|success∧perceived-time∧ease∧satisfaction|v1",
+    "config": {
+      "kind": "usability-score"
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "goal-gate",
+        "decision": "microsoft",
+        "why": "The goal is a pass/fail gate and all four ratings are present; the share of users who passed everything is the clearest answer."
+      }
+    ],
+    "suggestions": [
+      "Show sum3 next to it for gradation (it is in the sensitivity table).",
+      "No pass mark (gate_threshold) was agreed, so the score is reported without a target: as the share of people who passed everything, with its range."
+    ]
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "Add to cart & checkout",
+          "components": {
+            "completion": {
+              "x": 10,
+              "n": 12,
+              "pct": 0.8333333333333334,
+              "z": 0.9674215661017008,
+              "ci": [
+                0.5399867077346152,
+                0.9650172878285574
+              ],
+              "targetPct": null
+            },
+            "perceived_time": {
+              "x": 10,
+              "n": 12,
+              "pct": 0.8333333333333334,
+              "z": 0.9674215661017008,
+              "ci": [
+                0.5399867077346152,
+                0.9650172878285574
+              ],
+              "targetPct": null,
+              "threshold": 3
+            },
+            "ease": {
+              "x": 7,
+              "n": 12,
+              "pct": 0.5833333333333334,
+              "z": 0.2104283942479248,
+              "ci": [
+                0.3188772556619328,
+                0.8073737432288604
+              ],
+              "targetPct": null,
+              "threshold": 4
+            },
+            "satisfaction": {
+              "x": 9,
+              "n": 12,
+              "pct": 0.75,
+              "z": 0.674489750196082,
+              "ci": [
+                0.4615019099958587,
+                0.9172510866765208
+              ],
+              "targetPct": null,
+              "threshold": 4
+            }
+          },
+          "sum": {
+            "pct": 0.5833333333333334,
+            "z": 0.2104283942479248,
+            "x": 7,
+            "n": 12,
+            "ci": [
+              0.3188772556619328,
+              0.8073737432288604
+            ],
+            "targetPct": null
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [],
+            "needs": []
+          }
+        },
+        {
+          "task": "Find nearest store",
+          "components": {
+            "completion": {
+              "x": 11,
+              "n": 12,
+              "pct": 0.9166666666666666,
+              "z": 1.382994127100638,
+              "ci": [
+                0.6246665722941231,
+                1
+              ],
+              "targetPct": null
+            },
+            "perceived_time": {
+              "x": 11,
+              "n": 12,
+              "pct": 0.9166666666666666,
+              "z": 1.382994127100638,
+              "ci": [
+                0.6246665722941231,
+                1
+              ],
+              "targetPct": null,
+              "threshold": 3
+            },
+            "ease": {
+              "x": 10,
+              "n": 12,
+              "pct": 0.8333333333333334,
+              "z": 0.9674215661017008,
+              "ci": [
+                0.5399867077346152,
+                0.9650172878285574
+              ],
+              "targetPct": null,
+              "threshold": 4
+            },
+            "satisfaction": {
+              "x": 10,
+              "n": 12,
+              "pct": 0.8333333333333334,
+              "z": 0.9674215661017008,
+              "ci": [
+                0.5399867077346152,
+                0.9650172878285574
+              ],
+              "targetPct": null,
+              "threshold": 4
+            }
+          },
+          "sum": {
+            "pct": 0.75,
+            "z": 0.674489750196082,
+            "x": 9,
+            "n": 12,
+            "ci": [
+              0.4615019099958587,
+              0.9172510866765208
+            ],
+            "targetPct": null
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [],
+            "needs": []
+          }
+        },
+        {
+          "task": "Start a return",
+          "components": {
+            "completion": {
+              "x": 7,
+              "n": 12,
+              "pct": 0.5833333333333334,
+              "z": 0.2104283942479248,
+              "ci": [
+                0.3188772556619328,
+                0.8073737432288604
+              ],
+              "targetPct": null
+            },
+            "perceived_time": {
+              "x": 9,
+              "n": 12,
+              "pct": 0.75,
+              "z": 0.674489750196082,
+              "ci": [
+                0.4615019099958587,
+                0.9172510866765208
+              ],
+              "targetPct": null,
+              "threshold": 3
+            },
+            "ease": {
+              "x": 5,
+              "n": 12,
+              "pct": 0.4166666666666667,
+              "z": -0.2104283942479248,
+              "ci": [
+                0.19262625677113968,
+                0.6811227443380672
+              ],
+              "targetPct": null,
+              "threshold": 4
+            },
+            "satisfaction": {
+              "x": 7,
+              "n": 12,
+              "pct": 0.5833333333333334,
+              "z": 0.2104283942479248,
+              "ci": [
+                0.3188772556619328,
+                0.8073737432288604
+              ],
+              "targetPct": null,
+              "threshold": 4
+            }
+          },
+          "sum": {
+            "pct": 0.4166666666666667,
+            "z": -0.2104283942479248,
+            "x": 5,
+            "n": 12,
+            "ci": [
+              0.19262625677113968,
+              0.6811227443380672
+            ],
+            "targetPct": null
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "pct": 0.3333333333333333,
+        "z": -0.4307272992954574,
+        "x": 4,
+        "n": 12,
+        "unit": "person",
+        "ci": [
+          0.13550896800436799,
+          0.6119890342140457
+        ],
+        "targetPct": null
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 0,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "gate-ignores-time",
+        "params": {
+          "timeTargets": false,
+          "satTarget": true
+        },
+        "where": "all tasks",
+        "message": "The Usability Score counts who finished and rated perceived time, ease and satisfaction at or above their thresholds. Measured time on task does not enter it, and neither do the satisfaction target (they are used only in the comparison with other methods)."
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "string": "SUM4|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.7466417400164082
+        }
+      ]
+    },
+    {
+      "preset": "sum3",
+      "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.7167338767999166
+        }
+      ]
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.6835734947230904
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "string": "SUM3|zmean|completion=original|time=empirical,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.6288883753184813
+        }
+      ]
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    }
+  ],
+  "methodDependent": true,
+  "contract": {
+    "version": 1,
+    "study": "Checkout",
+    "goal": "gate",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "ease": [
+          1,
+          5
+        ],
+        "satisfaction": [
+          1,
+          5
+        ],
+        "perceived_time": [
+          1,
+          5
+        ]
+      },
+      "satisfaction_from": [
+        "ease",
+        "satisfaction",
+        "perceived_time"
+      ],
+      "sat_target": 4,
+      "expert_multiplier": 3,
+      "error_opportunities_predefined": true
+    },
+    "tasks": {
+      "Add to cart & checkout": {
+        "time_target_s": 120
+      },
+      "Find nearest store": {
+        "time_target_s": 60
+      },
+      "Start a return": {
+        "time_target_s": 100
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:48:52.551Z"
+}

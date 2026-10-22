@@ -1,0 +1,244 @@
+{
+  "lang": "en",
+  "study": "Moderator notes",
+  "method": {
+    "preset": "sum3",
+    "plain": "Three parts with equal weight: how many finished, how fast, and how satisfied people were.",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1"
+  },
+  "overall": {
+    "pct": 45,
+    "ci": [
+      21,
+      82
+    ],
+    "target": 50,
+    "verdict": "uncertain",
+    "verdictPlain": "The range runs from 21% to 82% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+  },
+  "taskVerdicts": {
+    "Book a demo": "uncertain",
+    "Invite a teammate": "uncertain"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 45,
+        "ci": [
+          21,
+          82
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 21% to 82% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "tasks": [
+        {
+          "task": "Book a demo",
+          "n": 6,
+          "sum": {
+            "pct": 48,
+            "ci": [
+              30,
+              82
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 30% to 82% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "3 of 6 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 62,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 79 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 31,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.17 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 31,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 3.17 on a 1–5 scale against a target of 4"
+          }
+        },
+        {
+          "task": "Invite a teammate",
+          "n": 6,
+          "sum": {
+            "pct": 42,
+            "ci": [
+              21,
+              76
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 21% to 76% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 50,
+              "target": null,
+              "onTarget": null,
+              "plain": "3 of 6 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 38,
+              "target": 50,
+              "onTarget": false,
+              "plain": "typical time 81 s against a target of 75 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 38,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 3.5 on a 1–5 scale against a target of 4"
+            }
+          },
+          "weakest": {
+            "key": "time",
+            "label": "Time on task",
+            "pct": 38,
+            "target": 50,
+            "onTarget": false,
+            "plain": "typical time 81 s against a target of 75 s"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "measuringu",
+          "pct": 44
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task": "Book a demo",
+      "n": 6,
+      "sum": {
+        "pct": 48,
+        "ci": [
+          30,
+          82
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 30% to 82% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "3 of 6 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 62,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 79 s against a target of 90 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 31,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.17 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 31,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 3.17 on a 1–5 scale against a target of 4"
+      }
+    },
+    {
+      "task": "Invite a teammate",
+      "n": 6,
+      "sum": {
+        "pct": 42,
+        "ci": [
+          21,
+          76
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 21% to 76% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 50,
+          "target": null,
+          "onTarget": null,
+          "plain": "3 of 6 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 38,
+          "target": 50,
+          "onTarget": false,
+          "plain": "typical time 81 s against a target of 75 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 38,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 3.5 on a 1–5 scale against a target of 4"
+        }
+      },
+      "weakest": {
+        "key": "time",
+        "label": "Time on task",
+        "pct": 38,
+        "target": 50,
+        "onTarget": false,
+        "plain": "typical time 81 s against a target of 75 s"
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "preset": "measuringu",
+      "pct": 44
+    }
+  ],
+  "methodDependent": false,
+  "caveats": [
+    "task Book a demo: Only 6 attempt(s); every component has a wide uncertainty range.",
+    "task Book a demo: 3 failed attempt(s) are left out of time; time describes successful users only.",
+    "task Invite a teammate: Only 6 attempt(s); every component has a wide uncertainty range.",
+    "task Invite a teammate: 3 failed attempt(s) are left out of time; time describes successful users only.",
+    "all tasks: 129 of 2000 bootstrap samples gave an undefined score; the interval is approximate."
+  ],
+  "suggestions": [],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

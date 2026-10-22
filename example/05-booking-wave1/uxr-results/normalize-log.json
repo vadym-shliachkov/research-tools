@@ -1,0 +1,10 @@
+{
+  "rowsIn": 60,
+  "rowsOut": 60,
+  "dropped": [],
+  "blanks": {},
+  "unusedColumns": [
+    "Device"
+  ],
+  "warnings": []
+}

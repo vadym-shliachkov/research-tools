@@ -1,0 +1,15 @@
+{
+  "rowsIn": 21,
+  "rowsOut": 80,
+  "dropped": [
+    {
+      "source_row": 2,
+      "reason": "pilot session"
+    }
+  ],
+  "blanks": {
+    "seq": 11
+  },
+  "unusedColumns": [],
+  "warnings": []
+}

@@ -185,6 +185,27 @@ describe('SUM reports', () => {
     assert.equal(chart.at(-1).label, 'Загальна оцінка');
   });
 
+  test('the Ukrainian report writes every decimal with a comma and agrees nouns with numbers', () => {
+    const md = buildReportMd(RESULT, 'ua');
+    assert.match(md, /\*\*\d+,\d%\*\* \(\d+,\d%–\d+,\d%\)/);
+    assert.match(md, /80,0% \(8\/10\) · z \+0,\d\d/);
+    assert.doesNotMatch(md.replace(/`[^`]*`/g, ''), /\d\.\d/);
+    assert.match(md, /Дані: 1 завдання/);
+    assert.match(buildReportMd(RESULT, 'en'), /Data: 1 task\b/);
+    assert.match(buildReportMd(RESULT, 'en'), /80\.0% \(8\/10\) · z \+0\.\d\d/);
+  });
+
+  test('a method that does not apply says why in Ukrainian too', () => {
+    const md = buildReportMd(RESULT, 'ua');
+    assert.match(md, /microsoft \| не застосовний: для оцінки зручності бракує оцінок: відчуття часу, легкість/);
+    assert.doesNotMatch(md, /Usability Score needs/);
+    assert.match(buildReportMd(RESULT, 'en'), /The Usability Score needs perceived_time, ease/);
+    // A result.json written before the error carried params is still translated.
+    const old = structuredClone(RESULT);
+    for (const s of old.sensitivity) delete s.params;
+    assert.match(buildReportMd(old, 'ua'), /не застосовний: для оцінки зручності бракує оцінок: відчуття часу, легкість/);
+  });
+
   test('the explainer chart avoids jargon; the team report keeps technical labels', () => {
     const chart = explainerChart(RESULT, 'en');
     assert.equal(chart.at(-1).label, 'Overall score');

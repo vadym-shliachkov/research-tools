@@ -1,0 +1,412 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "sum3",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "original",
+      "smoothing": "none",
+      "timeTarget": "target",
+      "timeLog": true,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "errors",
+        "decision": "sum3",
+        "why": "Errors are present but their opportunities were not defined before the study, so errors are left out (Microsoft and Autodesk found them unreliable).",
+        "params": {
+          "case": "not-predefined"
+        }
+      },
+      {
+        "rule": "default",
+        "decision": "sum3",
+        "why": "Nothing in the data or goal calls for a variant; the three-component SUM is the most stable default."
+      }
+    ],
+    "suggestions": []
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "Реєстрація",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 10,
+              "p": 0.6,
+              "score": 0.6,
+              "z": 0.2533471031357999,
+              "pct": 0.6,
+              "targetPct": null,
+              "ci": [
+                0.31160406628921383,
+                0.8328893737382084
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 90,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 74.68333333333334,
+              "median": 55.099999999999994,
+              "geoMean": 67.82286120143813,
+              "ci": [
+                42.10754003419155,
+                109.2426795251958
+              ],
+              "z": 0.6228515378223044,
+              "pct": 0.7333089564922834,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 10,
+              "from": [
+                "ease"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.6,
+              "mean": 5.4,
+              "sd": 1.429840705968481,
+              "ci": [
+                4.3771535765474905,
+                6.42284642345251
+              ],
+              "z": -0.13987572123604658,
+              "pct": 0.4443790921631342,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.24544097324068592,
+            "pct": 0.5969424965227228,
+            "targetPct": 0.5,
+            "ci": [
+              0.3865126373213358,
+              0.9999999980477401
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Підтвердження email",
+          "components": {
+            "completion": {
+              "x": 9,
+              "n": 10,
+              "p": 0.9,
+              "score": 0.9,
+              "z": 1.2815515655446004,
+              "pct": 0.9,
+              "targetPct": null,
+              "ci": [
+                0.5740322626051678,
+                1
+              ]
+            },
+            "time": {
+              "n": 9,
+              "target": 60,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 37.87777777777778,
+              "median": 35.8,
+              "geoMean": 33.06757690041846,
+              "ci": [
+                21.70357004999566,
+                50.38178693856439
+              ],
+              "z": 1.0876070154531383,
+              "pct": 0.8616156838178552,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 9,
+              "from": [
+                "ease"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.6,
+              "mean": 5.888888888888889,
+              "sd": 1.3642254619787415,
+              "ci": [
+                4.840252369997638,
+                6.93752540778014
+              ],
+              "z": 0.2117603702175963,
+              "pct": 0.5838530063435172,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.8603063170717782,
+            "pct": 0.8051898942018852,
+            "targetPct": 0.5,
+            "ci": [
+              0.6309735021588996,
+              0.9648883485846822
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 1
+                },
+                "message": "1 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Налаштування профілю",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 10,
+              "p": 0.6,
+              "score": 0.6,
+              "z": 0.2533471031357999,
+              "pct": 0.6,
+              "targetPct": null,
+              "ci": [
+                0.31160406628921383,
+                0.8328893737382084
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 150,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 109.86666666666666,
+              "median": 97.45,
+              "geoMean": 100.42093524442659,
+              "ci": [
+                61.48979410611626,
+                164.00061802064562
+              ],
+              "z": 0.858515388011149,
+              "pct": 0.8046960314158234,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 9,
+              "from": [
+                "ease"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.6,
+              "mean": 5,
+              "sd": 1.5811388300841898,
+              "ci": [
+                3.7846291064980084,
+                6.215370893501992
+              ],
+              "z": -0.3794733192202053,
+              "pct": 0.35216820674422605,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.24412972397558116,
+            "pct": 0.5964348237634967,
+            "targetPct": 0.5,
+            "ci": [
+              0.2843375884891346,
+              0.8837781580560176
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": 0.44995900476268175,
+        "pct": 0.6736299996873689,
+        "targetPct": 0.5,
+        "ci": [
+          0.5093997437732113,
+          0.9866975679383114
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 712,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task Реєстрація",
+        "group": null,
+        "task": "Реєстрація"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 1
+        },
+        "message": "1 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task Підтвердження email",
+        "group": null,
+        "task": "Підтвердження email"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task Налаштування профілю",
+        "group": null,
+        "task": "Налаштування профілю"
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.6400336250520532
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "empirical-time-impossible",
+          "params": {
+            "n": 3
+          },
+          "text": "an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)",
+          "group": null
+        }
+      ],
+      "reason": "needs an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)"
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    },
+    {
+      "preset": "microsoft",
+      "status": "not-applicable",
+      "code": "missing-columns",
+      "reason": "The Usability Score needs perceived_time."
+    }
+  ],
+  "methodDependent": false,
+  "contract": {
+    "version": 1,
+    "study": "Onboarding",
+    "goal": "diagnose",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "ease": [
+          1,
+          7
+        ],
+        "satisfaction": [
+          1,
+          5
+        ]
+      },
+      "satisfaction_from": "ease",
+      "sat_target": 5.6,
+      "expert_multiplier": 3,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "Реєстрація": {
+        "time_target_s": 90
+      },
+      "Підтвердження email": {
+        "time_target_s": 60
+      },
+      "Налаштування профілю": {
+        "time_target_s": 150
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:48:53.492Z"
+}

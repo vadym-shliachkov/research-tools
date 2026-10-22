@@ -1,0 +1,554 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "autodesk",
+    "string": "SUM3|zmean|completion=original|time=empirical,raw|failed-time=exclude|shift=0|smoothing=laplace|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "original",
+      "smoothing": "laplace",
+      "timeTarget": "empirical",
+      "timeLog": false,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "errors",
+        "decision": "sum3",
+        "why": "No error data; the three-component SUM is used.",
+        "params": {
+          "case": "none"
+        }
+      },
+      {
+        "rule": "time-target",
+        "decision": "time=empirical",
+        "why": "No time target was given; following Autodesk, the target is the 80th percentile time of satisfied successful users (75% of the cutoff when there are 3 or fewer)."
+      },
+      {
+        "rule": "extremes",
+        "decision": "smoothing=laplace",
+        "why": "Task(s) find-product have 0% or 100% on a proportion, whose z-score is infinite. Laplace smoothing was chosen; it keeps the score finite and is labelled.",
+        "params": {
+          "tasks": "find-product"
+        }
+      }
+    ],
+    "suggestions": []
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "find-product",
+          "components": {
+            "completion": {
+              "x": 14,
+              "n": 14,
+              "p": 1,
+              "smoothed": 0.9666666666666667,
+              "score": 0.9666666666666667,
+              "z": 1.8339146358159149,
+              "pct": 0.9666666666666667,
+              "targetPct": null,
+              "ci": [
+                0.7485253147664521,
+                1
+              ]
+            },
+            "time": {
+              "n": 14,
+              "target": 46.558200000000014,
+              "targetSource": "empirical: 80th percentile of 13 satisfied successful users",
+              "log": false,
+              "mean": 37.43928571428571,
+              "median": 39.93,
+              "geoMean": 36.02067160854061,
+              "ci": [
+                31.712524889852723,
+                43.166046538718696
+              ],
+              "z": 0.9193861096868994,
+              "pct": 0.8210531739622942,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 14,
+              "from": [
+                "sat_1",
+                "sat_2",
+                "sat_3"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5,
+              "mean": 5.642857142857144,
+              "sd": 0.5305099258645226,
+              "ci": [
+                5.33654983106763,
+                5.949164454646659
+              ],
+              "z": 1.2117721300115916,
+              "pct": 0.8872001902485929,
+              "targetPct": 0.5,
+              "alpha": 0.15618221258134463
+            }
+          },
+          "sum": {
+            "z": 1.321690958504802,
+            "pct": 0.9068644596792774,
+            "targetPct": 0.5,
+            "ci": [
+              0.8633048636043235,
+              0.9608229683238261
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "filter-by-price",
+          "components": {
+            "completion": {
+              "x": 12,
+              "n": 14,
+              "p": 0.8571428571428571,
+              "smoothed": 0.8333333333333334,
+              "score": 0.8333333333333334,
+              "z": 0.9674215661017008,
+              "pct": 0.8333333333333334,
+              "targetPct": null,
+              "ci": [
+                0.5881064989583494,
+                0.9723857848004821
+              ]
+            },
+            "time": {
+              "n": 12,
+              "target": 82.1474,
+              "targetSource": "empirical: 80th percentile of 10 satisfied successful users",
+              "log": false,
+              "mean": 81.59675,
+              "median": 71.0445,
+              "geoMean": 74.30685941181206,
+              "ci": [
+                57.962137479514,
+                105.231362520486
+              ],
+              "z": 0.01480313324474257,
+              "pct": 0.5059053800559239,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 14,
+              "from": [
+                "sat_1",
+                "sat_2",
+                "sat_3"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5,
+              "mean": 5.190476190476191,
+              "sd": 1.1071970131305566,
+              "ci": [
+                4.551199667684028,
+                5.829752713268354
+              ],
+              "z": 0.1720345956657042,
+              "pct": 0.5682948344822822,
+              "targetPct": 0.5,
+              "alpha": 0.8471115537848605
+            }
+          },
+          "sum": {
+            "z": 0.3847530983373825,
+            "pct": 0.6497898244696556,
+            "targetPct": 0.5,
+            "ci": [
+              0.4857491019829498,
+              0.8487705375469806
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 2
+                },
+                "message": "2 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "compare-two",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 14,
+              "p": 0.42857142857142855,
+              "smoothed": 0.43333333333333335,
+              "score": 0.43333333333333335,
+              "z": -0.16789400478810526,
+              "pct": 0.43333333333333335,
+              "targetPct": null,
+              "ci": [
+                0.21340511811421875,
+                0.6744964251340149
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 151.608,
+              "targetSource": "empirical: 80th percentile of 6 satisfied successful users",
+              "log": false,
+              "mean": 124.50733333333335,
+              "median": 110.7885,
+              "geoMean": 111.5127631905151,
+              "ci": [
+                55.120541211920695,
+                193.89412545474602
+              ],
+              "z": 0.4098821201472437,
+              "pct": 0.6590537890145808,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 14,
+              "from": [
+                "sat_1",
+                "sat_2",
+                "sat_3"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5,
+              "mean": 4.738095238095239,
+              "sd": 1.0474109017332203,
+              "ci": [
+                4.133338188307514,
+                5.342852287882964
+              ],
+              "z": -0.25004968104816344,
+              "pct": 0.4012744643590466,
+              "targetPct": 0.5,
+              "alpha": 0.8514190317195325
+            }
+          },
+          "sum": {
+            "z": -0.0026871885630083414,
+            "pct": 0.49892796815699214,
+            "targetPct": 0.5,
+            "ci": [
+              0.3010206840709223,
+              0.8953307568801208
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 8
+                },
+                "message": "8 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "return-policy",
+          "components": {
+            "completion": {
+              "x": 10,
+              "n": 14,
+              "p": 0.7142857142857143,
+              "smoothed": 0.7,
+              "score": 0.7,
+              "z": 0.5244005127080409,
+              "pct": 0.7,
+              "targetPct": null,
+              "ci": [
+                0.4496526515559861,
+                0.8866427186993128
+              ]
+            },
+            "time": {
+              "n": 10,
+              "target": 79.5878,
+              "targetSource": "empirical: 80th percentile of 9 satisfied successful users",
+              "log": false,
+              "mean": 65.22760000000001,
+              "median": 68.149,
+              "geoMean": 56.69269051269138,
+              "ci": [
+                42.85433025304853,
+                87.60086974695149
+              ],
+              "z": 0.45914917029593,
+              "pct": 0.6769364755035145,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 14,
+              "from": [
+                "sat_1",
+                "sat_2",
+                "sat_3"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5,
+              "mean": 5.19047619047619,
+              "sd": 0.7245899012755594,
+              "ci": [
+                4.772110437096817,
+                5.608841943855563
+              ],
+              "z": 0.2628744758115974,
+              "pct": 0.6036763350170506,
+              "targetPct": 0.5,
+              "alpha": 0.8546511627906975
+            }
+          },
+          "sum": {
+            "z": 0.4154747196051895,
+            "pct": 0.6611027910134624,
+            "targetPct": 0.5,
+            "ci": [
+              0.49512946014292825,
+              0.8335363584434986
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": 0.5298078969710914,
+        "pct": 0.7018774352959061,
+        "targetPct": 0.5,
+        "ci": [
+          0.6188872083969014,
+          0.837069113829075
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 0,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "task find-product",
+        "group": null,
+        "task": "find-product"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 2
+        },
+        "message": "2 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task filter-by-price",
+        "group": null,
+        "task": "filter-by-price"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "task filter-by-price",
+        "group": null,
+        "task": "filter-by-price"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 8
+        },
+        "message": "8 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task compare-two",
+        "group": null,
+        "task": "compare-two"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "task compare-two",
+        "group": null,
+        "task": "compare-two"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task return-policy",
+        "group": null,
+        "task": "return-policy"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "task return-policy",
+        "group": null,
+        "task": "return-policy"
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "sum3",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "time-target",
+          "text": "a time target (time_target_s, or expert_time_s with expert_multiplier)",
+          "group": null
+        }
+      ],
+      "reason": "needs a time target (time_target_s, or expert_time_s with expert_multiplier)"
+    },
+    {
+      "preset": "measuringu",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "time-target",
+          "text": "a time target (time_target_s, or expert_time_s with expert_multiplier)",
+          "group": null
+        }
+      ],
+      "reason": "needs a time target (time_target_s, or expert_time_s with expert_multiplier)"
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    },
+    {
+      "preset": "microsoft",
+      "status": "not-applicable",
+      "code": "missing-columns",
+      "reason": "The Usability Score needs perceived_time, ease, satisfaction."
+    }
+  ],
+  "methodDependent": false,
+  "contract": {
+    "version": 1,
+    "study": "Site search",
+    "goal": "benchmark",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "sat_1": [
+          1,
+          7
+        ],
+        "sat_2": [
+          1,
+          7
+        ],
+        "sat_3": [
+          1,
+          7
+        ]
+      },
+      "satisfaction_from": [
+        "sat_1",
+        "sat_2",
+        "sat_3"
+      ],
+      "sat_target": 5,
+      "expert_multiplier": 3,
+      "cutoff_s": 180,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "find-product": {},
+      "filter-by-price": {},
+      "compare-two": {
+        "cutoff_s": 240
+      },
+      "return-policy": {}
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:49:07.523Z"
+}

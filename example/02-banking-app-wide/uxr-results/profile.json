@@ -1,0 +1,611 @@
+{
+  "rows": 21,
+  "layout": "wide",
+  "wide": {
+    "tasks": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "fields": [
+      "Success",
+      "Time",
+      "SEQ"
+    ],
+    "pattern": "^(?:t|task|завдання|з)\\s*[_\\-\\s]?(?<task>\\d+)[\\s_:\\-.]+(?<field>.+)$",
+    "flags": "iu",
+    "idColumns": [
+      "Participant ID",
+      "Variant"
+    ]
+  },
+  "columns": [
+    {
+      "name": "Participant ID",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 21,
+      "top": [
+        {
+          "value": "PILOT",
+          "count": 1
+        },
+        {
+          "value": "B01",
+          "count": 1
+        },
+        {
+          "value": "B02",
+          "count": 1
+        },
+        {
+          "value": "B03",
+          "count": 1
+        },
+        {
+          "value": "B04",
+          "count": 1
+        },
+        {
+          "value": "B05",
+          "count": 1
+        },
+        {
+          "value": "B06",
+          "count": 1
+        },
+        {
+          "value": "B07",
+          "count": 1
+        }
+      ],
+      "roles": [
+        {
+          "role": "participant_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Variant",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "Current",
+          "count": 11
+        },
+        {
+          "value": "Redesign",
+          "count": 10
+        }
+      ],
+      "roles": [
+        {
+          "role": "group",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T1 Success",
+      "index": 2,
+      "type": "text",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "Yes",
+          "count": 15
+        },
+        {
+          "value": "No",
+          "count": 4
+        },
+        {
+          "value": "Assisted",
+          "count": 2
+        }
+      ],
+      "wideField": "Success",
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T1 Time",
+      "index": 3,
+      "type": "duration",
+      "missing": 0,
+      "distinct": 18,
+      "top": [
+        {
+          "value": "0:01:16",
+          "count": 3
+        },
+        {
+          "value": "0:02:23",
+          "count": 2
+        },
+        {
+          "value": "0:00:47",
+          "count": 1
+        },
+        {
+          "value": "0:01:01",
+          "count": 1
+        },
+        {
+          "value": "0:01:52",
+          "count": 1
+        },
+        {
+          "value": "0:00:45",
+          "count": 1
+        },
+        {
+          "value": "0:00:28",
+          "count": 1
+        },
+        {
+          "value": "0:01:51",
+          "count": 1
+        }
+      ],
+      "wideField": "Time",
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T1 SEQ",
+      "index": 4,
+      "type": "integer",
+      "missing": 4,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "5",
+          "count": 5
+        },
+        {
+          "value": "7",
+          "count": 4
+        },
+        {
+          "value": "3",
+          "count": 4
+        },
+        {
+          "value": "6",
+          "count": 3
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 2,
+      "max": 7,
+      "wideField": "SEQ",
+      "roles": [
+        {
+          "role": "seq",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T2 Success",
+      "index": 5,
+      "type": "boolean",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "Yes",
+          "count": 20
+        },
+        {
+          "value": "No",
+          "count": 1
+        }
+      ],
+      "wideField": "Success",
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T2 Time",
+      "index": 6,
+      "type": "duration",
+      "missing": 0,
+      "distinct": 15,
+      "top": [
+        {
+          "value": "0:00:21",
+          "count": 3
+        },
+        {
+          "value": "0:00:36",
+          "count": 2
+        },
+        {
+          "value": "0:00:26",
+          "count": 2
+        },
+        {
+          "value": "0:00:22",
+          "count": 2
+        },
+        {
+          "value": "0:00:28",
+          "count": 2
+        },
+        {
+          "value": "0:00:14",
+          "count": 1
+        },
+        {
+          "value": "0:00:23",
+          "count": 1
+        },
+        {
+          "value": "0:00:18",
+          "count": 1
+        }
+      ],
+      "wideField": "Time",
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T2 SEQ",
+      "index": 7,
+      "type": "integer",
+      "missing": 2,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "6",
+          "count": 8
+        },
+        {
+          "value": "5",
+          "count": 6
+        },
+        {
+          "value": "7",
+          "count": 4
+        },
+        {
+          "value": "4",
+          "count": 1
+        }
+      ],
+      "min": 4,
+      "max": 7,
+      "wideField": "SEQ",
+      "roles": [
+        {
+          "role": "seq",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T3 Success",
+      "index": 8,
+      "type": "text",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "Yes",
+          "count": 14
+        },
+        {
+          "value": "No",
+          "count": 3
+        },
+        {
+          "value": "Assisted",
+          "count": 2
+        },
+        {
+          "value": "Partial",
+          "count": 2
+        }
+      ],
+      "wideField": "Success",
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T3 Time",
+      "index": 9,
+      "type": "duration",
+      "missing": 0,
+      "distinct": 20,
+      "top": [
+        {
+          "value": "0:00:33",
+          "count": 2
+        },
+        {
+          "value": "0:00:50",
+          "count": 1
+        },
+        {
+          "value": "0:01:01",
+          "count": 1
+        },
+        {
+          "value": "0:01:07",
+          "count": 1
+        },
+        {
+          "value": "0:00:58",
+          "count": 1
+        },
+        {
+          "value": "0:01:40",
+          "count": 1
+        },
+        {
+          "value": "0:01:11",
+          "count": 1
+        },
+        {
+          "value": "0:00:40",
+          "count": 1
+        }
+      ],
+      "wideField": "Time",
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T3 SEQ",
+      "index": 10,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "4",
+          "count": 7
+        },
+        {
+          "value": "7",
+          "count": 5
+        },
+        {
+          "value": "3",
+          "count": 4
+        },
+        {
+          "value": "5",
+          "count": 3
+        },
+        {
+          "value": "6",
+          "count": 2
+        }
+      ],
+      "min": 3,
+      "max": 7,
+      "wideField": "SEQ",
+      "roles": [
+        {
+          "role": "seq",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T4 Success",
+      "index": 11,
+      "type": "text",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "Yes",
+          "count": 11
+        },
+        {
+          "value": "Partial",
+          "count": 6
+        },
+        {
+          "value": "No",
+          "count": 3
+        },
+        {
+          "value": "Assisted",
+          "count": 1
+        }
+      ],
+      "wideField": "Success",
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T4 Time",
+      "index": 12,
+      "type": "duration",
+      "missing": 0,
+      "distinct": 21,
+      "top": [
+        {
+          "value": "0:01:53",
+          "count": 1
+        },
+        {
+          "value": "0:05:07",
+          "count": 1
+        },
+        {
+          "value": "0:03:40",
+          "count": 1
+        },
+        {
+          "value": "0:05:58",
+          "count": 1
+        },
+        {
+          "value": "0:03:24",
+          "count": 1
+        },
+        {
+          "value": "0:01:19",
+          "count": 1
+        },
+        {
+          "value": "0:02:14",
+          "count": 1
+        },
+        {
+          "value": "0:03:01",
+          "count": 1
+        }
+      ],
+      "wideField": "Time",
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "T4 SEQ",
+      "index": 13,
+      "type": "integer",
+      "missing": 5,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "5",
+          "count": 6
+        },
+        {
+          "value": "6",
+          "count": 4
+        },
+        {
+          "value": "3",
+          "count": 3
+        },
+        {
+          "value": "7",
+          "count": 3
+        }
+      ],
+      "min": 3,
+      "max": 7,
+      "wideField": "SEQ",
+      "roles": [
+        {
+          "role": "seq",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "T1 Success"
+      ],
+      "question": "How should each value of \"Success\" (in every task) count: \"Yes\", \"No\", \"Assisted\"? In particular, does a partial or assisted success count as success?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "T4 SEQ"
+      ],
+      "question": "What is the full scale of \"SEQ\" (in every task) (seen 2–7)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "T4 SEQ"
+      ],
+      "question": "For \"SEQ\" (in every task): is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "T4 SEQ"
+      ],
+      "question": "Is \"SEQ\" (in every task) the satisfaction measure? The original SUM averaged ease, satisfaction and perceived time."
+    },
+    {
+      "topic": "blanks",
+      "columns": [
+        "T1 SEQ",
+        "T2 SEQ",
+        "T4 SEQ"
+      ],
+      "question": "Some cells are empty in \"T1 SEQ\" (4), \"T2 SEQ\" (2), \"T4 SEQ\" (5). What does an empty cell mean in each: not asked, skipped, task failed, or zero?"
+    },
+    {
+      "topic": "exclusions",
+      "columns": [],
+      "question": "Rows 2 mention \"PILOT\". Should any pilot, test or other rows be left out?"
+    },
+    {
+      "topic": "group-design",
+      "columns": [
+        "Variant"
+      ],
+      "question": "Did each participant see only one of the \"Variant\" values (different people per group), or all of them (the same people in each)? It decides how the difference between groups is judged."
+    },
+    {
+      "topic": "wide-pairing",
+      "columns": [],
+      "question": "Each row seems to be one participant with columns per task (tasks 1, 2, 3, 4; fields Success, Time, SEQ). Is that right, which field is which, and what is each task called (for the reports)?"
+    }
+  ],
+  "suspectRows": [
+    {
+      "source_row": 2,
+      "cells": [
+        "PILOT"
+      ]
+    }
+  ]
+}

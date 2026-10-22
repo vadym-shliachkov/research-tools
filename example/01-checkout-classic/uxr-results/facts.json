@@ -1,0 +1,408 @@
+{
+  "lang": "en",
+  "study": "Checkout",
+  "method": {
+    "preset": "microsoft",
+    "plain": "The share of people for whom everything was good enough at once: they finished, and found the task fast, easy and satisfying enough.",
+    "string": "USABILITY-SCORE|success∧perceived-time∧ease∧satisfaction|v1"
+  },
+  "overall": {
+    "pct": 33,
+    "ci": [
+      14,
+      61
+    ],
+    "target": null,
+    "verdict": "no-target",
+    "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 14% and 61%.",
+    "passed": {
+      "x": 4,
+      "n": 12
+    }
+  },
+  "taskVerdicts": {
+    "Add to cart & checkout": "no-target",
+    "Find nearest store": "no-target",
+    "Start a return": "no-target"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 33,
+        "ci": [
+          14,
+          61
+        ],
+        "target": null,
+        "verdict": "no-target",
+        "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 14% and 61%.",
+        "passed": {
+          "x": 4,
+          "n": 12
+        }
+      },
+      "tasks": [
+        {
+          "task": "Add to cart & checkout",
+          "n": 12,
+          "sum": {
+            "pct": 58,
+            "ci": [
+              32,
+              81
+            ],
+            "target": null,
+            "verdict": "no-target",
+            "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 32% and 81%."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 83,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 12 people finished"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 75,
+              "target": null,
+              "onTarget": null,
+              "plain": "9 of 12 people rated it 4 or higher"
+            },
+            "perceived_time": {
+              "label": "Perceived time",
+              "pct": 83,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 12 people rated it 3 or higher"
+            },
+            "ease": {
+              "label": "Ease",
+              "pct": 58,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 12 people rated it 4 or higher"
+            }
+          },
+          "weakest": {
+            "key": "ease",
+            "label": "Ease",
+            "pct": 58,
+            "target": null,
+            "onTarget": null,
+            "plain": "7 of 12 people rated it 4 or higher"
+          }
+        },
+        {
+          "task": "Find nearest store",
+          "n": 12,
+          "sum": {
+            "pct": 75,
+            "ci": [
+              46,
+              92
+            ],
+            "target": null,
+            "verdict": "no-target",
+            "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 46% and 92%."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 92,
+              "target": null,
+              "onTarget": null,
+              "plain": "11 of 12 people finished"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 83,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 12 people rated it 4 or higher"
+            },
+            "perceived_time": {
+              "label": "Perceived time",
+              "pct": 92,
+              "target": null,
+              "onTarget": null,
+              "plain": "11 of 12 people rated it 3 or higher"
+            },
+            "ease": {
+              "label": "Ease",
+              "pct": 83,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 12 people rated it 4 or higher"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 83,
+            "target": null,
+            "onTarget": null,
+            "plain": "10 of 12 people rated it 4 or higher"
+          }
+        },
+        {
+          "task": "Start a return",
+          "n": 12,
+          "sum": {
+            "pct": 42,
+            "ci": [
+              19,
+              68
+            ],
+            "target": null,
+            "verdict": "no-target",
+            "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 19% and 68%."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 58,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 12 people finished"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 58,
+              "target": null,
+              "onTarget": null,
+              "plain": "7 of 12 people rated it 4 or higher"
+            },
+            "perceived_time": {
+              "label": "Perceived time",
+              "pct": 75,
+              "target": null,
+              "onTarget": null,
+              "plain": "9 of 12 people rated it 3 or higher"
+            },
+            "ease": {
+              "label": "Ease",
+              "pct": 42,
+              "target": null,
+              "onTarget": null,
+              "plain": "5 of 12 people rated it 4 or higher"
+            }
+          },
+          "weakest": {
+            "key": "ease",
+            "label": "Ease",
+            "pct": 42,
+            "target": null,
+            "onTarget": null,
+            "plain": "5 of 12 people rated it 4 or higher"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "sum4",
+          "pct": 75
+        },
+        {
+          "preset": "sum3",
+          "pct": 72
+        },
+        {
+          "preset": "measuringu",
+          "pct": 68
+        },
+        {
+          "preset": "autodesk",
+          "pct": 63
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task": "Add to cart & checkout",
+      "n": 12,
+      "sum": {
+        "pct": 58,
+        "ci": [
+          32,
+          81
+        ],
+        "target": null,
+        "verdict": "no-target",
+        "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 32% and 81%."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 83,
+          "target": null,
+          "onTarget": null,
+          "plain": "10 of 12 people finished"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 75,
+          "target": null,
+          "onTarget": null,
+          "plain": "9 of 12 people rated it 4 or higher"
+        },
+        "perceived_time": {
+          "label": "Perceived time",
+          "pct": 83,
+          "target": null,
+          "onTarget": null,
+          "plain": "10 of 12 people rated it 3 or higher"
+        },
+        "ease": {
+          "label": "Ease",
+          "pct": 58,
+          "target": null,
+          "onTarget": null,
+          "plain": "7 of 12 people rated it 4 or higher"
+        }
+      },
+      "weakest": {
+        "key": "ease",
+        "label": "Ease",
+        "pct": 58,
+        "target": null,
+        "onTarget": null,
+        "plain": "7 of 12 people rated it 4 or higher"
+      }
+    },
+    {
+      "task": "Find nearest store",
+      "n": 12,
+      "sum": {
+        "pct": 75,
+        "ci": [
+          46,
+          92
+        ],
+        "target": null,
+        "verdict": "no-target",
+        "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 46% and 92%."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 92,
+          "target": null,
+          "onTarget": null,
+          "plain": "11 of 12 people finished"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 83,
+          "target": null,
+          "onTarget": null,
+          "plain": "10 of 12 people rated it 4 or higher"
+        },
+        "perceived_time": {
+          "label": "Perceived time",
+          "pct": 92,
+          "target": null,
+          "onTarget": null,
+          "plain": "11 of 12 people rated it 3 or higher"
+        },
+        "ease": {
+          "label": "Ease",
+          "pct": 83,
+          "target": null,
+          "onTarget": null,
+          "plain": "10 of 12 people rated it 4 or higher"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 83,
+        "target": null,
+        "onTarget": null,
+        "plain": "10 of 12 people rated it 4 or higher"
+      }
+    },
+    {
+      "task": "Start a return",
+      "n": 12,
+      "sum": {
+        "pct": 42,
+        "ci": [
+          19,
+          68
+        ],
+        "target": null,
+        "verdict": "no-target",
+        "verdictPlain": "No target was agreed for this score, so it is neither above nor below one. The true value is most likely between 19% and 68%."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 58,
+          "target": null,
+          "onTarget": null,
+          "plain": "7 of 12 people finished"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 58,
+          "target": null,
+          "onTarget": null,
+          "plain": "7 of 12 people rated it 4 or higher"
+        },
+        "perceived_time": {
+          "label": "Perceived time",
+          "pct": 75,
+          "target": null,
+          "onTarget": null,
+          "plain": "9 of 12 people rated it 3 or higher"
+        },
+        "ease": {
+          "label": "Ease",
+          "pct": 42,
+          "target": null,
+          "onTarget": null,
+          "plain": "5 of 12 people rated it 4 or higher"
+        }
+      },
+      "weakest": {
+        "key": "ease",
+        "label": "Ease",
+        "pct": 42,
+        "target": null,
+        "onTarget": null,
+        "plain": "5 of 12 people rated it 4 or higher"
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "pct": 75
+    },
+    {
+      "preset": "sum3",
+      "pct": 72
+    },
+    {
+      "preset": "measuringu",
+      "pct": 68
+    },
+    {
+      "preset": "autodesk",
+      "pct": 63
+    }
+  ],
+  "methodDependent": true,
+  "caveats": [
+    "all tasks: The Usability Score counts who finished and rated perceived time, ease and satisfaction at or above their thresholds. Measured time on task does not enter it, and neither do the satisfaction target (they are used only in the comparison with other methods)."
+  ],
+  "suggestions": [
+    "Show sum3 next to it for gradation (it is in the sensitivity table).",
+    "No pass mark (gate_threshold) was agreed, so the score is reported without a target: as the share of people who passed everything, with its range."
+  ],
+  "reading": "The overall score is the share of people who passed every check in every task they tried. No pass mark was agreed, so the score is not above or below a target."
+}

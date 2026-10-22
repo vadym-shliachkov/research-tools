@@ -1,0 +1,119 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Booking",
+  "verdict": "uncertain",
+  "taskVerdicts": {
+    "search-hotel": "uncertain",
+    "choose-room": "uncertain",
+    "pay": "uncertain",
+    "cancel-booking": "uncertain"
+  },
+  "headline": {
+    "value": "46%",
+    "label": "Overall usability score",
+    "sentence": "The hotel booking score sits close to its target, but this first round cannot yet tell on which side."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "15 people tried four tasks on the hotel booking site. They searched for a hotel, chose a room, paid, and cancelled a booking.",
+        "For each task we recorded whether the person finished, how long it took, and one rating of how easy it felt, from 1 to 7.",
+        "We also noted whether people used a computer or a phone. We did not split the results by device.",
+        "This is the first round of a study we will repeat. The next round will use the same method and targets, so the two can be compared."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 46%. On this scale, 50% means exactly on target, above 50% is better and below 50% is worse.",
+        "The score looks a little below the 50% target, but the study cannot yet tell. The likely range runs from 33% to 64% and includes the target.",
+        "The same holds for each of the four tasks. Each task score is close to 50%, and each range includes the target."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three parts: finishing the task, time, and the ease rating.",
+        "Finishing is judged against an agreed requirement: 78% of people should finish. Reaching 78% counts as exactly on target, so the score rewards meeting that bar rather than beating an average.",
+        "No task reached the 78% requirement. Every task was quicker than its time target. Every task's average ease rating was below the target of 5.5."
+      ],
+      "items": [
+        {
+          "label": "search-hotel",
+          "value": "42%",
+          "text": "7 of 15 people finished. A typical time was 64 s against a target of 90 s. The average ease rating was 4.33 out of 7."
+        },
+        {
+          "label": "choose-room",
+          "value": "47%",
+          "text": "9 of 15 people finished. A typical time was 52 s against a target of 60 s. The average ease rating was 4.87 out of 7."
+        },
+        {
+          "label": "pay",
+          "value": "51%",
+          "text": "6 of 15 people finished. A typical time was 78 s against a target of 120 s. The average ease rating was 4.6 out of 7."
+        },
+        {
+          "label": "cancel-booking",
+          "value": "44%",
+          "text": "8 of 15 people finished. A typical time was 73 s against a target of 90 s. The average ease rating was 4.8 out of 7."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With 15 people, the true overall score is most likely between 33% and 64%. That range is wide enough to include the target.",
+        "Each task on its own is less certain still. The pay task, for example, could be anywhere from 36% to 84%.",
+        "More people in the next round would narrow these ranges. Then we could say whether the site meets its target."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "In search-hotel, choose-room and cancel-booking, the weakest part is the ease rating. People finished quickly enough but did not find these tasks easy.",
+        "Searching for a hotel had the lowest ease rating, 4.33 out of 7. It is a good place to look first for what made people work hard.",
+        "In pay, the weakest part is finishing: only 6 of 15 people completed payment. Review where people stopped during payment before changing anything."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how well people managed the tasks, not why they struggled. Session notes or recordings are needed for that.",
+        "Time only describes people who finished. People who did not finish are left out of time: 8 in search-hotel, 6 in choose-room, 9 in pay and 7 in cancel-booking. So the good time results apply only to people who got through.",
+        "We did not compare computer and phone users, so the score may hide a difference between them. The results also cover only these four tasks and these 15 people.",
+        "As a first round, this score is a starting point. Its value grows when the next round, measured the same way, can be set beside it."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Usability score",
+      "definition": "One number from 0 to 100% that sums up finishing, time and ease. 50% means exactly on target."
+    },
+    {
+      "term": "Target",
+      "definition": "The level agreed before the study. For finishing, it is 78% of people; for time and ease, each task has its own target."
+    },
+    {
+      "term": "Range",
+      "definition": "The span where the true score most likely lies. A small study gives a wide range."
+    },
+    {
+      "term": "Ease rating",
+      "definition": "One question after each task: how easy was it, from 1 (very hard) to 7 (very easy)."
+    },
+    {
+      "term": "Round",
+      "definition": "One run of a study that is repeated over time with the same method, so results can be compared."
+    }
+  ]
+}

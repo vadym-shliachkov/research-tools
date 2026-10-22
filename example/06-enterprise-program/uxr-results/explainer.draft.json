@@ -1,0 +1,142 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Enterprise program",
+  "verdict": "uncertain",
+  "taskVerdicts": {
+    "T01": "uncertain",
+    "T02": "uncertain",
+    "T03": "uncertain",
+    "T04": "uncertain",
+    "T05": "uncertain",
+    "T06": "uncertain",
+    "T07": "uncertain",
+    "T08": "uncertain",
+    "T09": "uncertain",
+    "T10": "uncertain"
+  },
+  "headline": {
+    "value": "44%",
+    "label": "Overall usability score",
+    "sentence": "Across ten tasks the product scores 44%, but we cannot yet tell whether that is above or below the 50% target."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "12 people each tried the same 10 tasks in the enterprise product, named T01 to T10. The goal was to find the weakest tasks.",
+        "For each attempt we recorded whether the person finished and how long it took. A task that failed or ran out of time counts as not finished.",
+        "After each task, people gave three ratings from 1 to 5: how easy it was, how satisfied they were, and how long it felt. Satisfaction in this report is the average of those three ratings."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 44%. On this scale, 50% means exactly on target, and higher is better.",
+        "The score looks a little under target, but we cannot yet be sure. Its range runs from 23% to 70% and includes the 50% target.",
+        "The task scores run from 37% for T07 to 51% for T02. For every single task, the study cannot yet tell whether it is above or below its target."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three parts with equal weight: how many people finished, how fast they were, and how satisfied they felt.",
+        "Satisfaction was the weakest part on every task."
+      ],
+      "items": [
+        {
+          "label": "Completion",
+          "value": "5 to 8 of 12",
+          "text": "Between 5 and 8 of 12 people finished each task. T08 and T09 had the fewest finishers, 5 of 12 each. There is no agreed target for this part."
+        },
+        {
+          "label": "Time on task",
+          "value": "on target except T03",
+          "text": "On most tasks, a typical attempt was faster than its target. For T01, a typical time was 69 s against a target of 78 s. T03 was the one task slower than its target: 155 s against 143 s."
+        },
+        {
+          "label": "Satisfaction",
+          "value": "2.72 to 3.19 of 5",
+          "text": "The average rating was between 2.72 and 3.19 on a 1–5 scale, against a target of 4. It was under target on every task."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With 12 people, the true overall score is most likely between 23% and 70%. That is a wide range, because a small study leaves a lot of room for chance.",
+        "The ranges for single tasks are even wider. For T07, the range runs from 17% to 87%. For T10, it runs from 7% to 60%.",
+        "Because the task ranges overlap a lot, the order of the tasks is a strong hint, not a firm ranking. More participants would narrow the ranges and make the order clearer."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "Three tasks scored lowest: T07, T10 and T06. In all three, only 6 of 12 people finished, and satisfaction was the weakest part.",
+        "People were fast enough on these tasks, but they did not enjoy them. Start by watching the attempts that failed or ran out of time, and ask people what felt hard.",
+        "Look at T08 and T09 next: they had the fewest finishers of all, 5 of 12 each."
+      ],
+      "items": [
+        {
+          "label": "T07",
+          "value": "37%",
+          "text": "Average rating 2.72 on a 1–5 scale against a target of 4. A typical time was 252 s against a target of 273 s."
+        },
+        {
+          "label": "T10",
+          "value": "39%",
+          "text": "Average rating 2.75 on a 1–5 scale against a target of 4. A typical time was 332 s against a target of 371 s."
+        },
+        {
+          "label": "T06",
+          "value": "41%",
+          "text": "Average rating 2.97 on a 1–5 scale against a target of 4. A typical time was 233 s against a target of 241 s."
+        }
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows where people struggled, not why. It covers only these ten tasks and these 12 people.",
+        "Time comes only from people who finished. On every task, attempts that failed or ran out of time are left out of the time part.",
+        "Mistakes were recorded but not used, because the possible mistakes were not listed before the study. People's role, admin or agent, was also recorded but not used to split the results.",
+        "The study also recorded whether each task worked with a screen reader. That check is not part of the score. Report it separately, as its own accessibility pass or fail."
+      ]
+    },
+    {
+      "id": "methods",
+      "heading": "Would another method change the answer?",
+      "paragraphs": [
+        "We used the standard three-part score, where finishing, speed and satisfaction count equally. It fits the goal, because it shows which part pulls each task down.",
+        "Averaging the three parts the way a widely used online calculator does gives 43%, almost the same answer.",
+        "A stricter method counts only people who had a good experience on every task they tried. It gives 0%: no participant passed every check on every task. That method has no agreed pass mark, so 0% is not compared with the 50% target.",
+        "So the answer depends on the method. The averages sit near the target, yet nobody had a fully good experience across all tasks.",
+        "A method that lets the data decide how much each task counts could help rank ten tasks. It was not computed for this report."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Usability score",
+      "definition": "One number from 0 to 100% that sums up how well people managed a task. 50% means exactly on target."
+    },
+    {
+      "term": "Target",
+      "definition": "The level agreed before the study: a time for each task, and an average rating of 4 out of 5."
+    },
+    {
+      "term": "Range",
+      "definition": "The values the true score most likely falls between. A wider range means we are less sure."
+    },
+    {
+      "term": "Satisfaction",
+      "definition": "The average of three ratings from 1 to 5: how easy the task was, how satisfied people were, and how long it felt."
+    }
+  ]
+}

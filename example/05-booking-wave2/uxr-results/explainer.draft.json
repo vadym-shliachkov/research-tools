@@ -1,0 +1,116 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Booking",
+  "verdict": "uncertain",
+  "taskVerdicts": {
+    "search-hotel": "uncertain",
+    "choose-room": "uncertain",
+    "pay": "uncertain",
+    "cancel-booking": "uncertain"
+  },
+  "headline": {
+    "value": "57%",
+    "label": "Overall usability score",
+    "sentence": "Booking looks better than its target and better than in the first round, but this study cannot yet be sure of either."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "16 people tried to book a hotel online. Each person did the same tasks: search-hotel, choose-room, pay and cancel-booking.",
+        "For each task we recorded whether the person finished it (pass or fail), how long it took, and how easy it felt. People rated ease on a scale from 1 to 7.",
+        "This is the second round of a benchmark: a study repeated over time. It used the same tasks, method and targets as the first round, so the two rounds can be compared directly."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 57%. On this scale, 50% means exactly on target. Higher is better, and lower is worse.",
+        "The score looks better than the 50% target. But the range runs from 47% to 71% and includes the target. So we cannot yet be sure whether booking is above or below it.",
+        "The score is higher than in the first round, and so is the score of each task. The ranges of the two rounds overlap, though. So this study cannot yet tell whether booking has really improved."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three parts: how many people finished, how long a successful attempt took, and how easy people rated the task.",
+        "Every task was fast enough. Ease ratings were below their target in every task. Finishing met the requirement in two tasks and fell short in two."
+      ],
+      "items": [
+        {
+          "label": "search-hotel",
+          "value": "54%",
+          "text": "13 of 16 people finished, which meets the required 78%. A typical successful attempt took 69 s; the target was 90 s. The average ease rating was 5.19 out of 7; the target was 5.5."
+        },
+        {
+          "label": "choose-room",
+          "value": "59%",
+          "text": "11 of 16 people finished, which falls short of the required 78%. A typical successful attempt took 35 s; the target was 60 s. The average ease rating was 5.31 out of 7; the target was 5.5."
+        },
+        {
+          "label": "pay",
+          "value": "62%",
+          "text": "13 of 16 people finished, which meets the required 78%. A typical successful attempt took 73 s; the target was 120 s. The average ease rating was 5.19 out of 7; the target was 5.5."
+        },
+        {
+          "label": "cancel-booking",
+          "value": "52%",
+          "text": "11 of 16 people finished, which falls short of the required 78%. A typical successful attempt took 60 s; the target was 90 s. The average ease rating was 5.06 out of 7; the target was 5.5."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With 16 people, the true overall score is most likely between 47% and 71%. That range includes the 50% target, so the result could still be on either side of it.",
+        "Each task on its own is less certain. For example, the range for cancel-booking runs from 35% to 70%.",
+        "More participants would narrow these ranges. Then a future round could show more clearly whether booking is above its target and whether it has improved."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "In every task, the weakest part is how easy people found it. Ratings were higher than in the first round, but they are still below the 5.5 target.",
+        "The lowest rating was in cancel-booking, at 5.06 out of 7. That makes it a good place to start. Look at what people found hard or unclear there.",
+        "Next, look at choose-room and cancel-booking, where 11 of 16 people finished. Review the attempts that failed to see where people got stuck."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how well people managed these tasks, not why they struggled. It also says nothing about other tasks or other kinds of people.",
+        "Time counts only the people who finished. Failed attempts were left out of time: 3 in search-hotel, 5 in choose-room, 3 in pay and 5 in cancel-booking. So the times describe successful attempts only.",
+        "We also tried other common ways of combining the parts. They gave similar scores of 63% to 65%, so the choice of method does not change this conclusion."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Usability score",
+      "definition": "One percentage that sums up how well people managed the tasks. 50% means exactly on target."
+    },
+    {
+      "term": "Target",
+      "definition": "The level the team agreed in advance as good enough, for example a typical time of 90 s."
+    },
+    {
+      "term": "Range",
+      "definition": "The span the true score most likely falls in. It is wider when fewer people take part."
+    },
+    {
+      "term": "Ease rating",
+      "definition": "After each task, people rated how easy it felt, from 1 (very hard) to 7 (very easy)."
+    },
+    {
+      "term": "Benchmark",
+      "definition": "A study repeated over time with the same tasks and targets, so the rounds can be compared."
+    }
+  ]
+}

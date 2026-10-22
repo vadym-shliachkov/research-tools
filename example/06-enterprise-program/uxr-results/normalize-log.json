@@ -1,0 +1,11 @@
+{
+  "rowsIn": 120,
+  "rowsOut": 120,
+  "dropped": [],
+  "blanks": {},
+  "unusedColumns": [
+    "role",
+    "screen_reader_pass"
+  ],
+  "warnings": []
+}

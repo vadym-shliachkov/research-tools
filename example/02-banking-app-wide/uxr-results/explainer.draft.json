@@ -1,0 +1,95 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Mobile banking",
+  "headline": {
+    "value": "+13 points",
+    "label": "Redesign compared with Current",
+    "sentence": "The Redesign scored 13 points higher than the Current design, but we cannot yet tell which design is better."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "We tested two designs of the mobile banking app: Current and Redesign. Ten people tried each design, and each person saw only one of them. Everyone did the same four tasks: send money to a friend, freeze a card, find last month's statement, and set up a savings goal.",
+        "For each task we recorded whether the person finished, how long it took, and how easy they found it. Ease was a rating from 1 to 7, asked after the task. A task counted as finished only when the person fully finished it on their own. Partly finished tasks, and tasks finished with help, counted as not finished."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "Each design gets one usability score from 0 to 100%. A score of 50% means exactly on target. Above 50% is better than the target, and below 50% is worse.",
+        "The Redesign scored 66%, and its range runs from 54% to 79%. Even the low end of that range is above the target, so the Redesign is clearly above target.",
+        "The Current design scored 53%, with a range from 27% to 74%. That range includes the 50% target, so we cannot yet tell whether the Current design is above or below it.",
+        "The Redesign scored 13 points higher than the Current design. The true difference most likely lies between 10 points lower and 43 points higher. Because that range includes no difference at all, we cannot yet tell which design is better."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score has three equal parts: how many people finished, how fast they were, and how easy they found it. Each task has its own time target. The ease target was an average rating of 5.5 out of 7. Finishing had no required rate, so it has no target.",
+        "Freezing a card scored 77% in both designs, clearly above target in each. The other three tasks each scored higher in the Redesign, but for those we cannot yet tell whether either design is above or below target."
+      ],
+      "items": [
+        {
+          "label": "Send money to a friend",
+          "value": "Current 53%, Redesign 63%",
+          "text": "In the Current design, 6 of 10 people finished, in a typical 66 s against a target of 90 s. The average ease rating was 4.56, below the 5.5 target. In the Redesign, 8 of 10 finished, in a typical 79 s, still within target. Ease was 5.29, still below target."
+        },
+        {
+          "label": "Freeze your card",
+          "value": "Current 77%, Redesign 77%",
+          "text": "In the Current design, 9 of 10 people finished, in a typical 23 s against a target of 30 s. Ease was 5.88, on target. In the Redesign, 10 of 10 finished, in a typical 25 s. Ease was 5.6, also on target."
+        },
+        {
+          "label": "Find last month's statement",
+          "value": "Current 37%, Redesign 61%",
+          "text": "In the Current design, only 4 of 10 people finished, in a typical 58 s against a target of 60 s. Ease was 4.2, below target. In the Redesign, 9 of 10 finished. But a typical attempt took 64 s, just over the target, and ease was 5.3, below target."
+        },
+        {
+          "label": "Set up a savings goal",
+          "value": "Current 43%, Redesign 60%",
+          "text": "In the Current design, 4 of 10 people finished, in a typical 143 s against a target of 150 s. Ease was 4.67, below target. In the Redesign, 7 of 10 finished, in a typical 138 s. Ease was 5.56, on target."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With ten people per design, every score comes with a wide range. The true score for the Current design most likely lies between 27% and 74%. For the Redesign, it most likely lies between 54% and 79%.",
+        "The two ranges overlap a lot. That is why a 13-point lead is not yet enough to call the Redesign better. More people per design would narrow the ranges and show whether the lead is real."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "In both designs, the weakest part of every task was how easy people found it. In the Current design, ease was below target for every task except freezing a card. The lowest rating was 4.2, for finding last month's statement.",
+        "The Current design also lost many people before the end. Only 4 of 10 found last month's statement, and only 4 of 10 set up a savings goal. These two tasks are the first places to look at the recordings.",
+        "In the Redesign, ease was still below target for sending money (5.29) and for finding the statement (5.3). Finding the statement also took a little longer than its target. These two tasks are the ones to look into next in the Redesign."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The scores show where people struggled, not why. To find the reasons, watch the session recordings or talk to participants. The results also cover only these four tasks and the people who took part.",
+        "Time counts only the people who finished a task. People who gave up are left out of the time, so time can look better than the experience really was.",
+        "Ease ratings come from the people who were asked the ease question. Where the question was not asked, the rating was left blank and not counted.",
+        "Every Redesign participant froze their card. A perfect result like that cannot be put on the scoring scale as it is. So we applied a small standard correction to every share in the study. Each result counts as if half a success and half a failure were added. This nudges every share slightly toward the middle; 10 of 10 counts as 95%, and 6 of 10 as 59%. This choice was made before anyone saw the scores. Because of it, the scores differ slightly from the original method.",
+        "A pilot session was left out, because it was a trial run and not part of the study. Another common way of scoring gives a similar picture: 51% for the Current design and 61% for the Redesign."
+      ]
+    }
+  ],
+  "glossary": [
+    { "term": "Usability score", "definition": "One number from 0 to 100% that sums up how well people managed the tasks. It combines how many finished, how fast, and how easy they found it. 50% means exactly on target." },
+    { "term": "Target", "definition": "The level agreed before the study: a time for each task and an average ease rating of 5.5 out of 7." },
+    { "term": "Range", "definition": "The span in which the true value most likely lies. Fewer people give a wider range." },
+    { "term": "Ease rating", "definition": "The answer to a question asked after each task: how easy it was, from 1 (very hard) to 7 (very easy)." },
+    { "term": "Small correction (Laplace smoothing)", "definition": "A standard adjustment that counts every result as if half a success and half a failure were added. It lets a perfect 10 of 10 be scored, and moves every share slightly toward the middle." }
+  ]
+}

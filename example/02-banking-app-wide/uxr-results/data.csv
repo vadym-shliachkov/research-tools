@@ -1,0 +1,81 @@
+source_row,participant_id,task_id,group,success,time_s,seq
+3,B01,Send money to a friend,Current,0,76,
+3,B01,Freeze your card,Current,1,36,5
+3,B01,Find last month's statement,Current,0,61,3
+3,B01,Set up a savings goal,Current,0,307,3
+4,B02,Send money to a friend,Current,1,61,5
+4,B02,Freeze your card,Current,1,23,
+4,B02,Find last month's statement,Current,1,67,5
+4,B02,Set up a savings goal,Current,1,220,5
+5,B03,Send money to a friend,Current,1,76,5
+5,B03,Freeze your card,Current,1,18,6
+5,B03,Find last month's statement,Current,1,58,4
+5,B03,Set up a savings goal,Current,0,358,
+6,B04,Send money to a friend,Current,0,112,3
+6,B04,Freeze your card,Current,1,26,7
+6,B04,Find last month's statement,Current,0,100,3
+6,B04,Set up a savings goal,Current,0,204,
+7,B05,Send money to a friend,Current,1,45,7
+7,B05,Freeze your card,Current,1,13,7
+7,B05,Find last month's statement,Current,1,71,6
+7,B05,Set up a savings goal,Current,1,79,7
+8,B06,Send money to a friend,Current,1,28,7
+8,B06,Freeze your card,Current,1,15,6
+8,B06,Find last month's statement,Current,1,40,7
+8,B06,Set up a savings goal,Current,1,134,7
+9,B07,Send money to a friend,Current,0,111,3
+9,B07,Freeze your card,Current,1,21,6
+9,B07,Find last month's statement,Current,0,159,4
+9,B07,Set up a savings goal,Current,1,181,
+10,B08,Send money to a friend,Current,1,143,3
+10,B08,Freeze your card,Current,1,26,5
+10,B08,Find last month's statement,Current,0,90,3
+10,B08,Set up a savings goal,Current,0,404,3
+11,B09,Send money to a friend,Current,1,96,5
+11,B09,Freeze your card,Current,1,45,5
+11,B09,Find last month's statement,Current,0,122,3
+11,B09,Set up a savings goal,Current,0,304,3
+12,B10,Send money to a friend,Current,0,167,3
+12,B10,Freeze your card,Current,0,55,
+12,B10,Find last month's statement,Current,0,184,4
+12,B10,Set up a savings goal,Current,0,286,
+13,B11,Send money to a friend,Redesign,1,64,7
+13,B11,Freeze your card,Redesign,1,21,6
+13,B11,Find last month's statement,Redesign,0,44,4
+13,B11,Set up a savings goal,Redesign,1,60,7
+14,B12,Send money to a friend,Redesign,1,76,
+14,B12,Freeze your card,Redesign,1,9,7
+14,B12,Find last month's statement,Redesign,1,46,7
+14,B12,Set up a savings goal,Redesign,1,143,6
+15,B13,Send money to a friend,Redesign,1,128,6
+15,B13,Freeze your card,Redesign,1,21,5
+15,B13,Find last month's statement,Redesign,1,145,4
+15,B13,Set up a savings goal,Redesign,1,183,5
+16,B14,Send money to a friend,Redesign,1,79,6
+16,B14,Freeze your card,Redesign,1,44,6
+16,B14,Find last month's statement,Redesign,1,62,4
+16,B14,Set up a savings goal,Redesign,0,147,5
+17,B15,Send money to a friend,Redesign,1,143,5
+17,B15,Freeze your card,Redesign,1,22,6
+17,B15,Find last month's statement,Redesign,1,56,7
+17,B15,Set up a savings goal,Redesign,0,171,5
+18,B16,Send money to a friend,Redesign,0,141,2
+18,B16,Freeze your card,Redesign,1,41,4
+18,B16,Find last month's statement,Redesign,1,137,5
+18,B16,Set up a savings goal,Redesign,0,471,
+19,B17,Send money to a friend,Redesign,1,46,
+19,B17,Freeze your card,Redesign,1,28,6
+19,B17,Find last month's statement,Redesign,1,33,6
+19,B17,Set up a savings goal,Redesign,1,117,5
+20,B18,Send money to a friend,Redesign,1,71,6
+20,B18,Freeze your card,Redesign,1,28,5
+20,B18,Find last month's statement,Redesign,1,282,4
+20,B18,Set up a savings goal,Redesign,1,207,6
+21,B19,Send money to a friend,Redesign,1,67,5
+21,B19,Freeze your card,Redesign,1,36,5
+21,B19,Find last month's statement,Redesign,1,33,5
+21,B19,Set up a savings goal,Redesign,1,144,6
+22,B20,Send money to a friend,Redesign,0,152,
+22,B20,Freeze your card,Redesign,1,22,6
+22,B20,Find last month's statement,Redesign,1,19,7
+22,B20,Set up a savings goal,Redesign,1,172,5

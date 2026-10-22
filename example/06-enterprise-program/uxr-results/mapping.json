@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "user" },
+    "task_id": { "from": "task_code" },
+    "success": { "from": "status", "map": { "completed": 1, "failed": 0, "timed out": 0 } },
+    "time_s": { "from": "minutes", "unit": "min" },
+    "errors": { "from": "error_count" },
+    "ease": { "from": "ease", "scale": [1, 5] },
+    "satisfaction": { "from": "satisfaction", "scale": [1, 5] },
+    "perceived_time": { "from": "duration_feel", "scale": [1, 5] }
+  },
+  "duplicates": "error"
+}

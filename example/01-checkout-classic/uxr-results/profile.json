@@ -1,0 +1,398 @@
+{
+  "rows": 36,
+  "layout": "long",
+  "columns": [
+    {
+      "name": "participant",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 12,
+      "top": [
+        {
+          "value": "P01",
+          "count": 3
+        },
+        {
+          "value": "P02",
+          "count": 3
+        },
+        {
+          "value": "P03",
+          "count": 3
+        },
+        {
+          "value": "P04",
+          "count": 3
+        },
+        {
+          "value": "P05",
+          "count": 3
+        },
+        {
+          "value": "P06",
+          "count": 3
+        },
+        {
+          "value": "P07",
+          "count": 3
+        },
+        {
+          "value": "P08",
+          "count": 3
+        }
+      ],
+      "roles": [
+        {
+          "role": "participant_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "Add to cart & checkout",
+          "count": 12
+        },
+        {
+          "value": "Find nearest store",
+          "count": 12
+        },
+        {
+          "value": "Start a return",
+          "count": 12
+        }
+      ],
+      "roles": [
+        {
+          "role": "task_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "completed",
+      "index": 2,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "1",
+          "count": 28
+        },
+        {
+          "value": "0",
+          "count": 8
+        }
+      ],
+      "min": 0,
+      "max": 1,
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "time_sec",
+      "index": 3,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 30,
+      "top": [
+        {
+          "value": "49",
+          "count": 3
+        },
+        {
+          "value": "51",
+          "count": 2
+        },
+        {
+          "value": "52",
+          "count": 2
+        },
+        {
+          "value": "101",
+          "count": 2
+        },
+        {
+          "value": "77",
+          "count": 2
+        },
+        {
+          "value": "75",
+          "count": 1
+        },
+        {
+          "value": "123",
+          "count": 1
+        },
+        {
+          "value": "94",
+          "count": 1
+        }
+      ],
+      "min": 25,
+      "max": 197,
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "errors",
+      "index": 4,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "0",
+          "count": 16
+        },
+        {
+          "value": "1",
+          "count": 13
+        },
+        {
+          "value": "4",
+          "count": 3
+        },
+        {
+          "value": "3",
+          "count": 3
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 0,
+      "max": 4,
+      "roles": [
+        {
+          "role": "errors",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "error_opportunities",
+      "index": 5,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "6",
+          "count": 12
+        },
+        {
+          "value": "4",
+          "count": 12
+        },
+        {
+          "value": "5",
+          "count": 12
+        }
+      ],
+      "min": 4,
+      "max": 6,
+      "roles": [
+        {
+          "role": "error_opportunities",
+          "confidence": 0.9
+        },
+        {
+          "role": "errors",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "ease_1to5",
+      "index": 6,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "5",
+          "count": 13
+        },
+        {
+          "value": "4",
+          "count": 9
+        },
+        {
+          "value": "3",
+          "count": 9
+        },
+        {
+          "value": "2",
+          "count": 3
+        },
+        {
+          "value": "1",
+          "count": 2
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "ease",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "satisfaction_1to5",
+      "index": 7,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "4",
+          "count": 14
+        },
+        {
+          "value": "5",
+          "count": 12
+        },
+        {
+          "value": "3",
+          "count": 4
+        },
+        {
+          "value": "2",
+          "count": 4
+        },
+        {
+          "value": "1",
+          "count": 2
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "satisfaction",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "time_rating_1to5",
+      "index": 8,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "4",
+          "count": 13
+        },
+        {
+          "value": "5",
+          "count": 13
+        },
+        {
+          "value": "2",
+          "count": 6
+        },
+        {
+          "value": "3",
+          "count": 4
+        }
+      ],
+      "min": 2,
+      "max": 5,
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "notes",
+      "index": 9,
+      "type": "text",
+      "missing": 22,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "Hesitated at shipping step",
+          "count": 6
+        },
+        {
+          "value": "Missed the promo field",
+          "count": 3
+        },
+        {
+          "value": "Read the FAQ first",
+          "count": 3
+        },
+        {
+          "value": "Used search instead of menu",
+          "count": 2
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "completed"
+      ],
+      "question": "Does 1 in \"completed\" mean the task was completed and 0 that it was not? Does a partial or assisted success count?"
+    },
+    {
+      "topic": "time-format",
+      "columns": [
+        "time_sec"
+      ],
+      "question": "What unit is \"time_sec\" in: seconds, milliseconds or minutes?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "ease_1to5",
+        "satisfaction_1to5"
+      ],
+      "question": "What is the full scale of \"ease_1to5\" (seen 1–5), \"satisfaction_1to5\" (seen 1–5)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "ease_1to5",
+        "satisfaction_1to5"
+      ],
+      "question": "For \"ease_1to5\", \"satisfaction_1to5\": is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "ease_1to5",
+        "satisfaction_1to5"
+      ],
+      "question": "Which rating questions make up satisfaction: one of them, or an average of several?"
+    }
+  ],
+  "suspectRows": []
+}

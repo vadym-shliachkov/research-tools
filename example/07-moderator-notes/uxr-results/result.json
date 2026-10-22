@@ -1,0 +1,363 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "sum3",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "original",
+      "smoothing": "none",
+      "timeTarget": "target",
+      "timeLog": true,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "errors",
+        "decision": "sum3",
+        "why": "No error data; the three-component SUM is used.",
+        "params": {
+          "case": "none"
+        }
+      },
+      {
+        "rule": "default",
+        "decision": "sum3",
+        "why": "Nothing in the data or goal calls for a variant; the three-component SUM is the most stable default."
+      }
+    ],
+    "suggestions": []
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "Book a demo",
+          "components": {
+            "completion": {
+              "x": 3,
+              "n": 6,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.18761630648265054,
+                0.8123836935173494
+              ]
+            },
+            "time": {
+              "n": 3,
+              "target": 90,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 83.66666666666667,
+              "median": 79,
+              "geoMean": 78.99578036533754,
+              "ci": [
+                27.95837522379753,
+                223.20085718776033
+              ],
+              "z": 0.31190562563854884,
+              "pct": 0.62244387649848,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 6,
+              "from": [
+                "ease"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.1666666666666665,
+              "sd": 1.7224014243685084,
+              "ci": [
+                1.359117225726772,
+                4.974216107606561
+              ],
+              "z": -0.48382062482261484,
+              "pct": 0.3142565881965043,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": -0.057304999728022,
+            "pct": 0.4771511188464913,
+            "targetPct": 0.5,
+            "ci": [
+              0.2957834874179631,
+              0.8177587943093916
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "small-n",
+                "params": {
+                  "n": 6
+                },
+                "message": "Only 6 attempt(s); every component has a wide uncertainty range."
+              },
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 3
+                },
+                "message": "3 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Invite a teammate",
+          "components": {
+            "completion": {
+              "x": 3,
+              "n": 6,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.18761630648265054,
+                0.8123836935173494
+              ]
+            },
+            "time": {
+              "n": 3,
+              "target": 75,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 82.66666666666667,
+              "median": 82,
+              "geoMean": 81.03336531242931,
+              "ci": [
+                43.97997272633809,
+                149.30446489170347
+              ],
+              "z": -0.3145090829873704,
+              "pct": 0.3765672094940159,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 6,
+              "from": [
+                "ease"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.5,
+              "sd": 1.6431676725154984,
+              "ci": [
+                1.7756012821373275,
+                5.224398717862672
+              ],
+              "z": -0.30429030972509225,
+              "pct": 0.3804533635375571,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": -0.20626646423748754,
+            "pct": 0.41829138645384645,
+            "targetPct": 0.5,
+            "ci": [
+              0.2054091705021774,
+              0.7598093175443448
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "small-n",
+                "params": {
+                  "n": 6
+                },
+                "message": "Only 6 attempt(s); every component has a wide uncertainty range."
+              },
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 3
+                },
+                "message": "3 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": -0.13178573198275478,
+        "pct": 0.44757688617134195,
+        "targetPct": 0.5,
+        "ci": [
+          0.21114167933181358,
+          0.8240255640673996
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 129,
+        "smoothedSamples": 108,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "small-n",
+        "params": {
+          "n": 6
+        },
+        "message": "Only 6 attempt(s); every component has a wide uncertainty range.",
+        "where": "task Book a demo",
+        "group": null,
+        "task": "Book a demo"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 3
+        },
+        "message": "3 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task Book a demo",
+        "group": null,
+        "task": "Book a demo"
+      },
+      {
+        "code": "small-n",
+        "params": {
+          "n": 6
+        },
+        "message": "Only 6 attempt(s); every component has a wide uncertainty range.",
+        "where": "task Invite a teammate",
+        "group": null,
+        "task": "Invite a teammate"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 3
+        },
+        "message": "3 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task Invite a teammate",
+        "group": null,
+        "task": "Invite a teammate"
+      },
+      {
+        "code": "bootstrap-skips",
+        "params": {
+          "skipped": 129,
+          "B": 2000
+        },
+        "message": "129 of 2000 bootstrap samples gave an undefined score; the interval is approximate.",
+        "where": "all tasks",
+        "group": null
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.4364800117773545
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "empirical-time-impossible",
+          "params": {
+            "n": 3
+          },
+          "text": "an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)",
+          "group": null
+        }
+      ],
+      "reason": "needs an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)"
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    },
+    {
+      "preset": "microsoft",
+      "status": "not-applicable",
+      "code": "missing-columns",
+      "reason": "The Usability Score needs perceived_time, satisfaction."
+    }
+  ],
+  "methodDependent": false,
+  "contract": {
+    "version": 1,
+    "study": "Moderator notes",
+    "goal": "diagnose",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "ease": [
+          1,
+          5
+        ]
+      },
+      "satisfaction_from": "ease",
+      "sat_target": 4,
+      "expert_multiplier": 3,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "Book a demo": {
+        "time_target_s": 90
+      },
+      "Invite a teammate": {
+        "time_target_s": 75
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:48:58.350Z"
+}

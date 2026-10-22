@@ -1,0 +1,441 @@
+{
+  "lang": "en",
+  "study": "Booking",
+  "method": {
+    "preset": "pearson",
+    "plain": "Three parts, with completion scored against the required completion rate, so meeting it counts as exactly on target.",
+    "string": "SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1"
+  },
+  "overall": {
+    "pct": 46,
+    "ci": [
+      33,
+      64
+    ],
+    "target": 50,
+    "verdict": "uncertain",
+    "verdictPlain": "The range runs from 33% to 64% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+  },
+  "taskVerdicts": {
+    "search-hotel": "uncertain",
+    "choose-room": "uncertain",
+    "pay": "uncertain",
+    "cancel-booking": "uncertain"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 46,
+        "ci": [
+          33,
+          64
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 33% to 64% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "tasks": [
+        {
+          "task": "search-hotel",
+          "n": 15,
+          "sum": {
+            "pct": 42,
+            "ci": [
+              25,
+              65
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 25% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 30,
+              "target": 50,
+              "onTarget": false,
+              "plain": "7 of 15 people finished against a required 78%"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 75,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 64 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 23,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.33 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 23,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.33 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "choose-room",
+          "n": 15,
+          "sum": {
+            "pct": 47,
+            "ci": [
+              30,
+              66
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 30% to 66% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 38,
+              "target": 50,
+              "onTarget": false,
+              "plain": "9 of 15 people finished against a required 78%"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 70,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 52 s against a target of 60 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 33,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.87 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 33,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.87 on a 1–7 scale against a target of 5.5"
+          }
+        },
+        {
+          "task": "pay",
+          "n": 15,
+          "sum": {
+            "pct": 51,
+            "ci": [
+              36,
+              84
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 36% to 84% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 26,
+              "target": 50,
+              "onTarget": false,
+              "plain": "6 of 15 people finished against a required 78%"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 92,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 78 s against a target of 120 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 26,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.6 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "completion",
+            "label": "Completion",
+            "pct": 26,
+            "target": 50,
+            "onTarget": false,
+            "plain": "6 of 15 people finished against a required 78%"
+          }
+        },
+        {
+          "task": "cancel-booking",
+          "n": 15,
+          "sum": {
+            "pct": 44,
+            "ci": [
+              26,
+              65
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 26% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 34,
+              "target": 50,
+              "onTarget": false,
+              "plain": "8 of 15 people finished against a required 78%"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 65,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 73 s against a target of 90 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 32,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.8 on a 1–7 scale against a target of 5.5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 32,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.8 on a 1–7 scale against a target of 5.5"
+          }
+        }
+      ],
+      "sensitivity": [
+        {
+          "preset": "sum3",
+          "pct": 52
+        },
+        {
+          "preset": "measuringu",
+          "pct": 50
+        },
+        {
+          "preset": "autodesk",
+          "pct": 44
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task": "search-hotel",
+      "n": 15,
+      "sum": {
+        "pct": 42,
+        "ci": [
+          25,
+          65
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 25% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 30,
+          "target": 50,
+          "onTarget": false,
+          "plain": "7 of 15 people finished against a required 78%"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 75,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 64 s against a target of 90 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 23,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 4.33 on a 1–7 scale against a target of 5.5"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 23,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 4.33 on a 1–7 scale against a target of 5.5"
+      }
+    },
+    {
+      "task": "choose-room",
+      "n": 15,
+      "sum": {
+        "pct": 47,
+        "ci": [
+          30,
+          66
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 30% to 66% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 38,
+          "target": 50,
+          "onTarget": false,
+          "plain": "9 of 15 people finished against a required 78%"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 70,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 52 s against a target of 60 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 33,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 4.87 on a 1–7 scale against a target of 5.5"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 33,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 4.87 on a 1–7 scale against a target of 5.5"
+      }
+    },
+    {
+      "task": "pay",
+      "n": 15,
+      "sum": {
+        "pct": 51,
+        "ci": [
+          36,
+          84
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 36% to 84% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 26,
+          "target": 50,
+          "onTarget": false,
+          "plain": "6 of 15 people finished against a required 78%"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 92,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 78 s against a target of 120 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 26,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 4.6 on a 1–7 scale against a target of 5.5"
+        }
+      },
+      "weakest": {
+        "key": "completion",
+        "label": "Completion",
+        "pct": 26,
+        "target": 50,
+        "onTarget": false,
+        "plain": "6 of 15 people finished against a required 78%"
+      }
+    },
+    {
+      "task": "cancel-booking",
+      "n": 15,
+      "sum": {
+        "pct": 44,
+        "ci": [
+          26,
+          65
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 26% to 65% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 34,
+          "target": 50,
+          "onTarget": false,
+          "plain": "8 of 15 people finished against a required 78%"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 65,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 73 s against a target of 90 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 32,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 4.8 on a 1–7 scale against a target of 5.5"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 32,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 4.8 on a 1–7 scale against a target of 5.5"
+      }
+    }
+  ],
+  "sensitivity": [
+    {
+      "preset": "sum3",
+      "pct": 52
+    },
+    {
+      "preset": "measuringu",
+      "pct": 50
+    },
+    {
+      "preset": "autodesk",
+      "pct": 44
+    }
+  ],
+  "methodDependent": false,
+  "caveats": [
+    "task search-hotel: 8 failed attempt(s) are left out of time; time describes successful users only.",
+    "task choose-room: 6 failed attempt(s) are left out of time; time describes successful users only.",
+    "task pay: 9 failed attempt(s) are left out of time; time describes successful users only.",
+    "task cancel-booking: 7 failed attempt(s) are left out of time; time describes successful users only."
+  ],
+  "suggestions": [],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Звіт SUM: Booking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">Звіт SUM</h1><p class="band-meta"><span>Booking</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">57</span><span class="score-of">%</span><span class="score-label">Загальний SUM</span><span class="score-range">95% діапазон: 46,9%–71,4%</span></div><p class="verdict"><span class="meta">Метод: pearson · <code>SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1</code></span></p></div></div><div class="content"><section><h2>SUM</h2><h3>search-hotel</h3><div class="bars"><div class="label">Частка успішного виконання<small>13 з 16 виконали</small></div><div class="track"><span class="fill above" style="width:57.4%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">57%</div><div class="label">Час на завдання<small>69 с при цілі 90 с</small></div><div class="track"><span class="fill above" style="width:65.0%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">65%</div><div class="label">Задоволеність<small>5,19 при цілі 5,5</small></div><div class="track"><span class="fill below" style="width:39.9%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">40%</div><div class="label">SUM</div><div class="track"><span class="fill neutral" style="width:54.2%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:37.6%;width:37.6%"></span></div><div class="value">54%</div></div><h3>choose-room</h3><div class="bars"><div class="label">Частка успішного виконання<small>11 з 16 виконали</small></div><div class="track"><span class="fill below" style="width:44.1%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">44%</div><div class="label">Час на завдання<small>35 с при цілі 60 с</small></div><div class="track"><span class="fill above" style="width:84.3%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">84%</div><div class="label">Задоволеність<small>5,31 при цілі 5,5</small></div><div class="track"><span class="fill below" style="width:43.5%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">43%</div><div class="label">SUM</div><div class="track"><span class="fill neutral" style="width:59.2%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:45.4%;width:34.1%"></span></div><div class="value">59%</div></div><h3>pay</h3><div class="bars"><div class="label">Частка успішного виконання<small>13 з 16 виконали</small></div><div class="track"><span class="fill above" style="width:57.4%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">57%</div><div class="label">Час на завдання<small>73 с при цілі 120 с</small></div><div class="track"><span class="fill above" style="width:83.1%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">83%</div><div class="label">Задоволеність<small>5,19 при цілі 5,5</small></div><div class="track"><span class="fill below" style="width:40.7%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">41%</div><div class="label">SUM</div><div class="track"><span class="fill neutral" style="width:61.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:47.7%;width:34.5%"></span></div><div class="value">62%</div></div><h3>cancel-booking</h3><div class="bars"><div class="label">Частка успішного виконання<small>11 з 16 виконали</small></div><div class="track"><span class="fill below" style="width:44.1%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">44%</div><div class="label">Час на завдання<small>60 с при цілі 90 с</small></div><div class="track"><span class="fill above" style="width:78.3%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">78%</div><div class="label">Задоволеність<small>5,06 при цілі 5,5</small></div><div class="track"><span class="fill below" style="width:31.9%"></span><span class="mid" style="left:50.0%"></span></div><div class="value">32%</div><div class="label">SUM</div><div class="track"><span class="fill neutral" style="width:52.2%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:35.3%;width:34.4%"></span></div><div class="value">52%</div></div><p class="bars-key">Смуги показують кожну складову у відсотках. Вертикальна лінія позначає ціль, якщо вона є (50% для складових SUM, погоджена прохідна частка для оцінки зручності). Зелений — явно на рівні цілі або вище; червоний — явно нижче; сірий — 95% діапазон (вуса) перетинає лінію, або цілі немає. Смуги без вусів забарвлено за значенням.</p></section><table><thead><tr><th>Завдання</th><th>n</th><th>Частка успішного виконання</th><th>Час на завдання</th><th>Задоволеність</th><th>SUM (95% діапазон)</th></tr></thead><tbody><tr><td>search-hotel</td><td>16</td><td>81,3% (13/16) · z +0,19</td><td>69 с проти 90 с · z +0,39</td><td>5,19 проти 5,5 · z −0,26</td><td><strong>54,2%</strong> (37,6%–75,3%)</td></tr><tr><td>choose-room</td><td>16</td><td>68,8% (11/16) · z −0,15</td><td>35 с проти 60 с · z +1,01</td><td>5,31 проти 5,5 · z −0,16</td><td><strong>59,2%</strong> (45,4%–79,5%)</td></tr><tr><td>pay</td><td>16</td><td>81,3% (13/16) · z +0,19</td><td>73 с проти 120 с · z +0,96</td><td>5,19 проти 5,5 · z −0,24</td><td><strong>61,9%</strong> (47,7%–82,2%)</td></tr><tr><td>cancel-booking</td><td>16</td><td>68,8% (11/16) · z −0,15</td><td>60 с проти 90 с · z +0,78</td><td>5,06 проти 5,5 · z −0,47</td><td><strong>52,2%</strong> (35,3%–69,7%)</td></tr></tbody></table><p><strong>Загальний SUM: 56,9%</strong> (95% діапазон 46,9%–71,4%)</p><section><h2>Чому цей метод</h2><ul><li><strong>reuse pearson</strong>: Є попередня хвиля цього дослідження. Той самий метод і ті самі цілі зберігають порівнянність хвиль.</li></ul></section><section><h2>Наскільки результат залежить від методу</h2><table><thead><tr><th>Метод</th><th>SUM</th></tr></thead><tbody><tr><td><strong>pearson</strong> (обраний)</td><td><strong>56,9%</strong></td></tr><tr><td>sum4</td><td>не застосовний: немає даних про помилки</td></tr><tr><td>sum3</td><td>65,4%</td></tr><tr><td>measuringu</td><td>62,8%</td></tr><tr><td>autodesk</td><td>64,3%</td></tr><tr><td>microsoft</td><td>не застосовний: для оцінки зручності бракує оцінок: відчуття часу, легкість, задоволеність</td></tr></tbody></table><div class="callout">Застосовні методи розходяться не більш ніж на 10 пунктів; висновок не залежить від методу.</div></section><section><h2>Перевірки якості</h2><ul><li>завдання search-hotel: 3 невдалі спроби не враховано в часі; час описує лише успішні спроби.</li><li>завдання choose-room: 5 невдалих спроб не враховано в часі; час описує лише успішні спроби.</li><li>завдання pay: 3 невдалі спроби не враховано в часі; час описує лише успішні спроби.</li><li>завдання cancel-booking: 5 невдалих спроб не враховано в часі; час описує лише успішні спроби.</li></ul></section><section><h2>Деталі методу</h2><ul><li>Метод: <code>SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1</code></li><li>search-hotel: Ціль за часом 90 с (попередня хвиля)</li><li>search-hotel: Ціль задоволеності 5,5 за шкалою 1–7 (з seq)</li><li>search-hotel: Орієнтир успішності 78,0%</li><li>choose-room: Ціль за часом 60 с (попередня хвиля)</li><li>choose-room: Ціль задоволеності 5,5 за шкалою 1–7 (з seq)</li><li>choose-room: Орієнтир успішності 78,0%</li><li>pay: Ціль за часом 120 с (попередня хвиля)</li><li>pay: Ціль задоволеності 5,5 за шкалою 1–7 (з seq)</li><li>pay: Орієнтир успішності 78,0%</li><li>cancel-booking: Ціль за часом 90 с (попередня хвиля)</li><li>cancel-booking: Ціль задоволеності 5,5 за шкалою 1–7 (з seq)</li><li>cancel-booking: Орієнтир успішності 78,0%</li><li>Діапазони отримано бутстрепом за учасниками: 2000 вибірок, зерно 20261021</li></ul></section></div>
+</body>
+</html>

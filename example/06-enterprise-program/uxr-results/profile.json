@@ -1,0 +1,1127 @@
+{
+  "rows": 120,
+  "layout": "long",
+  "columns": [
+    {
+      "name": "user",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 12,
+      "top": [
+        {
+          "value": "user1@example.test",
+          "count": 10
+        },
+        {
+          "value": "user2@example.test",
+          "count": 10
+        },
+        {
+          "value": "user3@example.test",
+          "count": 10
+        },
+        {
+          "value": "user4@example.test",
+          "count": 10
+        },
+        {
+          "value": "user5@example.test",
+          "count": 10
+        },
+        {
+          "value": "user6@example.test",
+          "count": 10
+        },
+        {
+          "value": "user7@example.test",
+          "count": 10
+        },
+        {
+          "value": "user8@example.test",
+          "count": 10
+        }
+      ],
+      "roles": [
+        {
+          "role": "participant_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "role",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "agent",
+          "count": 70
+        },
+        {
+          "value": "admin",
+          "count": 50
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "task_code",
+      "index": 2,
+      "type": "text",
+      "missing": 0,
+      "distinct": 10,
+      "top": [
+        {
+          "value": "T01",
+          "count": 12
+        },
+        {
+          "value": "T02",
+          "count": 12
+        },
+        {
+          "value": "T03",
+          "count": 12
+        },
+        {
+          "value": "T04",
+          "count": 12
+        },
+        {
+          "value": "T05",
+          "count": 12
+        },
+        {
+          "value": "T06",
+          "count": 12
+        },
+        {
+          "value": "T07",
+          "count": 12
+        },
+        {
+          "value": "T08",
+          "count": 12
+        }
+      ],
+      "roles": [
+        {
+          "role": "task_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "status",
+      "index": 3,
+      "type": "text",
+      "missing": 0,
+      "distinct": 3,
+      "top": [
+        {
+          "value": "completed",
+          "count": 64
+        },
+        {
+          "value": "timed out",
+          "count": 29
+        },
+        {
+          "value": "failed",
+          "count": 27
+        }
+      ],
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "minutes",
+      "index": 4,
+      "type": "number",
+      "missing": 0,
+      "distinct": 113,
+      "top": [
+        {
+          "value": "2.55",
+          "count": 3
+        },
+        {
+          "value": "3.27",
+          "count": 3
+        },
+        {
+          "value": "7.19",
+          "count": 2
+        },
+        {
+          "value": "8.32",
+          "count": 2
+        },
+        {
+          "value": "1.67",
+          "count": 2
+        },
+        {
+          "value": "2.58",
+          "count": 1
+        },
+        {
+          "value": "2.75",
+          "count": 1
+        },
+        {
+          "value": "9.35",
+          "count": 1
+        }
+      ],
+      "min": 0.31,
+      "max": 17.82,
+      "roles": []
+    },
+    {
+      "name": "error_count",
+      "index": 5,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "1",
+          "count": 36
+        },
+        {
+          "value": "2",
+          "count": 30
+        },
+        {
+          "value": "0",
+          "count": 30
+        },
+        {
+          "value": "3",
+          "count": 15
+        },
+        {
+          "value": "4",
+          "count": 9
+        }
+      ],
+      "min": 0,
+      "max": 4,
+      "roles": [
+        {
+          "role": "errors",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "ease",
+      "index": 6,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "3",
+          "count": 35
+        },
+        {
+          "value": "2",
+          "count": 28
+        },
+        {
+          "value": "1",
+          "count": 21
+        },
+        {
+          "value": "4",
+          "count": 21
+        },
+        {
+          "value": "5",
+          "count": 15
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "ease",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "satisfaction",
+      "index": 7,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "3",
+          "count": 38
+        },
+        {
+          "value": "4",
+          "count": 28
+        },
+        {
+          "value": "2",
+          "count": 20
+        },
+        {
+          "value": "1",
+          "count": 19
+        },
+        {
+          "value": "5",
+          "count": 15
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "satisfaction",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "duration_feel",
+      "index": 8,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 5,
+      "top": [
+        {
+          "value": "4",
+          "count": 31
+        },
+        {
+          "value": "2",
+          "count": 30
+        },
+        {
+          "value": "3",
+          "count": 24
+        },
+        {
+          "value": "1",
+          "count": 20
+        },
+        {
+          "value": "5",
+          "count": 15
+        }
+      ],
+      "min": 1,
+      "max": 5,
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "screen_reader_pass",
+      "index": 9,
+      "type": "boolean",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "true",
+          "count": 82
+        },
+        {
+          "value": "false",
+          "count": 38
+        }
+      ],
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "status"
+      ],
+      "question": "How should each value of \"status\" count: \"completed\", \"timed out\", \"failed\"? In particular, does a partial or assisted success count as success?"
+    },
+    {
+      "topic": "time-format",
+      "columns": [
+        "duration_feel"
+      ],
+      "question": "What unit is \"duration_feel\" in: seconds, milliseconds or minutes?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "ease",
+        "satisfaction"
+      ],
+      "question": "What is the full scale of \"ease\" (seen 1–5), \"satisfaction\" (seen 1–5)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "ease",
+        "satisfaction"
+      ],
+      "question": "For \"ease\", \"satisfaction\": is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "ease",
+        "satisfaction"
+      ],
+      "question": "Which rating questions make up satisfaction: one of them, or an average of several?"
+    },
+    {
+      "topic": "exclusions",
+      "columns": [],
+      "question": "Rows 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121 mention \"user1@example.test\", \"user2@example.test\", \"user3@example.test\", \"user4@example.test\", \"user5@example.test\", \"user6@example.test\", \"user7@example.test\", \"user8@example.test\", \"user9@example.test\", \"user10@example.test\", \"user11@example.test\", \"user12@example.test\". Should any pilot, test or other rows be left out?"
+    }
+  ],
+  "suspectRows": [
+    {
+      "source_row": 2,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 3,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 4,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 5,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 6,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 7,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 8,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 9,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 10,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 11,
+      "cells": [
+        "user1@example.test"
+      ]
+    },
+    {
+      "source_row": 12,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 13,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 14,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 15,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 16,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 17,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 18,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 19,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 20,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 21,
+      "cells": [
+        "user2@example.test"
+      ]
+    },
+    {
+      "source_row": 22,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 23,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 24,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 25,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 26,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 27,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 28,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 29,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 30,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 31,
+      "cells": [
+        "user3@example.test"
+      ]
+    },
+    {
+      "source_row": 32,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 33,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 34,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 35,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 36,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 37,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 38,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 39,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 40,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 41,
+      "cells": [
+        "user4@example.test"
+      ]
+    },
+    {
+      "source_row": 42,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 43,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 44,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 45,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 46,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 47,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 48,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 49,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 50,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 51,
+      "cells": [
+        "user5@example.test"
+      ]
+    },
+    {
+      "source_row": 52,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 53,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 54,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 55,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 56,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 57,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 58,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 59,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 60,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 61,
+      "cells": [
+        "user6@example.test"
+      ]
+    },
+    {
+      "source_row": 62,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 63,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 64,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 65,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 66,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 67,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 68,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 69,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 70,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 71,
+      "cells": [
+        "user7@example.test"
+      ]
+    },
+    {
+      "source_row": 72,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 73,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 74,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 75,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 76,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 77,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 78,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 79,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 80,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 81,
+      "cells": [
+        "user8@example.test"
+      ]
+    },
+    {
+      "source_row": 82,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 83,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 84,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 85,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 86,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 87,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 88,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 89,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 90,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 91,
+      "cells": [
+        "user9@example.test"
+      ]
+    },
+    {
+      "source_row": 92,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 93,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 94,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 95,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 96,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 97,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 98,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 99,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 100,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 101,
+      "cells": [
+        "user10@example.test"
+      ]
+    },
+    {
+      "source_row": 102,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 103,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 104,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 105,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 106,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 107,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 108,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 109,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 110,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 111,
+      "cells": [
+        "user11@example.test"
+      ]
+    },
+    {
+      "source_row": 112,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 113,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 114,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 115,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 116,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 117,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 118,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 119,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 120,
+      "cells": [
+        "user12@example.test"
+      ]
+    },
+    {
+      "source_row": 121,
+      "cells": [
+        "user12@example.test"
+      ]
+    }
+  ]
+}

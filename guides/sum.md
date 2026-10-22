@@ -34,10 +34,10 @@ Any layout works: one row per participant and task, or one row per participant w
 
 ```text
 /uxr:sum results.xlsx                          autopilot (default)
-/uxr:sum results.xlsx --method sum3            one method, exactly
+/uxr:sum results.xlsx --method sum3            exactly this method
 /uxr:sum results.xlsx --method sum3 --agg pct-mean --shift 1.5
 /uxr:sum results.xlsx --compare-methods        every applicable method side by side
-/uxr:sum results.xlsx --explain-choice         only why autopilot would choose what it chooses
+/uxr:sum results.xlsx --explain-choice         only which method autopilot would pick, and why
 /uxr:sum results.xlsx --ua                     also produce the Ukrainian explainer PDF
 ```
 
@@ -47,8 +47,8 @@ The source can be a CSV, TSV, Excel, JSON or NDJSON file, a Google Sheets link, 
 
 The skill never guesses what your data means. Expect questions like these:
 
-1. **Which sheet or list** holds the data, if there are several.
-2. **The meaning of each column**, shown as a table for one confirmation. The skill always asks about:
+1. **Which sheet (in Excel) or array (in JSON)** holds the data, if there are several.
+2. **The meaning of each column**, shown as one table that you confirm in one step. The skill always asks about:
    - how success codes count ("partial", "with help")
    - the time unit and format
    - each rating's full scale and which end is best
@@ -56,6 +56,7 @@ The skill never guesses what your data means. Expect questions like these:
    - which rows to leave out (pilots, tests)
    - duplicates
    - which ratings make up satisfaction
+   - which columns belong to which task, if there is one row per participant
 3. **The measurement contract**, fixed *before* any result is shown:
    - the goal
    - the satisfaction target
@@ -83,26 +84,26 @@ Modifiers adjust any preset: `--agg`, `--completion`, `--smoothing`, `--time-tar
 
 Without `--method`, the skill chooses for you by fixed rules and tells you why:
 
-- An **earlier wave** of the same study → reuse its method and targets.
-- A **pass/fail goal**, and all four ratings present → `microsoft`, judged against the pass mark you set. Without one, it is reported as a share with its range, not as above or below a target..
+- An **earlier wave** of the same study → reuse its method and time targets.
+- A **pass/fail goal**, with success and all three ratings (ease, satisfaction, perceived time) present → `microsoft`, judged against the pass mark you set. Without one, it is reported as a share with its range, not as above or below a target.
 - Errors with **predefined opportunities** → `sum4`; otherwise errors are left out.
 - A **required completion rate** → `pearson`.
-- **No time targets** → `autodesk`, if there are enough satisfied people; otherwise it asks.
-- A task at **0% or 100%** → the skill asks which fix to use: Laplace smoothing, percentage averaging or another method.
+- **No time targets** → `autodesk`, if every task has enough satisfied participants who succeeded, or a time limit; otherwise it asks.
 - **MeasuringU comparability** → percentage averaging.
+- A task at **0% or 100%** under z-score averaging → the skill asks which fix to use: Laplace smoothing, percentage averaging or another method.
 - Otherwise → `sum3`.
 
-It then runs every other method that fits your data. When they disagree by more than 10 points, the report says the verdict depends on the method.
+It then runs every other method that fits your data. When they differ by more than 10 percentage points, the report says the verdict depends on the method.
 
 ## What you get
 
-Everything goes to `uxr-results/<study>-<date>/` next to your data. A second run never overwrites the first.
+Everything goes to `uxr-results/<study>-<date>/` next to your data file, or in the working folder for pasted data and links. A second run never overwrites the first.
 
 | File | For |
 |---|---|
 | `explainer.pdf` (`explainer.ua.pdf`) | **Everyone.** "How to understand your results" in plain language, edited for a broad audience before it is rendered |
-| `report.html` | The team: component bars with ranges, tables, method, sensitivity, quality checks |
-| `report.md` | The same report as text |
+| `report.html` (`report.ua.html`) | The team: component bars with ranges, tables, method, sensitivity to the method, quality checks |
+| `report.md` (`report.ua.md`) | The same report as text |
 | `result.json` | Every number and the exact method, for reuse and audit |
 | `data.csv`, `mapping.json`, `normalize-log.json` | What the data became, and why rows were dropped |
 | `contract.json` | The targets and rules, fixed before computing |
@@ -122,11 +123,11 @@ Run the skill on the new data from the same study. It finds the earlier `result.
 
 ## Troubleshooting
 
-- **"Completion is 100%; its z-score is infinite."** With few people, everyone finishing is common. Choose Laplace smoothing, percentage averaging, or report completion on its own. The skill asks; it does not pick for you.
-- **"No time target."** Give an acceptable time or an expert time per task, or agree that autopilot may derive it from satisfied people.
+- **"Completion is 100%; its z-score is infinite."** With few participants, it is common for everyone to finish. Choose Laplace smoothing, percentage averaging or another method, or report completion on its own. The skill asks; it does not pick for you.
+- **"No time target."** Give an acceptable time or an expert time per task, or agree that autopilot may derive the target from satisfied participants.
 - **"Satisfaction items are on different scales."** Choose one rating, or put the items on the same scale first.
 - **No PDF, only HTML.** No Chrome, Edge or Chromium was found. Install one, or set `CHROME_PATH`.
-- **Wrong characters in names.** The file was not UTF-8. The skill reports the encoding it used; re-export as UTF-8 if the names look wrong.
+- **Garbled characters in names.** The file was not saved as UTF-8. The skill reports the encoding it used; re-export as UTF-8 if the names look wrong.
 
 ## Sources
 

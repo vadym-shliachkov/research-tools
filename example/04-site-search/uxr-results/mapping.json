@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "pid" },
+    "task_id": { "from": "task" },
+    "success": { "from": "outcome", "map": { "success": 1, "fail": 0, "abandoned": 0 } },
+    "time_s": { "from": "duration_ms", "unit": "ms" },
+    "sat_1": { "from": "q1_easy", "scale": [1, 7] },
+    "sat_2": { "from": "q2_satisfied", "scale": [1, 7] },
+    "sat_3": { "from": "q3_confident", "scale": [1, 7] }
+  },
+  "duplicates": "error"
+}

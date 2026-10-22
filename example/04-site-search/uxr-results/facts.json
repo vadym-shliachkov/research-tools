@@ -1,0 +1,418 @@
+{
+  "lang": "en",
+  "study": "Site search",
+  "method": {
+    "preset": "autodesk",
+    "plain": "Three parts, with the time target taken from how long satisfied people needed.",
+    "string": "SUM3|zmean|completion=original|time=empirical,raw|failed-time=exclude|shift=0|smoothing=laplace|v1"
+  },
+  "overall": {
+    "pct": 70,
+    "ci": [
+      62,
+      84
+    ],
+    "target": 50,
+    "verdict": "above",
+    "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+  },
+  "taskVerdicts": {
+    "find-product": "above",
+    "filter-by-price": "uncertain",
+    "compare-two": "uncertain",
+    "return-policy": "uncertain"
+  },
+  "groups": [
+    {
+      "group": null,
+      "overall": {
+        "pct": 70,
+        "ci": [
+          62,
+          84
+        ],
+        "target": 50,
+        "verdict": "above",
+        "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+      },
+      "tasks": [
+        {
+          "task": "find-product",
+          "n": 14,
+          "sum": {
+            "pct": 91,
+            "ci": [
+              86,
+              96
+            ],
+            "target": 50,
+            "verdict": "above",
+            "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 97,
+              "target": null,
+              "onTarget": null,
+              "plain": "14 of 14 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 82,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 37 s against a target of 47 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 89,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.64 on a 1–7 scale against a target of 5"
+            }
+          },
+          "weakest": {
+            "key": "time",
+            "label": "Time on task",
+            "pct": 82,
+            "target": 50,
+            "onTarget": true,
+            "plain": "typical time 37 s against a target of 47 s"
+          }
+        },
+        {
+          "task": "filter-by-price",
+          "n": 14,
+          "sum": {
+            "pct": 65,
+            "ci": [
+              49,
+              85
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 49% to 85% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 83,
+              "target": null,
+              "onTarget": null,
+              "plain": "12 of 14 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 51,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 82 s against a target of 82 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 57,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+            }
+          },
+          "weakest": {
+            "key": "time",
+            "label": "Time on task",
+            "pct": 51,
+            "target": 50,
+            "onTarget": true,
+            "plain": "typical time 82 s against a target of 82 s"
+          }
+        },
+        {
+          "task": "compare-two",
+          "n": 14,
+          "sum": {
+            "pct": 50,
+            "ci": [
+              30,
+              90
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 30% to 90% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 43,
+              "target": null,
+              "onTarget": null,
+              "plain": "6 of 14 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 66,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 125 s against a target of 152 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 40,
+              "target": 50,
+              "onTarget": false,
+              "plain": "average rating 4.74 on a 1–7 scale against a target of 5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 40,
+            "target": 50,
+            "onTarget": false,
+            "plain": "average rating 4.74 on a 1–7 scale against a target of 5"
+          }
+        },
+        {
+          "task": "return-policy",
+          "n": 14,
+          "sum": {
+            "pct": 66,
+            "ci": [
+              50,
+              83
+            ],
+            "target": 50,
+            "verdict": "uncertain",
+            "verdictPlain": "The range runs from 50% to 83% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+          },
+          "components": {
+            "completion": {
+              "label": "Completion",
+              "pct": 70,
+              "target": null,
+              "onTarget": null,
+              "plain": "10 of 14 people finished"
+            },
+            "time": {
+              "label": "Time on task",
+              "pct": 68,
+              "target": 50,
+              "onTarget": true,
+              "plain": "typical time 65 s against a target of 80 s"
+            },
+            "satisfaction": {
+              "label": "Satisfaction",
+              "pct": 60,
+              "target": 50,
+              "onTarget": true,
+              "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+            }
+          },
+          "weakest": {
+            "key": "satisfaction",
+            "label": "Satisfaction",
+            "pct": 60,
+            "target": 50,
+            "onTarget": true,
+            "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+          }
+        }
+      ],
+      "sensitivity": []
+    }
+  ],
+  "tasks": [
+    {
+      "task": "find-product",
+      "n": 14,
+      "sum": {
+        "pct": 91,
+        "ci": [
+          86,
+          96
+        ],
+        "target": 50,
+        "verdict": "above",
+        "verdictPlain": "Even the low end of the range is above the target, so the result is clearly above it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 97,
+          "target": null,
+          "onTarget": null,
+          "plain": "14 of 14 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 82,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 37 s against a target of 47 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 89,
+          "target": 50,
+          "onTarget": true,
+          "plain": "average rating 5.64 on a 1–7 scale against a target of 5"
+        }
+      },
+      "weakest": {
+        "key": "time",
+        "label": "Time on task",
+        "pct": 82,
+        "target": 50,
+        "onTarget": true,
+        "plain": "typical time 37 s against a target of 47 s"
+      }
+    },
+    {
+      "task": "filter-by-price",
+      "n": 14,
+      "sum": {
+        "pct": 65,
+        "ci": [
+          49,
+          85
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 49% to 85% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 83,
+          "target": null,
+          "onTarget": null,
+          "plain": "12 of 14 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 51,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 82 s against a target of 82 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 57,
+          "target": 50,
+          "onTarget": true,
+          "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+        }
+      },
+      "weakest": {
+        "key": "time",
+        "label": "Time on task",
+        "pct": 51,
+        "target": 50,
+        "onTarget": true,
+        "plain": "typical time 82 s against a target of 82 s"
+      }
+    },
+    {
+      "task": "compare-two",
+      "n": 14,
+      "sum": {
+        "pct": 50,
+        "ci": [
+          30,
+          90
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 30% to 90% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 43,
+          "target": null,
+          "onTarget": null,
+          "plain": "6 of 14 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 66,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 125 s against a target of 152 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 40,
+          "target": 50,
+          "onTarget": false,
+          "plain": "average rating 4.74 on a 1–7 scale against a target of 5"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 40,
+        "target": 50,
+        "onTarget": false,
+        "plain": "average rating 4.74 on a 1–7 scale against a target of 5"
+      }
+    },
+    {
+      "task": "return-policy",
+      "n": 14,
+      "sum": {
+        "pct": 66,
+        "ci": [
+          50,
+          83
+        ],
+        "target": 50,
+        "verdict": "uncertain",
+        "verdictPlain": "The range runs from 50% to 83% and includes the 50% target, so we cannot yet be sure whether the result is above or below it."
+      },
+      "components": {
+        "completion": {
+          "label": "Completion",
+          "pct": 70,
+          "target": null,
+          "onTarget": null,
+          "plain": "10 of 14 people finished"
+        },
+        "time": {
+          "label": "Time on task",
+          "pct": 68,
+          "target": 50,
+          "onTarget": true,
+          "plain": "typical time 65 s against a target of 80 s"
+        },
+        "satisfaction": {
+          "label": "Satisfaction",
+          "pct": 60,
+          "target": 50,
+          "onTarget": true,
+          "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+        }
+      },
+      "weakest": {
+        "key": "satisfaction",
+        "label": "Satisfaction",
+        "pct": 60,
+        "target": 50,
+        "onTarget": true,
+        "plain": "average rating 5.19 on a 1–7 scale against a target of 5"
+      }
+    }
+  ],
+  "sensitivity": [],
+  "methodDependent": false,
+  "caveats": [
+    "task find-product: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "task filter-by-price: 2 failed attempt(s) are left out of time; time describes successful users only.",
+    "task filter-by-price: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "task compare-two: 8 failed attempt(s) are left out of time; time describes successful users only.",
+    "task compare-two: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+    "task return-policy: 4 failed attempt(s) are left out of time; time describes successful users only.",
+    "task return-policy: Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+  ],
+  "suggestions": [],
+  "reading": "Scores are percentages: 50% means exactly on target, above 50% better than the target, below 50% worse. Completion without a required rate, and the share of actions without mistakes, are plain shares with no target."
+}

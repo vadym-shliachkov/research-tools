@@ -28,6 +28,14 @@ coverage/
 .env
 .env.*
 
+# Skill run output and schem-it working files: they hold study data and local paths.
+# The finished flowchart is published in flowchart/.
+uxr-results/
+.schem-it/
+# Except the reference reports kept for each example; new dated runs inside them stay local.
+!example/*/uxr-results/
+example/*/uxr-results/*/
+
 # Local Claude Code / Codex settings and agent scratch
 .claude/settings.local.json
 .superpowers/

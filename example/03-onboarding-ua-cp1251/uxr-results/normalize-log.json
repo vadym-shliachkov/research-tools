@@ -1,0 +1,30 @@
+{
+  "rowsIn": 34,
+  "rowsOut": 30,
+  "dropped": [
+    {
+      "source_row": 33,
+      "reason": "test account"
+    },
+    {
+      "source_row": 34,
+      "reason": "test account"
+    },
+    {
+      "source_row": 35,
+      "reason": "test account"
+    },
+    {
+      "source_row": 12,
+      "reason": "duplicate participant × task"
+    }
+  ],
+  "blanks": {
+    "errors": 9,
+    "ease": 2
+  },
+  "unusedColumns": [
+    "Коментар"
+  ],
+  "warnings": []
+}

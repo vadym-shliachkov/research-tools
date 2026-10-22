@@ -2,7 +2,7 @@
 name: sum
 description: Calculate a Single Usability Metric (SUM) from usability-test data and explain what it means. Use when asked for a SUM, a single usability score, a usability benchmark number, or to combine task completion, time on task, errors and satisfaction (or SEQ/ease ratings) into one score, including in Ukrainian. Accepts data in any form (CSV, Excel, JSON, Google Sheets, pasted tables), confirms with the user what every column means instead of guessing, then picks the right SUM variant on autopilot (original 4- or 3-component, MeasuringU, Autodesk, Pearson, Microsoft Usability Score) or runs the one requested, with a sensitivity check across methods. Produces an audit folder, an HTML report and a plain-language "How to understand your results" PDF, edited for a broad audience, in English and on request in Ukrainian. Not for simply adding up a column.
 argument-hint: "<data source> [--auto | --method sum4|sum3|measuringu|autodesk|pearson|microsoft] [--compare-methods] [--explain-choice] [--goal gate|benchmark|compare|diagnose] [--ua] [--study NAME]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(node:*), Agent, AskUserQuestion, WebFetch
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(node "${CLAUDE_PLUGIN_ROOT}/scripts/uxr.mjs" *), Bash(node "${CLAUDE_SKILL_DIR}/scripts/sum.mjs" *), Agent, AskUserQuestion
 ---
 
 # Single Usability Metric
@@ -16,7 +16,7 @@ You turn usability-test data into a defensible SUM and a conclusion people can a
 ## Setup
 
 - **SKILL_DIR** is the folder containing this file. **PLUGIN_ROOT** is two levels up (`<SKILL_DIR>/../..`).
-- `UXR` means `node "<PLUGIN_ROOT>/scripts/uxr.mjs"` and `SUM` means `node "<SKILL_DIR>/scripts/sum.mjs"`. Both need Node.js 20+.
+- `UXR` means `node "<PLUGIN_ROOT>/scripts/uxr.mjs"` and `SUM` means `node "<SKILL_DIR>/scripts/sum.mjs"`. Both need Node.js 20+. On Claude Code, write them exactly as `node "${CLAUDE_PLUGIN_ROOT}/scripts/uxr.mjs"` and `node "${CLAUDE_SKILL_DIR}/scripts/sum.mjs"`, with nothing before `node` and no other command joined on: only these two forms run without a permission prompt.
 - **No shell or no Node here** (for example a chat without code execution): say so and stop. Rule 2 means you cannot compute the score by hand. Tell the user the skill needs Claude Code or Codex with Node.js 20+.
 - **Arguments.** On Claude Code they are: $ARGUMENTS. On other hosts, read them from the user's message ("run uxr sum on results.xlsx with the pearson method, Ukrainian too" = `results.xlsx --method pearson --ua`).
 - **Modes.** Autopilot is the default. `--method <preset>` runs exactly that preset. Modifiers such as `--agg pct-mean` or `--shift 1.5` are passed through to `SUM run` (see `references/methods.md`). `--compare-methods` shows every applicable method side by side. `--explain-choice` shows only the autopilot's reasoning.

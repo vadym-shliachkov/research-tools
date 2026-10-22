@@ -1,0 +1,11 @@
+{
+  "rowsIn": 12,
+  "rowsOut": 12,
+  "dropped": [],
+  "blanks": {},
+  "unusedColumns": [
+    "Time",
+    "Notes"
+  ],
+  "warnings": []
+}

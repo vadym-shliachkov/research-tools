@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "study": "Enterprise program",
+  "goal": "diagnose",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "ease": [
+        1,
+        5
+      ],
+      "satisfaction": [
+        1,
+        5
+      ],
+      "perceived_time": [
+        1,
+        5
+      ]
+    },
+    "satisfaction_from": [
+      "ease",
+      "satisfaction",
+      "perceived_time"
+    ],
+    "sat_target": 4,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": false,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "T01": {
+      "time_target_s": 78
+    },
+    "T02": {
+      "time_target_s": 111
+    },
+    "T03": {
+      "time_target_s": 143
+    },
+    "T04": {
+      "time_target_s": 176
+    },
+    "T05": {
+      "time_target_s": 208
+    },
+    "T06": {
+      "time_target_s": 241
+    },
+    "T07": {
+      "time_target_s": 273
+    },
+    "T08": {
+      "time_target_s": 306
+    },
+    "T09": {
+      "time_target_s": 338
+    },
+    "T10": {
+      "time_target_s": 371
+    }
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": true
+}

@@ -27,9 +27,9 @@
 
 - `research-tools` marketplace for Claude Code and Codex, with the `uxr` plugin.
 - `/uxr:sum`: Single Usability Metric.
-  - **Data intake from any source:** CSV, TSV, JSON, NDJSON and Excel are read directly; other sources are extracted by the agent and confirmed. A column mapping is confirmed with the user, and anything unclear is asked, never guessed.
-  - **Methods:** six presets (`sum4`, `sum3`, `measuringu`, `autodesk`, `pearson`, `microsoft`) plus modifiers for aggregation, completion scoring, smoothing, time targets, failed-attempt time, weights and sigma shift.
-  - **Autopilot:** picks the method by documented rules and says why; reuses a previous wave's method; always shows how much the method matters.
-  - **Uncertainty:** adjusted-Wald ranges for completion, t-ranges for time and satisfaction, and a reproducible participant bootstrap for SUM.
-  - **Outputs:** an audit folder, `report.md` and `report.html`, and a "How to understand your results" PDF in English, plus Ukrainian on request. The PDF text goes through the plain-language editor before rendering.
+  - **Data intake from any source:** CSV, TSV, JSON, NDJSON and Excel are read directly; other sources are extracted by the agent, and the user confirms the extracted table. The user also confirms the column mapping; anything unclear is asked, never guessed.
+  - **Methods:** six presets (`sum4`, `sum3`, `measuringu`, `autodesk`, `pearson`, `microsoft`) plus modifiers for components, aggregation, completion scoring, smoothing, time targets, log or raw time, failed-attempt time, weights and the 1.5 sigma shift.
+  - **Autopilot:** picks the method by documented rules and says why; reuses the method of an earlier wave; always shows how much the result depends on the method.
+  - **Uncertainty:** adjusted-Wald intervals for completion, t-intervals for time and satisfaction, and a reproducible participant-level bootstrap for SUM.
+  - **Outputs:** an audit folder, `report.md` and `report.html`, and a "How to understand your results" PDF in English; on request, the report and the PDF in Ukrainian too. The PDF text goes through the plain-language editor before rendering.
 - Golden tests that reproduce the published numbers: Sauro & Kindlund, MeasuringU, Autodesk, Microsoft and Pearson.

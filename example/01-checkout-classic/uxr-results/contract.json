@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "study": "Checkout",
+  "goal": "gate",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "ease": [
+        1,
+        5
+      ],
+      "satisfaction": [
+        1,
+        5
+      ],
+      "perceived_time": [
+        1,
+        5
+      ]
+    },
+    "satisfaction_from": [
+      "ease",
+      "satisfaction",
+      "perceived_time"
+    ],
+    "sat_target": 4,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": true,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "Add to cart & checkout": {
+      "time_target_s": 120
+    },
+    "Find nearest store": {
+      "time_target_s": 60
+    },
+    "Start a return": {
+      "time_target_s": 100
+    }
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": false
+}

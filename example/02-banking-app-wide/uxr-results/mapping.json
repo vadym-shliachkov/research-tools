@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "layout": "wide",
+  "columns": {
+    "participant_id": { "from": "Participant ID" },
+    "group": { "from": "Variant" }
+  },
+  "wide": {
+    "pattern": "^T(?<task>[0-9]+) (?<field>.+)$",
+    "flags": "iu",
+    "fields": {
+      "Success": { "to": "success", "map": { "yes": 1, "no": 0, "partial": 0, "assisted": 0 } },
+      "Time": { "to": "time_s", "unit": "s" },
+      "SEQ": { "to": "seq", "scale": [1, 7] }
+    },
+    "taskNames": { "1": "Send money to a friend", "2": "Freeze your card", "3": "Find last month's statement", "4": "Set up a savings goal" }
+  },
+  "exclude": [{ "column": "Participant ID", "equals": ["PILOT"], "reason": "pilot session" }],
+  "duplicates": "error"
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "Respondent" },
+    "task_id": { "from": "Task" },
+    "success": { "from": "Result", "map": { "Pass": 1, "Fail": 0 } },
+    "time_s": { "from": "Time (mm:ss)", "unit": "mm:ss" },
+    "seq": { "from": "SEQ (1-7)", "scale": [1, 7] }
+  },
+  "duplicates": "error"
+}

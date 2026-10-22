@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "study": "Onboarding",
+  "goal": "diagnose",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "ease": [
+        1,
+        7
+      ],
+      "satisfaction": [
+        1,
+        5
+      ]
+    },
+    "satisfaction_from": "ease",
+    "sat_target": 5.6,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": false,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "Реєстрація": {
+      "time_target_s": 90
+    },
+    "Підтвердження email": {
+      "time_target_s": 60
+    },
+    "Налаштування профілю": {
+      "time_target_s": 150
+    }
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": false
+}

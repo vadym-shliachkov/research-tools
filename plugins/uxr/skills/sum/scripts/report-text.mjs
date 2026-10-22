@@ -27,6 +27,7 @@ const UA_WARNINGS = {
   'mixed-design': ({ shared, group, vs }) => `${shared} ${uaPlural(shared, 'учасник брав', 'учасники брали', 'учасників брали')} участь і в ${vs}, і в ${group}, решта — лише в одній групі. Різниця враховує результати кожної людини разом; перевірте, що дослідження проводили саме так.`,
   'completion-extreme': ({ pct, x, n }) => `Частка успіху ${pct}% (${x}/${n}); її z-оцінка нескінченна. Оберіть згладжування (laplace) або усереднення відсотків.`,
   'errors-extreme': ({ pct }) => `Частка дій без помилок ${pct}%; її z-оцінка нескінченна. Оберіть згладжування (laplace) або усереднення відсотків.`,
+  'missing-columns': ({ missing }) => `Для оцінки зручності бракує оцінок: ${uaColumns(missing)}.`,
 };
 
 const UA_REASONS = {
@@ -61,7 +62,12 @@ const UA_NEEDS = {
   thresholds: () => 'пороги для perceived_time, ease і satisfaction (типові 3/4/4 розраховані на 5-бальні шкали)',
 };
 
+// Canonical column names as a Ukrainian reader knows them.
+const UA_COLUMNS = { success: 'успіх', perceived_time: 'відчуття часу', ease: 'легкість', satisfaction: 'задоволеність' };
+const uaColumns = (missing = []) => missing.map((c) => UA_COLUMNS[c] ?? c).join(', ');
+
 const UA_NOT_APPLICABLE = {
+  'missing-columns': ({ missing }) => `для оцінки зручності бракує оцінок: ${uaColumns(missing)}`,
   'no-error-data': () => 'немає даних про помилки',
   'errors-not-predefined': () => 'можливі помилки не визначили до дослідження',
   'no-benchmark': () => 'немає орієнтира успішності',
@@ -108,7 +114,9 @@ function needText(m, lang) {
 export function notApplicableText(s, lang) {
   if (!ua(lang)) return s.reason;
   if (s.code === 'needs' && s.missing) return `бракує: ${s.missing.map((m) => needText(m, lang)).join('; ')}`;
-  return call(UA_NOT_APPLICABLE, s.code, s.params) ?? s.reason;
+  // Results written before missing-columns carried params name the columns only in the English message.
+  const legacy = s.code === 'missing-columns' && !s.params ? /needs (.+)\.$/.exec(s.reason ?? '') : null;
+  return call(UA_NOT_APPLICABLE, s.code, legacy ? { missing: legacy[1].split(', ') } : s.params) ?? s.reason;
 }
 
 export function timeSourceText(source, lang) {

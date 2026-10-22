@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "study": "Booking",
+  "goal": "benchmark",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "seq": [
+        1,
+        7
+      ]
+    },
+    "satisfaction_from": "seq",
+    "sat_target": 5.5,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": 0.78,
+    "error_opportunities_predefined": false,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "search-hotel": {
+      "time_target_s": 90
+    },
+    "choose-room": {
+      "time_target_s": 60
+    },
+    "pay": {
+      "time_target_s": 120
+    },
+    "cancel-booking": {
+      "time_target_s": 90
+    }
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": false
+}

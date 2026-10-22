@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "Учасник" },
+    "task_id": { "from": "Завдання" },
+    "success": { "from": "Результат", "map": { "Виконано": 1, "Не виконано": 0, "З допомогою": 0, "Здався": 0 } },
+    "time_s": { "from": "Час, с", "unit": "s" },
+    "errors": { "from": "Помилки", "missingAs": 0 },
+    "ease": { "from": "Легкість (1 = дуже легко, 7 = дуже важко)", "scale": [1, 7], "reverse": true },
+    "satisfaction": { "from": "Задоволення (1-5)", "scale": [1, 5] }
+  },
+  "number": { "decimal": "," },
+  "missing": { "tokens": ["", "н/д", "-"] },
+  "exclude": [{ "column": "Учасник", "equals": ["test_user"], "reason": "test account" }],
+  "duplicates": "first"
+}

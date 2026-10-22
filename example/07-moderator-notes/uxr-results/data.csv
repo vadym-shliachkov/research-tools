@@ -1,0 +1,13 @@
+source_row,participant_id,task_id,success,time_s,ease
+2,Olena,Book a demo,0,112,2
+3,Olena,Invite a teammate,1,103,4
+4,Marco,Book a demo,1,79,5
+5,Marco,Invite a teammate,0,41,4
+6,Priya,Book a demo,0,159,1
+7,Priya,Invite a teammate,0,214,1
+8,Dmytro,Book a demo,1,120,4
+9,Dmytro,Invite a teammate,0,85,2
+10,Sam,Book a demo,0,179,2
+11,Sam,Invite a teammate,1,82,5
+12,Chen,Book a demo,1,52,5
+13,Chen,Invite a teammate,1,63,5

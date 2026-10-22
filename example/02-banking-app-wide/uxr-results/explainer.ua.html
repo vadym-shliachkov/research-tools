@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Як зрозуміти ваші результати</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">Як зрозуміти ваші результати</h1><p class="band-meta"><span>Мобільний банкінг</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">+13 пунктів</span><span class="score-of"></span><span class="score-label">Redesign порівняно з Current</span></div><p class="verdict">Redesign отримав на 13 пунктів більше, ніж Current, але ми ще не можемо сказати, який варіант кращий.</p></div></div><div class="content"><section id="measured"><h2>Що ми вимірювали</h2><p>Ми перевірили два варіанти дизайну мобільного банківського застосунку: Current (поточний) і Redesign (новий). Кожен варіант випробували десять людей, і кожен учасник бачив лише один із них. Усі виконували ті самі чотири завдання: переказати гроші другові, заморозити картку, знайти виписку за минулий місяць і створити ціль заощаджень.</p><p>Для кожного завдання ми записували, чи впорався учасник, скільки часу на це пішло і наскільки легким воно здалося. Після кожного завдання учасники оцінювали легкість за шкалою від 1 до 7. Завдання вважалося виконаним, лише якщо людина повністю впоралася з ним сама. Завдання, виконані наполовину або з допомогою, ми рахували як невиконані.</p></section><section id="result"><h2>Ваш результат</h2><p>Кожен варіант дизайну отримує одну оцінку зручності від 0 до 100%. Оцінка 50% означає результат рівно на рівні цілі. Понад 50% — краще за ціль, менше 50% — гірше.</p><p>Redesign отримав 66%, а його діапазон — від 54% до 79%. Навіть нижня межа цього діапазону вища за ціль, тож Redesign явно вище цілі.</p><p>Current отримав 53%, його діапазон — від 27% до 74%. Цей діапазон містить ціль 50%, тож ми ще не можемо сказати, чи Current вище цілі, чи нижче.</p><p>Redesign отримав на 13 пунктів більше, ніж Current. Справжня різниця найімовірніше лежить між 10 пунктами на користь Current і 43 пунктами на користь Redesign. Цей діапазон включає й нульову різницю, тож ми ще не можемо сказати, який варіант кращий.</p></section><div class="bars"><div class="label">Current · Send money to a friend</div><div class="track"><span class="fill neutral" style="width:52.8%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:23.8%;width:53.9%"></span></div><div class="value">53%</div><div class="label">Current · Freeze your card</div><div class="track"><span class="fill above" style="width:76.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:60.8%;width:32.4%"></span></div><div class="value">77%</div><div class="label">Current · Find last month's statement</div><div class="track"><span class="fill neutral" style="width:36.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:2.6%;width:57.0%"></span></div><div class="value">37%</div><div class="label">Current · Set up a savings goal</div><div class="track"><span class="fill neutral" style="width:42.7%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:5.3%;width:62.7%"></span></div><div class="value">43%</div><div class="label">Current · Загальна оцінка</div><div class="track"><span class="fill neutral" style="width:52.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:26.5%;width:47.8%"></span></div><div class="value">53%</div><div class="label">Redesign · Send money to a friend</div><div class="track"><span class="fill neutral" style="width:62.6%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:43.1%;width:46.1%"></span></div><div class="value">63%</div><div class="label">Redesign · Freeze your card</div><div class="track"><span class="fill above" style="width:76.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:64.1%;width:23.3%"></span></div><div class="value">77%</div><div class="label">Redesign · Find last month's statement</div><div class="track"><span class="fill neutral" style="width:61.4%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:38.9%;width:41.4%"></span></div><div class="value">61%</div><div class="label">Redesign · Set up a savings goal</div><div class="track"><span class="fill neutral" style="width:59.9%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:32.2%;width:44.9%"></span></div><div class="value">60%</div><div class="label">Redesign · Загальна оцінка</div><div class="track"><span class="fill above" style="width:65.5%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:53.9%;width:24.8%"></span></div><div class="value">66%</div></div><p class="bars-key">Кожна смуга показує оцінку від 0 до 100%. Вертикальна лінія позначає ціль, якщо вона є. Зелений означає, що результат явно на рівні цілі або вище, червоний — явно нижче, сірий — що ми ще не можемо сказати напевно або що цілі немає. Тонка чорна лінія показує діапазон, у якому найімовірніше лежить справжнє значення.</p><section id="components"><h2>З чого складається оцінка</h2><p>Оцінка кожного завдання складається з трьох рівних частин: скільки людей упоралися, як швидко і наскільки легким здалося завдання. Для кожного завдання є своя ціль за часом. Ціль для легкості — середня оцінка 5,5 із 7. Обов'язкового рівня для частки успішного виконання не було, тож цілі в неї немає.</p><p>Заморожування картки отримало 77% в обох варіантах — явно вище цілі в кожному. Три інші завдання в Redesign отримали вищі оцінки, ніж у Current. Але для цих трьох ми ще не можемо сказати, чи котрийсь варіант вище цілі, чи нижче.</p><ul><li><strong>Переказ грошей другові (Current 53%, Redesign 63%):</strong> У Current упоралися 6 із 10 людей, типовий час — 66 с за цілі 90 с. Середня оцінка легкості — 4,56, нижче цілі 5,5. У Redesign упоралися 8 із 10, типовий час — 79 с, у межах цілі. Оцінка легкості — 5,29, усе ще нижче цілі.</li><li><strong>Заморожування картки (Current 77%, Redesign 77%):</strong> У Current упоралися 9 із 10 людей, типовий час — 23 с за цілі 30 с. Оцінка легкості — 5,88, ціль досягнуто. У Redesign упоралися всі 10 із 10, типовий час — 25 с. Оцінка легкості — 5,6, ціль теж досягнуто.</li><li><strong>Пошук виписки за минулий місяць (Current 37%, Redesign 61%):</strong> У Current упоралися лише 4 із 10 людей, типовий час — 58 с за цілі 60 с. Оцінка легкості — 4,2, нижче цілі. У Redesign упоралися 9 із 10. Але типова спроба тривала 64 с, трохи довше за ціль, а оцінка легкості — 5,3, нижче цілі.</li><li><strong>Створення цілі заощаджень (Current 43%, Redesign 60%):</strong> У Current упоралися 4 із 10 людей, типовий час — 143 с за цілі 150 с. Оцінка легкості — 4,67, нижче цілі. У Redesign упоралися 7 із 10, типовий час — 138 с. Оцінка легкості — 5,56, ціль досягнуто.</li></ul></section><section id="range"><h2>Наскільки ми впевнені</h2><p>Коли кожен варіант пробують лише десять людей, кожна оцінка має широкий діапазон. Справжня оцінка Current найімовірніше лежить між 27% і 74%. Для Redesign — між 54% і 79%.</p><p>Ці два діапазони значною мірою перекриваються. Тому перевага в 13 пунктів поки не дає підстав назвати Redesign кращим. Більше учасників на кожен варіант звузили б діапазони й показали, чи ця перевага справжня.</p></section><section id="fix-first"><h2>Що виправити насамперед</h2><p>В обох варіантах найслабшою частиною кожного завдання була легкість. У Current оцінка легкості була нижче цілі в усіх завданнях, крім заморожування картки. Найнижча оцінка — 4,2, за пошук виписки за минулий місяць.</p><p>Крім того, у Current багато людей не дійшли до кінця. Лише 4 із 10 знайшли виписку за минулий місяць, і лише 4 із 10 створили ціль заощаджень. Почніть із перегляду записів сеансів саме цих двох завдань.</p><p>У Redesign оцінка легкості досі нижче цілі для переказу грошей (5,29) і для пошуку виписки (5,3). До того ж пошук виписки тривав трохи довше за ціль. Ці два завдання в Redesign варто дослідити наступними.</p></section><section id="limits"><h2>Чого це число не скаже</h2><p>Оцінки показують, де людям було складно, але не пояснюють чому. Щоб знайти причини, перегляньте записи сеансів або поговоріть з учасниками. До того ж результати стосуються лише цих чотирьох завдань і людей, які взяли участь.</p><p>Час рахується лише для тих, хто впорався із завданням. Ті, хто здався, не враховані, тож час може виглядати кращим, ніж було насправді.</p><p>Оцінки легкості дали лише ті, кому поставили питання про легкість. Де питання не ставили, оцінку залишили порожньою і не враховували.</p><p>Усі учасники Redesign заморозили картку. Такий ідеальний результат неможливо врахувати в оцінці без поправки. Тому ми застосували невелику стандартну поправку до кожної частки успішного виконання в дослідженні. Вона рахує кожен результат так, ніби до нього додали половину успіху й половину невдачі.</p><p>Ця поправка трохи зсуває кожну частку успішного виконання до середини: 10 із 10 рахується як 95%, а 6 із 10 — як 59%. Ми обрали її до того, як хтось побачив оцінки. Через неї оцінки трохи відрізняються від тих, які дав би оригінальний метод.</p><p>Ми не врахували один пілотний сеанс, бо це був пробний запуск, а не частина дослідження. Інший поширений спосіб підрахунку дає схожу картину: 51% для Current і 61% для Redesign.</p></section><section id="glossary"><h2>Словник</h2><dl class="glossary"><dt>Оцінка зручності</dt><dd>Одне число від 0 до 100%, яке підсумовує, скільки людей упоралися, як швидко і наскільки легким здалося завдання. 50% означає результат рівно на рівні цілі.</dd><dt>Пункт</dt><dd>Одиниця різниці між двома оцінками зручності: якщо одна оцінка 66%, а інша 53%, різниця становить 13 пунктів.</dd><dt>Ціль</dt><dd>Рівень, погоджений до початку дослідження: час для кожного завдання і середня оцінка легкості 5,5 із 7.</dd><dt>Діапазон (найімовірніший діапазон значень)</dt><dd>Проміжок, у якому найімовірніше лежить справжнє значення; що менше учасників, то ширший діапазон.</dd><dt>Оцінка легкості</dt><dd>Відповідь на питання після кожного завдання про те, наскільки легким воно було, від 1 (дуже складно) до 7 (дуже легко).</dd><dt>Типовий час</dt><dd>Серединне значення часу серед тих, хто впорався, тож одна надто швидка чи надто повільна людина його не спотворює.</dd><dt>Частка успішного виконання</dt><dd>Частка людей, які повністю виконали завдання самостійно, наприклад 6 із 10.</dd><dt>Невелика поправка (згладжування Лапласа)</dt><dd>Стандартне коригування, яке рахує кожен результат так, ніби до нього додали половину успіху й половину невдачі. Воно дає змогу оцінити ідеальний результат 10 із 10 і трохи зсуває кожну частку успішного виконання до середини.</dd><dt>Current і Redesign</dt><dd>Назви двох варіантів дизайну в дослідженні: Current — поточний застосунок, Redesign — новий дизайн.</dd><dt>Назви завдань: Send money to a friend, Freeze your card, Find last month's statement, Set up a savings goal</dt><dd>Так завдання названо в дослідженні. Українською це переказ грошей другові, заморожування картки, пошук виписки за минулий місяць і створення цілі заощаджень.</dd></dl></section></div>
+</body>
+</html>

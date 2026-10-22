@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "study": "Moderator notes",
+  "goal": "diagnose",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "ease": [
+        1,
+        5
+      ]
+    },
+    "satisfaction_from": "ease",
+    "sat_target": 4,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": null,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": false,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "Book a demo": {
+      "time_target_s": 90
+    },
+    "Invite a teammate": {
+      "time_target_s": 75
+    }
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": false
+}

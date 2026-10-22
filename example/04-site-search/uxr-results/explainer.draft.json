@@ -1,0 +1,107 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Site search",
+  "verdict": "above",
+  "taskVerdicts": {
+    "find-product": "above",
+    "filter-by-price": "uncertain",
+    "compare-two": "uncertain",
+    "return-policy": "uncertain"
+  },
+  "headline": {
+    "value": "70%",
+    "label": "Overall usability score",
+    "sentence": "Site search is clearly above its target overall, but for most single tasks we cannot tell yet."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "14 people used the shop's site search for four tasks. They looked for a product (find-product), narrowed a list by price (filter-by-price), compared two products (compare-two) and looked up the return policy (return-policy).",
+        "For each task we recorded whether the person succeeded and how long it took. Afterwards, each person rated how easy it was, how satisfied they were and how confident they felt, each on a 1–7 scale.",
+        "The study is a benchmark: a baseline to track over time, so later rounds can show whether site search gets better or worse."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score for site search is 70%. On this scale, 50% means exactly on target, and anything higher is better. Even the low end of the range is above the target, so the overall result is clearly above it.",
+        "find-product scored 91%, and it is clearly above its target. The other tasks scored lower: filter-by-price 65%, return-policy 66% and compare-two 50%.",
+        "For each of those three tasks, the range includes the target. So we cannot yet tell whether each one is above or below it."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three parts. Completion is how many people succeeded. Time is how long a typical successful attempt took. Satisfaction is the average of the three ratings.",
+        "Only a real success counted as finished. A failed attempt and a task someone gave up on both counted as not finished.",
+        "Nobody set time targets before the study. So the acceptable time for each task comes from the people who finished it and were satisfied. Completion has no target, so it gets no verdict."
+      ],
+      "items": [
+        {
+          "label": "find-product",
+          "value": "91%",
+          "text": "14 of 14 people finished. A typical attempt took 37 s, within the acceptable time of 47 s. The average rating was 5.64 out of 7, above the target of 5."
+        },
+        {
+          "label": "filter-by-price",
+          "value": "65%",
+          "text": "12 of 14 people finished. A typical attempt took 82 s, right at the acceptable time of 82 s. The average rating was 5.19 out of 7, above the target of 5."
+        },
+        {
+          "label": "compare-two",
+          "value": "50%",
+          "text": "6 of 14 people finished. A typical attempt took 125 s, within the acceptable time of 152 s. The average rating was 4.74 out of 7, below the target of 5."
+        },
+        {
+          "label": "return-policy",
+          "value": "66%",
+          "text": "10 of 14 people finished. A typical attempt took 65 s, within the acceptable time of 80 s. The average rating was 5.19 out of 7, above the target of 5."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With 14 people, the true overall score is most likely between 62% and 84%. The whole range is above the 50% target, so the overall result is solid.",
+        "The ranges for single tasks are wider. find-product runs from 86% to 96%, and is the only task that is clearly above its target. filter-by-price runs from 49% to 85%, and return-policy from 50% to 83%.",
+        "compare-two has the widest range, from 30% to 90%. More participants would narrow these ranges. That could settle whether the three unclear tasks are above or below their targets."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "Start with compare-two. Its weakest part is satisfaction: the average rating was 4.74, below the target of 5. Also, only 6 of 14 people finished it. Watch how people tried to compare two products, and where they got stuck or gave up.",
+        "For return-policy, the weakest part is also satisfaction, at 5.19 against a target of 5. It is on target, but only 10 of 14 people finished. Check whether the return policy is easy to find from search.",
+        "For filter-by-price, the weakest part is time: a typical attempt took 82 s, right at the acceptable time. Look at what slows people down when they filter by price.",
+        "find-product needs no urgent work. Its weakest part, time, is still on target at 37 s against 47 s."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how well people managed, not why they struggled. It covers only these four tasks and these 14 people. Other tasks, or other kinds of shoppers, may give a different picture.",
+        "The time part compares people with the satisfied finishers in this study, not with a business target. Nobody set time targets in advance, so the acceptable times came from this data. Each task also had a time limit, with a longer one for compare-two.",
+        "Time counts only successful attempts. Failed attempts are left out: 2 for filter-by-price, 8 for compare-two and 4 for return-policy. For compare-two, time therefore describes only the 6 people who finished.",
+        "Everyone finished find-product, a perfect 100%. This scoring method cannot handle a perfect rate as it is. So a small standard correction (Laplace smoothing) was applied to the completion rates of all tasks.",
+        "The correction nudges each rate slightly toward the middle. That is why find-product shows 97% completion although 14 of 14 people finished. You chose this correction before any scores were seen.",
+        "Because this is a benchmark, the next round must reuse the same method, the same correction and the same targets. That includes the acceptable times found this round. Otherwise a change in score could come from the method, not from site search."
+      ]
+    }
+  ],
+  "glossary": [
+    { "term": "Usability score", "definition": "One number from 0 to 100% that sums up how well people managed a task, or all tasks together. 50% means exactly on target." },
+    { "term": "Target", "definition": "The level a part should reach. Here: a rating of 5 out of 7 for satisfaction, and the acceptable time for each task." },
+    { "term": "Acceptable time", "definition": "The time target for a task, taken from how long the people who finished and were satisfied needed." },
+    { "term": "Range", "definition": "The span the true score most likely falls in. Fewer people give a wider range." },
+    { "term": "Benchmark", "definition": "A study repeated over time with the same method, so results can be compared from round to round." },
+    { "term": "Laplace smoothing", "definition": "A small standard correction that keeps a perfect 100% (or a 0%) from breaking the score. It moves each completion rate slightly toward the middle." }
+  ]
+}

@@ -1,0 +1,958 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "sum3",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|smoothing=laplace|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "original",
+      "smoothing": "laplace",
+      "timeTarget": "target",
+      "timeLog": true,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "errors",
+        "decision": "sum3",
+        "why": "No error data; the three-component SUM is used.",
+        "params": {
+          "case": "none"
+        }
+      },
+      {
+        "rule": "default",
+        "decision": "sum3",
+        "why": "Nothing in the data or goal calls for a variant; the three-component SUM is the most stable default."
+      }
+    ],
+    "suggestions": []
+  },
+  "groups": [
+    {
+      "group": "Current",
+      "tasks": [
+        {
+          "task": "Send money to a friend",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 10,
+              "p": 0.6,
+              "smoothed": 0.5909090909090909,
+              "score": 0.5909090909090909,
+              "z": 0.22988411757923227,
+              "pct": 0.5909090909090909,
+              "targetPct": null,
+              "ci": [
+                0.31160406628921383,
+                0.8328893737382084
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 90,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 74.83333333333333,
+              "median": 68.5,
+              "geoMean": 65.66796234531502,
+              "ci": [
+                35.96236847180436,
+                119.91093639916063
+              ],
+              "z": 0.5493433135659194,
+              "pct": 0.7086150659759263,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 9,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 4.555555555555555,
+              "sd": 1.6666666666666667,
+              "ci": [
+                3.274442147108812,
+                5.836668964002299
+              ],
+              "z": -0.5666666666666668,
+              "pct": 0.285470335901444,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.07085358815949498,
+            "pct": 0.5282428591144278,
+            "targetPct": 0.5,
+            "ci": [
+              0.23780754423128078,
+              0.7765238720466893
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Freeze your card",
+          "components": {
+            "completion": {
+              "x": 9,
+              "n": 10,
+              "p": 0.9,
+              "smoothed": 0.8636363636363636,
+              "score": 0.8636363636363636,
+              "z": 1.096803562093513,
+              "pct": 0.8636363636363636,
+              "targetPct": null,
+              "ci": [
+                0.5740322626051678,
+                1
+              ]
+            },
+            "time": {
+              "n": 9,
+              "target": 30,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 24.77777777777778,
+              "median": 23,
+              "geoMean": 23.077601085933978,
+              "ci": [
+                17.014739746019224,
+                31.300841495745054
+              ],
+              "z": 0.6616142752044014,
+              "pct": 0.7458907717600511,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 8,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.875,
+              "sd": 0.8345229603962802,
+              "ci": [
+                5.177321345528355,
+                6.572678654471645
+              ],
+              "z": 0.4493585171364586,
+              "pct": 0.6734134744761573,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.7359254514781243,
+            "pct": 0.7691119663958882,
+            "targetPct": 0.5,
+            "ci": [
+              0.6078657238621276,
+              0.9319090156925409
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 1
+                },
+                "message": "1 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Find last month's statement",
+          "components": {
+            "completion": {
+              "x": 4,
+              "n": 10,
+              "p": 0.4,
+              "smoothed": 0.4090909090909091,
+              "score": 0.4090909090909091,
+              "z": -0.229884117579232,
+              "pct": 0.4090909090909091,
+              "targetPct": null,
+              "ci": [
+                0.16711062626179163,
+                0.6883959337107862
+              ]
+            },
+            "time": {
+              "n": 4,
+              "target": 60,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 59,
+              "median": 62.5,
+              "geoMean": 57.63751975469949,
+              "ci": [
+                38.23389802378205,
+                86.8884381447842
+              ],
+              "z": 0.15573285312283336,
+              "pct": 0.5618781999733498,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 10,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 4.2,
+              "sd": 1.3984117975602022,
+              "ci": [
+                3.199636463224471,
+                5.200363536775529
+              ],
+              "z": -0.9296260245144523,
+              "pct": 0.1762823740591045,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": -0.3345924296569503,
+            "pct": 0.36896627817116034,
+            "targetPct": 0.5,
+            "ci": [
+              0.0256810141162433,
+              0.5959826610361479
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Set up a savings goal",
+          "components": {
+            "completion": {
+              "x": 4,
+              "n": 10,
+              "p": 0.4,
+              "smoothed": 0.4090909090909091,
+              "score": 0.4090909090909091,
+              "z": -0.229884117579232,
+              "pct": 0.4090909090909091,
+              "targetPct": null,
+              "ci": [
+                0.16711062626179163,
+                0.6883959337107862
+              ]
+            },
+            "time": {
+              "n": 4,
+              "target": 150,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 153.5,
+              "median": 157.5,
+              "geoMean": 143.28749370507967,
+              "ci": [
+                70.43984046820754,
+                291.47291810733
+              ],
+              "z": 0.10259170035199779,
+              "pct": 0.5408564848793457,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 6,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 4.666666666666667,
+              "sd": 1.96638416050035,
+              "ci": [
+                2.603073046910684,
+                6.73026028642265
+              ],
+              "z": -0.42378968976300635,
+              "pct": 0.3358595989823727,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": -0.1836940356634135,
+            "pct": 0.4271267440708385,
+            "targetPct": 0.5,
+            "ci": [
+              0.05288339434262894,
+              0.679424309968263
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": 0.07212314357931385,
+        "pct": 0.5287480458638669,
+        "targetPct": 0.5,
+        "ci": [
+          0.2651419979576513,
+          0.7432706484344576
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 0,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    },
+    {
+      "group": "Redesign",
+      "tasks": [
+        {
+          "task": "Send money to a friend",
+          "components": {
+            "completion": {
+              "x": 8,
+              "n": 10,
+              "p": 0.8,
+              "smoothed": 0.7727272727272727,
+              "score": 0.7727272727272727,
+              "z": 0.7478585947633023,
+              "pct": 0.7727272727272727,
+              "targetPct": null,
+              "ci": [
+                0.47936759056615075,
+                0.9541127295161158
+              ]
+            },
+            "time": {
+              "n": 8,
+              "target": 90,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 84.25,
+              "median": 73.5,
+              "geoMean": 79.14203368231439,
+              "ci": [
+                58.05245375304995,
+                107.8931395736828
+              ],
+              "z": 0.3468359647986324,
+              "pct": 0.6356427218481516,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 7,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.285714285714286,
+              "sd": 1.6035674514745462,
+              "ci": [
+                3.8026617460768746,
+                6.768766825351697
+              ],
+              "z": -0.13363062095621228,
+              "pct": 0.44684733466161625,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.32035464620190746,
+            "pct": 0.6256502488297527,
+            "targetPct": 0.5,
+            "ci": [
+              0.43131216415069673,
+              0.8926687413177387
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 2
+                },
+                "message": "2 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Freeze your card",
+          "components": {
+            "completion": {
+              "x": 10,
+              "n": 10,
+              "p": 1,
+              "smoothed": 0.9545454545454546,
+              "score": 0.9545454545454546,
+              "z": 1.6906216295848984,
+              "pct": 0.9545454545454546,
+              "targetPct": null,
+              "ci": [
+                0.6791126942494543,
+                1
+              ]
+            },
+            "time": {
+              "n": 10,
+              "target": 30,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 27.2,
+              "median": 25,
+              "geoMean": 25.063294414294027,
+              "ci": [
+                18.104965799341983,
+                34.69593557146696
+              ],
+              "z": 0.39547654592717685,
+              "pct": 0.6537543862416401,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 10,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.6,
+              "sd": 0.8432740427115677,
+              "ci": [
+                4.996758089920486,
+                6.203241910079513
+              ],
+              "z": 0.11858541225631382,
+              "pct": 0.5471980884368788,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.7348945292561297,
+            "pct": 0.7687981347880517,
+            "targetPct": 0.5,
+            "ci": [
+              0.6406504021462925,
+              0.8738463604666634
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Find last month's statement",
+          "components": {
+            "completion": {
+              "x": 9,
+              "n": 10,
+              "p": 0.9,
+              "smoothed": 0.8636363636363636,
+              "score": 0.8636363636363636,
+              "z": 1.096803562093513,
+              "pct": 0.8636363636363636,
+              "targetPct": null,
+              "ci": [
+                0.5740322626051678,
+                1
+              ]
+            },
+            "time": {
+              "n": 9,
+              "target": 60,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 90.33333333333333,
+              "median": 56,
+              "geoMean": 64.1941111134539,
+              "ci": [
+                33.12370908516934,
+                124.40889065444453
+              ],
+              "z": -0.07849403012455256,
+              "pct": 0.468717539421554,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 10,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.3,
+              "sd": 1.3374935098492586,
+              "ci": [
+                4.343214781038402,
+                6.256785218961598
+              ],
+              "z": -0.1495334358837682,
+              "pct": 0.44056636396395765,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.28959203202839745,
+            "pct": 0.613935818277929,
+            "targetPct": 0.5,
+            "ci": [
+              0.38872239964383876,
+              0.8023951406805131
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 1
+                },
+                "message": "1 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "Set up a savings goal",
+          "components": {
+            "completion": {
+              "x": 7,
+              "n": 10,
+              "p": 0.7,
+              "smoothed": 0.6818181818181818,
+              "score": 0.6818181818181818,
+              "z": 0.472789120992267,
+              "pct": 0.6818181818181818,
+              "targetPct": null,
+              "ci": [
+                0.3923252979772696,
+                0.8966615820775747
+              ]
+            },
+            "time": {
+              "n": 7,
+              "target": 150,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 146.57142857142858,
+              "median": 144,
+              "geoMean": 137.76560035342712,
+              "ci": [
+                94.14764534981794,
+                201.5914531926942
+              ],
+              "z": 0.2066969749033076,
+              "pct": 0.5818767399681226,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 9,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.555555555555555,
+              "sd": 0.7264831572567788,
+              "ci": [
+                4.9971311672921255,
+                6.113979943818985
+              ],
+              "z": 0.07647191129018699,
+              "pct": 0.5304781699672116,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.25198600239525387,
+            "pct": 0.5994740583786743,
+            "targetPct": 0.5,
+            "ci": [
+              0.3221211499393504,
+              0.7710051353643751
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 3
+                },
+                "message": "3 failed attempt(s) are left out of time; time describes successful users only."
+              },
+              {
+                "code": "smoothing",
+                "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": 0.3992068024704222,
+        "pct": 0.6551295843302158,
+        "targetPct": 0.5,
+        "ci": [
+          0.5393437062856424,
+          0.7873329686233941
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 0,
+        "seed": 20261022,
+        "unit": "participant"
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "group": "Redesign",
+      "vs": "Current",
+      "diff": 0.12638153846634892,
+      "ci": [
+        -0.10017686887237384,
+        0.42873469495067684
+      ],
+      "design": "independent",
+      "shared": 0
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Current, task Send money to a friend",
+        "group": "Current",
+        "task": "Send money to a friend"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Current, task Send money to a friend",
+        "group": "Current",
+        "task": "Send money to a friend"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 1
+        },
+        "message": "1 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Current, task Freeze your card",
+        "group": "Current",
+        "task": "Freeze your card"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Current, task Freeze your card",
+        "group": "Current",
+        "task": "Freeze your card"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Current, task Find last month's statement",
+        "group": "Current",
+        "task": "Find last month's statement"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Current, task Find last month's statement",
+        "group": "Current",
+        "task": "Find last month's statement"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Current, task Set up a savings goal",
+        "group": "Current",
+        "task": "Set up a savings goal"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Current, task Set up a savings goal",
+        "group": "Current",
+        "task": "Set up a savings goal"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 2
+        },
+        "message": "2 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Redesign, task Send money to a friend",
+        "group": "Redesign",
+        "task": "Send money to a friend"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Redesign, task Send money to a friend",
+        "group": "Redesign",
+        "task": "Send money to a friend"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Redesign, task Freeze your card",
+        "group": "Redesign",
+        "task": "Freeze your card"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 1
+        },
+        "message": "1 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Redesign, task Find last month's statement",
+        "group": "Redesign",
+        "task": "Find last month's statement"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Redesign, task Find last month's statement",
+        "group": "Redesign",
+        "task": "Find last month's statement"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 3
+        },
+        "message": "3 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "group Redesign, task Set up a savings goal",
+        "group": "Redesign",
+        "task": "Set up a savings goal"
+      },
+      {
+        "code": "smoothing",
+        "message": "Laplace smoothing ((x+0.5)/(n+1)) is applied to proportions; this is not the original SUM.",
+        "where": "group Redesign, task Set up a savings goal",
+        "group": "Redesign",
+        "task": "Set up a savings goal"
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|smoothing=laplace|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": "Current",
+          "pct": 0.5074681194872173
+        },
+        {
+          "group": "Redesign",
+          "pct": 0.608229779404058
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "empirical-time-impossible",
+          "params": {
+            "n": 2
+          },
+          "text": "an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 2 and no cutoff) (group Current)",
+          "group": "Current"
+        }
+      ],
+      "reason": "needs an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 2 and no cutoff) (group Current)"
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    },
+    {
+      "preset": "microsoft",
+      "status": "not-applicable",
+      "code": "missing-columns",
+      "reason": "The Usability Score needs perceived_time, ease, satisfaction."
+    }
+  ],
+  "methodDependent": false,
+  "contract": {
+    "version": 1,
+    "study": "Mobile banking",
+    "goal": "compare",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "seq": [
+          1,
+          7
+        ]
+      },
+      "satisfaction_from": "seq",
+      "sat_target": 5.5,
+      "expert_multiplier": 3,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "Send money to a friend": {
+        "time_target_s": 90
+      },
+      "Freeze your card": {
+        "time_target_s": 30
+      },
+      "Find last month's statement": {
+        "time_target_s": 60
+      },
+      "Set up a savings goal": {
+        "time_target_s": 150
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:49:06.304Z"
+}

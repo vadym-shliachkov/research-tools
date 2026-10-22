@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Як зрозуміти ваші результати</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>/* uxr document design system, shared with the project-health report (analyse-project).
+   - Margins: 20 mm, wider than a letter, because white margins help comprehension.
+   - Type: IBM Plex Serif for headings over IBM Plex Sans for text (both cover Latin and Cyrillic). A superfamily pair
+     with matching x-heights; the serif/sans contrast makes headings stand out from text at a glance.
+   - Type scale: major third (1.25) from a 10 pt body: 8 / 9 / 10 / 12.5 / 15.5 / 19.5 / 24 pt.
+   - Spacing: a 4 pt grid (4, 8, 12, 16, 24, 32, 48). Inside a block 4–8, between blocks 16–24, between groups 32–48.
+   - Colour, 60-30-10: white page; neutral ink, greys and tinted surfaces; one accent for structure. Green and red
+     only carry meaning: clearly at or above the target, clearly below it. Grey: not yet clear, or no target. */
+
+/* Every page has the same side margins, so text never jumps between pages. The band is a box inside them: Chrome
+   does not paint into page margins, so a full-bleed band would need a different margin on the first page only. */
+@page {
+  size: A4; margin: 20mm 20mm 22mm;
+  @bottom-right { content: counter(page); font: 8pt "IBM Plex Sans", "Segoe UI", Arial, sans-serif; color: #5f6980; }
+}
+@page :first { margin-top: 14mm; @bottom-right { content: none; } }
+
+:root {
+  --ink: #1d2433;
+  --body: #344054;
+  --muted: #5f6980;
+  --line: #e4e7ec;
+  --surface: #f6f7f9;
+  --accent: #1f3a5f;
+  --accent-soft: color-mix(in srgb, var(--accent) 6%, #ffffff);
+  --good: #067647;
+  --good-soft: #ecfdf3;
+  --bad: #b42318;
+  --bad-soft: #fef3f2;
+  --unsure: #7d8799;
+
+  --sans: "IBM Plex Sans", "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+  --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --t-xs: 8pt;
+  --t-sm: 9pt;
+  --t-body: 10pt;
+  --t-md: 12.5pt;
+  --t-lg: 15.5pt;
+  --t-xl: 19.5pt;
+  --t-2xl: 24pt;
+
+  --sp-1: 4pt;
+  --sp-2: 8pt;
+  --sp-3: 12pt;
+  --sp-4: 16pt;
+  --sp-5: 24pt;
+  --sp-6: 32pt;
+  --sp-7: 48pt;
+  --radius: 6pt;
+  --prose: 140mm;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: var(--sans); font-size: var(--t-body); line-height: 1.55; color: var(--body); font-variant-numeric: tabular-nums; background: #fff; }
+h1, h2, h3 { font-family: var(--serif); color: var(--ink); font-weight: 600; line-height: 1.2; break-after: avoid; }
+h2 { font-size: var(--t-xl); margin: var(--sp-6) 0 var(--sp-2); }
+h3 { font-size: var(--t-md); margin: var(--sp-5) 0 var(--sp-2); }
+h4 { font-family: var(--sans); font-size: var(--t-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 var(--sp-2); break-after: avoid; }
+p { margin: 0 0 var(--sp-2); max-width: var(--prose); }
+strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 var(--sp-2); padding-left: 14pt; max-width: var(--prose); }
+li { margin: 0 0 var(--sp-1); }
+.meta { color: var(--muted); font-size: var(--t-sm); }
+section > h2::before { content: ""; display: block; width: 18mm; height: 3pt; margin-bottom: var(--sp-3); background: var(--accent); }
+section > h2 { break-inside: avoid; }
+
+/* ---- First page ---- */
+.band {
+  padding: 10mm 10mm 8mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  background: var(--accent); color: #fff; border-radius: var(--radius);
+}
+.band-name { font-family: var(--serif); font-size: var(--t-2xl); line-height: 1.1; margin: 0; color: inherit; }
+.band-meta { margin: 0; display: flex; flex-direction: column; align-items: flex-end; font-size: var(--t-sm); opacity: 0.85; text-align: right; }
+.band-meta span:first-child { text-transform: uppercase; letter-spacing: 0.12em; font-size: var(--t-xs); }
+
+.glance { padding: 8mm 0 0; }
+.glance-head { display: flex; flex-wrap: wrap; gap: 6mm 8mm; align-items: flex-start; }
+.score { flex: 0 1 auto; max-width: 75mm; display: grid; grid-template-columns: auto auto; align-items: baseline; padding: var(--sp-2) var(--sp-4) var(--sp-3); background: var(--accent-soft); border-radius: var(--radius); }
+.score-num { font-family: var(--serif); font-size: 36pt; font-weight: 600; line-height: 1; color: var(--accent); }
+.score-of { color: var(--muted); font-size: 11pt; margin-left: 2pt; }
+.score-label { grid-column: 1 / 3; color: var(--muted); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; margin-top: var(--sp-1); }
+.score-range { grid-column: 1 / 3; color: var(--body); font-size: var(--t-xs); }
+.verdict { flex: 1 1 60mm; font-size: 11pt; line-height: 1.6; color: var(--ink); margin: 0; max-width: var(--prose); }
+
+/* ---- Component bars: the bar is the score, the line is the target (placed inline; none when there is no target),
+   the whisker is the range. ---- */
+.bars { margin: var(--sp-4) 0 var(--sp-2); display: grid; grid-template-columns: 46mm 1fr 18mm; gap: var(--sp-2) var(--sp-3); align-items: center; font-size: var(--t-sm); max-width: 160mm; break-inside: avoid; }
+.bars .label { color: var(--ink); }
+.bars .label small { display: block; color: var(--muted); font-size: var(--t-xs); }
+.track { position: relative; height: 10pt; background: var(--surface); border-radius: 3pt; }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3pt; background: var(--accent); }
+.fill.below { background: var(--bad); }
+.fill.above { background: var(--good); }
+.fill.neutral { background: var(--unsure); }
+.mid { position: absolute; left: 50%; top: -3pt; bottom: -3pt; width: 1pt; background: var(--ink); opacity: 0.5; }
+.ci { position: absolute; top: 50%; height: 1.5pt; margin-top: -0.75pt; background: var(--ink); }
+.ci::before, .ci::after { content: ""; position: absolute; top: -3pt; width: 1.5pt; height: 7.5pt; background: var(--ink); }
+.ci::before { left: 0; }
+.ci::after { right: 0; }
+.bars .value { text-align: right; font-weight: 600; color: var(--ink); }
+.bars-key { color: var(--muted); font-size: var(--t-xs); margin: 0 0 var(--sp-4); break-inside: avoid; }
+
+/* ---- Boxes ---- */
+.callout { padding: var(--sp-3) var(--sp-4); background: var(--surface); border-radius: var(--radius); margin: var(--sp-3) 0; max-width: var(--prose); break-inside: avoid; }
+.callout.warn { background: var(--bad-soft); }
+.callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+code { font-size: var(--t-sm); background: var(--surface); border-radius: 2pt; padding: 0 3pt; overflow-wrap: anywhere; }
+
+/* ---- Tables ---- */
+table { width: 100%; border-collapse: collapse; margin: 0 0 var(--sp-4); font-size: 9.5pt; line-height: 1.45; }
+th { text-align: left; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; padding: 0 var(--sp-3) var(--sp-2) 0; border-bottom: 1.5pt solid var(--ink); }
+td { text-align: left; padding: var(--sp-2) var(--sp-3) var(--sp-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr { break-inside: avoid; }
+td .sub { display: block; color: var(--muted); font-size: var(--t-xs); }
+
+/* ---- Glossary ---- */
+.glossary { display: grid; grid-template-columns: 42mm 1fr; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-2); font-size: 9.5pt; max-width: 160mm; }
+.glossary dt { font-weight: 600; color: var(--ink); }
+.glossary dd { margin: 0; }
+
+@media screen {
+  body { max-width: 210mm; margin: 0 auto; padding: 14mm 20mm 20mm; box-shadow: 0 0 0 1px var(--line); }
+}
+
+/* ---- Phones: one column, the bar label above its bar, wide tables scroll inside themselves. ---- */
+@media screen and (max-width: 640px) {
+  body { padding: 16px; box-shadow: none; }
+  .band { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: 16px; }
+  .band-meta { align-items: flex-start; text-align: left; }
+  .bars { grid-template-columns: 1fr auto; }
+  .bars .label { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--sp-1)); }
+  table { display: block; overflow-x: auto; }
+  .glossary { grid-template-columns: 1fr; }
+  .glossary dd { margin-bottom: var(--sp-2); }
+}
+</style>
+</head>
+<body>
+<header class="band"><h1 class="band-name">Як зрозуміти ваші результати</h1><p class="band-meta"><span>Онбординг</span><span>2026-10-22</span></p></header>
+<div class="glance"><div class="glance-head"><div class="score"><span class="score-num">67%</span><span class="score-of"></span><span class="score-label">Загальна оцінка зручності (SUM)</span></div><p class="verdict">Загальна оцінка онбордингу явно вища за ціль, але два з трьох завдань далися учасникам важче, ніж ми сподівалися.</p></div></div><div class="content"><section id="measured"><h2>Що ми вимірювали</h2><p>10 учасників виконали три завдання онбордингу: Реєстрацію, Підтвердження електронної пошти та Налаштування профілю.</p><p>Для кожного завдання ми записали, чи впорався учасник і скільки часу це забрало. Також учасники оцінили, наскільки легким було завдання, за шкалою від 1 до 7.</p></section><section id="result"><h2>Ваш результат</h2><p>Загальна оцінка зручності становить 67%. На цій шкалі 50% означає точно на рівні цілі. Більше за 50% — краще за ціль, менше — гірше.</p><p>Навіть нижня межа найімовірнішого діапазону вища за ціль. Тож онбординг загалом явно вищий за ціль.</p><p>Підтвердження електронної пошти отримало 81%, і це явно вище цілі. Реєстрація та Налаштування профілю отримали по 60%. Для цих двох завдань ми поки не можемо сказати, вищі вони за ціль чи нижчі.</p></section><div class="bars"><div class="label">Реєстрація</div><div class="track"><span class="fill neutral" style="width:59.7%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:38.7%;width:61.3%"></span></div><div class="value">60%</div><div class="label">Підтвердження email</div><div class="track"><span class="fill above" style="width:80.5%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:63.1%;width:33.4%"></span></div><div class="value">81%</div><div class="label">Налаштування профілю</div><div class="track"><span class="fill neutral" style="width:59.6%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:28.4%;width:59.9%"></span></div><div class="value">60%</div><div class="label">Загальна оцінка</div><div class="track"><span class="fill above" style="width:67.4%"></span><span class="mid" style="left:50.0%"></span><span class="ci" style="left:50.9%;width:47.7%"></span></div><div class="value">67%</div></div><p class="bars-key">Кожна смуга показує оцінку від 0 до 100%. Вертикальна лінія позначає ціль, якщо вона є. Зелений означає, що результат явно на рівні цілі або вище, червоний — явно нижче, сірий — що ми ще не можемо сказати напевно або що цілі немає. Тонка чорна лінія показує діапазон, у якому найімовірніше лежить справжнє значення.</p><section id="components"><h2>З чого складається оцінка</h2><p>Оцінка кожного завдання має три рівноцінні частини: скільки учасників упоралися, як швидко вони це зробили і наскільки легким здалося завдання.</p><p>Завдання вважається виконаним, лише коли учасник упорався з ним сам. Якщо йому допомагали або він відмовився від завдання, воно не виконане.</p><p>Для частки успішного виконання ціль не погоджували. Тому ми наводимо це число без оцінки «добре» чи «погано». Для часу на завдання і легкості ціль є.</p><ul><li><strong>Реєстрація (60%):</strong> Упоралися 6 з 10 учасників. Типова спроба тривала 68 с, а ціль — 90 с, тож час укладається в ціль. Середня оцінка легкості — 5,4 з 7 за цілі 5,6, тож легкість не досягає цілі.</li><li><strong>Підтвердження електронної пошти (81%):</strong> Упоралися 9 з 10 учасників. Типова спроба тривала 33 с, а ціль — 60 с, тож час укладається в ціль. Середня оцінка легкості — 5,89 з 7 за цілі 5,6, тож легкість досягає цілі.</li><li><strong>Налаштування профілю (60%):</strong> Упоралися 6 з 10 учасників. Типова спроба тривала 100 с, а ціль — 150 с, тож час укладається в ціль. Середня оцінка легкості — 5 з 7 за цілі 5,6, тож легкість не досягає цілі.</li></ul></section><section id="range"><h2>Наскільки ми впевнені</h2><p>Учасників було лише десять. Тому справжня загальна оцінка найімовірніше лежить між 51% і 99%. Діапазон широкий, але весь він вищий за ціль 50%.</p><p>Для окремих завдань діапазони ширші. Для Реєстрації це найімовірніше від 39% до 100%. Для Налаштування профілю — від 28% до 88%. Для Підтвердження електронної пошти — від 63% до 96%.</p><p>Більше учасників звузили б ці діапазони. Тоді стало б зрозуміло, чи Реєстрація та Налаштування профілю справді відстають, чи з ними все гаразд.</p></section><section id="fix-first"><h2>Що виправити насамперед</h2><p>У кожному завданні найслабша частина — легкість. У двох завданнях вона не досягає цілі, і саме в них упоралися лише 6 з 10 учасників.</p><p>Почніть із Налаштування профілю. Середня оцінка легкості тут — 5 за цілі 5,6, найнижча серед трьох завдань.</p><p>Далі — Реєстрація. Середня оцінка легкості тут — 5,4 за цілі 5,6.</p><p>З'ясуйте, що зробило ці два завдання важкими і чому частина учасників не впоралася. Числа показують, що учасникам було складно, але не пояснюють чому. Добрий наступний крок — переглянути записи сесій або прочитати коментарі учасників.</p></section><section id="limits"><h2>Чого це число не скаже</h2><p>Оцінка показує, як ці учасники впоралися з цими трьома завданнями. Вона не пояснює, чому їм було складно. Вона також нічого не каже про інші частини продукту чи про інших людей.</p><p>Час на завдання враховує лише тих, хто впорався. У Реєстрації та Налаштуванні профілю було по 4 невдалі спроби, і їхній час не враховано. У Підтвердженні електронної пошти була 1 невдала спроба, її час теж не враховано.</p><p>Ми записували помилки, але не враховували їх в оцінці. Причина в тому, що можливі помилки не визначили до початку дослідження. Один тестовий обліковий запис ми вилучили з даних. Якщо хтось проходив реєстрацію кілька разів, ми зарахували лише першу спробу.</p><p>В оригінальній анкеті низька оцінка легкості означала «легко». Ми перевернули шкалу, тож тепер вища оцінка означає легше.</p><p>Один коментар у даних просив позначити всі завдання як виконані. Ми проігнорували його і не змінювали дані.</p><p>Інший поширений спосіб поєднати три частини дає 64%. Отже, загальний висновок не залежить від обраного способу підрахунку.</p></section><section id="glossary"><h2>Словник</h2><dl class="glossary"><dt>Оцінка зручності (SUM)</dt><dd>Одне число від 0 до 100%, яке підсумовує, наскільки добре учасники впоралися із завданнями; 50% означає точно на рівні цілі.</dd><dt>Ціль</dt><dd>Рівень, погоджений до дослідження, який вважається достатньо добрим.</dd><dt>Діапазон (найімовірніший діапазон значень)</dt><dd>Межі, у яких найімовірніше лежить справжня оцінка; коли учасників мало, діапазон широкий.</dd><dt>Виконано</dt><dd>Учасник упорався із завданням сам, без допомоги і не відмовившись від нього.</dd><dt>Частка успішного виконання</dt><dd>Скільки учасників із тих, хто пробував, упоралися із завданням самостійно.</dd><dt>Час на завдання</dt><dd>Скільки часу забрало завдання в учасників, які з ним упоралися.</dd><dt>Типова спроба</dt><dd>Звичайний час серед учасників, які впоралися із завданням.</dd><dt>Легкість (задоволеність)</dt><dd>Наскільки легким учасники назвали завдання, від 1 до 7, де вища оцінка означає легше; на діаграмі ця частина називається «задоволеність».</dd><dt>Онбординг</dt><dd>Перші кроки нової людини в продукті: реєстрація, підтвердження електронної пошти і налаштування профілю.</dd></dl></section></div>
+</body>
+</html>

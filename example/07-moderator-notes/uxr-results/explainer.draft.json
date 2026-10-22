@@ -1,0 +1,125 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Moderator notes",
+  "verdict": "uncertain",
+  "taskVerdicts": {
+    "Book a demo": "uncertain",
+    "Invite a teammate": "uncertain"
+  },
+  "headline": {
+    "value": "45%",
+    "label": "Overall usability score",
+    "sentence": "Team plan onboarding looks a little weaker than the target, but six people are too few to tell for sure."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "Six people each tried two onboarding tasks for the team plan: Book a demo and Invite a teammate. A moderator noted during each call whether they finished, how long it took, and how easy it felt.",
+        "Only finishing without help counts as finished. Someone who finished only after a hint from the moderator counts as not finished. The \"How easy\" rating, from 1 to 5 where 5 means very easy, is our measure of satisfaction.",
+        "The aim was to find the weaker of the two tasks, so the team knows where to look first."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 45%. A score of 50% means exactly on target, higher is better, and lower is worse.",
+        "The score looks a little below the 50% target, but the study cannot yet tell. The likely range runs from 21% to 82% and includes the target.",
+        "Invite a teammate scored 42% and Book a demo scored 48%. For each task, we cannot yet tell whether it is above or below its target.",
+        "Invite a teammate scored lower, so it is the first candidate for the weaker task. The two ranges overlap a lot, so this study cannot prove that it is weaker."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three parts with equal weight: how many people finished, how fast they were, and how easy it felt. Time counts only the people who finished."
+      ],
+      "items": [
+        {
+          "label": "Book a demo: completion",
+          "value": "3 of 6",
+          "text": "3 of 6 people finished. There is no agreed target for this part."
+        },
+        {
+          "label": "Book a demo: time on task",
+          "value": "79 s",
+          "text": "A typical attempt took 79 seconds; the target was 90 seconds. This part is on target."
+        },
+        {
+          "label": "Book a demo: satisfaction",
+          "value": "3.17 of 5",
+          "text": "The average ease rating was 3.17 on the 1 to 5 scale; the target was 4. This part is off target."
+        },
+        {
+          "label": "Invite a teammate: completion",
+          "value": "3 of 6",
+          "text": "3 of 6 people finished. There is no agreed target for this part."
+        },
+        {
+          "label": "Invite a teammate: time on task",
+          "value": "81 s",
+          "text": "A typical attempt took 81 seconds; the target was 75 seconds. This part is off target."
+        },
+        {
+          "label": "Invite a teammate: satisfaction",
+          "value": "3.5 of 5",
+          "text": "The average ease rating was 3.5 on the 1 to 5 scale; the target was 4. This part is off target."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With six people, the true overall score is most likely between 21% and 82%. That range is very wide, because one person more or less who finishes moves the score a lot.",
+        "The task ranges are just as wide: 30% to 82% for Book a demo, and 21% to 76% for Invite a teammate. These ranges are also only approximate, because the data is so thin.",
+        "Testing more people would narrow the ranges. Only then could we say whether each task is above or below its target, and which task is really weaker."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "For Invite a teammate, the weakest part is time. A typical attempt took 81 seconds against a target of 75 seconds. Look at which steps of inviting slow people down.",
+        "For Book a demo, the weakest part is satisfaction. People finished quickly enough, but the average ease rating was only 3.17 against a target of 4. Look at what made booking feel hard.",
+        "Half of the people did not finish each task on their own. The moderator also noted that several people asked what \"seat\" means. That is an observation from the notes, not a measured number, but the word is worth checking."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how well people did, not why they struggled. For the reasons, read the moderator's notes and watch the recordings, if there are any.",
+        "Six people is a very small study, so every part of the score is uncertain. The times describe only the people who finished, because those who did not finish are left out of time.",
+        "The data was copied by hand from notes typed during the calls, and the times were written as free text. Small copying or timing errors are possible, even though the table was checked.",
+        "These results cover only these two tasks and these six people. Another common way of scoring gives 44%, so the scoring method does not change the answer."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Usability score",
+      "definition": "One number that sums up how well people managed a task. 50% means exactly on target; higher is better, lower is worse."
+    },
+    {
+      "term": "Target",
+      "definition": "The level the team agreed a task should reach, such as a time limit or an ease rating."
+    },
+    {
+      "term": "Range",
+      "definition": "The values the true score most likely falls between. Fewer people give a wider range."
+    },
+    {
+      "term": "Satisfaction",
+      "definition": "Here, the \"How easy\" rating each person gave after a task, from 1 to 5 where 5 means very easy."
+    },
+    {
+      "term": "Time on task",
+      "definition": "How long a typical person who finished took to complete the task."
+    }
+  ]
+}

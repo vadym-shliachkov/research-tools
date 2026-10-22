@@ -1,0 +1,255 @@
+{
+  "rows": 64,
+  "layout": "long",
+  "columns": [
+    {
+      "name": "Respondent",
+      "index": 0,
+      "type": "text",
+      "missing": 0,
+      "distinct": 16,
+      "top": [
+        {
+          "value": "R001",
+          "count": 4
+        },
+        {
+          "value": "R002",
+          "count": 4
+        },
+        {
+          "value": "R003",
+          "count": 4
+        },
+        {
+          "value": "R004",
+          "count": 4
+        },
+        {
+          "value": "R005",
+          "count": 4
+        },
+        {
+          "value": "R006",
+          "count": 4
+        },
+        {
+          "value": "R007",
+          "count": 4
+        },
+        {
+          "value": "R008",
+          "count": 4
+        }
+      ],
+      "roles": [
+        {
+          "role": "participant_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Task",
+      "index": 1,
+      "type": "text",
+      "missing": 0,
+      "distinct": 4,
+      "top": [
+        {
+          "value": "search-hotel",
+          "count": 16
+        },
+        {
+          "value": "choose-room",
+          "count": 16
+        },
+        {
+          "value": "pay",
+          "count": 16
+        },
+        {
+          "value": "cancel-booking",
+          "count": 16
+        }
+      ],
+      "roles": [
+        {
+          "role": "task_id",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Result",
+      "index": 2,
+      "type": "boolean",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "Pass",
+          "count": 48
+        },
+        {
+          "value": "Fail",
+          "count": 16
+        }
+      ],
+      "roles": [
+        {
+          "role": "success",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Time (mm:ss)",
+      "index": 3,
+      "type": "duration",
+      "missing": 0,
+      "distinct": 56,
+      "top": [
+        {
+          "value": "0:22",
+          "count": 3
+        },
+        {
+          "value": "0:48",
+          "count": 2
+        },
+        {
+          "value": "0:41",
+          "count": 2
+        },
+        {
+          "value": "1:26",
+          "count": 2
+        },
+        {
+          "value": "1:35",
+          "count": 2
+        },
+        {
+          "value": "1:24",
+          "count": 2
+        },
+        {
+          "value": "1:33",
+          "count": 2
+        },
+        {
+          "value": "1:43",
+          "count": 1
+        }
+      ],
+      "roles": [
+        {
+          "role": "time_s",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "SEQ (1-7)",
+      "index": 4,
+      "type": "integer",
+      "missing": 0,
+      "distinct": 6,
+      "top": [
+        {
+          "value": "5",
+          "count": 21
+        },
+        {
+          "value": "6",
+          "count": 18
+        },
+        {
+          "value": "4",
+          "count": 13
+        },
+        {
+          "value": "7",
+          "count": 8
+        },
+        {
+          "value": "3",
+          "count": 3
+        },
+        {
+          "value": "2",
+          "count": 1
+        }
+      ],
+      "min": 2,
+      "max": 7,
+      "scaleHint": [
+        1,
+        7
+      ],
+      "roles": [
+        {
+          "role": "seq",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Device",
+      "index": 5,
+      "type": "text",
+      "missing": 0,
+      "distinct": 2,
+      "top": [
+        {
+          "value": "mobile",
+          "count": 36
+        },
+        {
+          "value": "desktop",
+          "count": 28
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "mustAsk": [
+    {
+      "topic": "success-coding",
+      "columns": [
+        "Result"
+      ],
+      "question": "How should each value of \"Result\" count: \"Pass\", \"Fail\"? In particular, does a partial or assisted success count as success?"
+    },
+    {
+      "topic": "time-format",
+      "columns": [
+        "Time (mm:ss)"
+      ],
+      "question": "Values in \"Time (mm:ss)\" look like 0:22. Is that minutes:seconds or hours:minutes?"
+    },
+    {
+      "topic": "scale-range",
+      "columns": [
+        "SEQ (1-7)"
+      ],
+      "question": "What is the full scale of \"SEQ (1-7)\" (seen 2–7; the header says 1–7)? The highest possible answer may not appear in the data."
+    },
+    {
+      "topic": "scale-direction",
+      "columns": [
+        "SEQ (1-7)"
+      ],
+      "question": "For \"SEQ (1-7)\": is the highest number the best answer (very easy, very satisfied)?"
+    },
+    {
+      "topic": "satisfaction-construct",
+      "columns": [
+        "SEQ (1-7)"
+      ],
+      "question": "Is \"SEQ (1-7)\" the satisfaction measure? The original SUM averaged ease, satisfaction and perceived time."
+    }
+  ],
+  "suspectRows": []
+}

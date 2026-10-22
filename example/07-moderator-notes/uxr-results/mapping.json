@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "layout": "long",
+  "columns": {
+    "participant_id": { "from": "Who" },
+    "task_id": { "from": "Task" },
+    "success": { "from": "Done?", "map": { "✓": 1, "✗": 0, "✓ (hint)": 0 } },
+    "time_s": { "from": "Time (s)", "unit": "s" },
+    "ease": { "from": "How easy", "scale": [1, 5] }
+  },
+  "duplicates": "error"
+}

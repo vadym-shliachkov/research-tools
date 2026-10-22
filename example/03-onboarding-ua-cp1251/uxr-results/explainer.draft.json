@@ -1,0 +1,95 @@
+{
+  "lang": "en",
+  "title": "How to understand your results",
+  "study": "Onboarding",
+  "verdict": "above",
+  "taskVerdicts": {
+    "Реєстрація": "uncertain",
+    "Підтвердження email": "above",
+    "Налаштування профілю": "uncertain"
+  },
+  "headline": {
+    "value": "67%",
+    "label": "Overall usability score",
+    "sentence": "Onboarding as a whole is clearly above its target, but people found two of the three tasks harder than hoped."
+  },
+  "sections": [
+    {
+      "id": "measured",
+      "heading": "What we measured",
+      "paragraphs": [
+        "10 people tried three onboarding tasks: Реєстрація (sign-up), Підтвердження email (confirm email) and Налаштування профілю (profile setup). For each task we recorded whether they finished, how long it took, and how easy it felt on a 1–7 scale."
+      ]
+    },
+    {
+      "id": "result",
+      "heading": "Your result",
+      "paragraphs": [
+        "The overall usability score is 67%. On this scale, 50% means exactly on target, above 50% is better and below 50% is worse. Even the low end of the range is above the target, so the result is clearly above it.",
+        "Підтвердження email (confirm email) scored 81% and is clearly above its target. Реєстрація (sign-up) and Налаштування профілю (profile setup) each scored 60%. For these two, we cannot yet tell whether they are above or below the target."
+      ]
+    },
+    {
+      "id": "components",
+      "heading": "What the score is made of",
+      "paragraphs": [
+        "Each task score combines three equal parts: how many people finished, how fast they were, and how easy the task felt. Only a task marked as done counts as finished. Finishing with help or giving up counts as not finished.",
+        "Finishing has no agreed target, so we give the number without calling it good or bad. Time and ease each have a target."
+      ],
+      "items": [
+        {
+          "label": "Реєстрація (sign-up)",
+          "value": "60%",
+          "text": "6 of 10 people finished. A typical attempt took 68 s against a target of 90 s, so time is on target. The average ease rating was 5.4 out of 7 against a target of 5.6, so ease is off target."
+        },
+        {
+          "label": "Підтвердження email (confirm email)",
+          "value": "81%",
+          "text": "9 of 10 people finished. A typical attempt took 33 s against a target of 60 s, so time is on target. The average ease rating was 5.89 out of 7 against a target of 5.6, so ease is on target."
+        },
+        {
+          "label": "Налаштування профілю (profile setup)",
+          "value": "60%",
+          "text": "6 of 10 people finished. A typical attempt took 100 s against a target of 150 s, so time is on target. The average ease rating was 5 out of 7 against a target of 5.6, so ease is off target."
+        }
+      ]
+    },
+    {
+      "id": "range",
+      "heading": "How sure we are",
+      "paragraphs": [
+        "With ten people, the true overall score is most likely between 51% and 99%. That range is wide, but all of it is above the 50% target.",
+        "The ranges for single tasks are wider. Реєстрація (sign-up) most likely lies between 39% and 100%, and Налаштування профілю (profile setup) between 28% and 88%. Підтвердження email (confirm email) most likely lies between 63% and 96%.",
+        "More participants would narrow these ranges. That could show whether Реєстрація (sign-up) and Налаштування профілю (profile setup) really fall short or are fine."
+      ]
+    },
+    {
+      "id": "fix-first",
+      "heading": "What to fix first",
+      "paragraphs": [
+        "Ease is the weakest part of every task. In two tasks it is off target, and in those same two tasks only 6 of 10 people finished.",
+        "Start with Налаштування профілю (profile setup). Its average ease rating was 5 against a target of 5.6, the lowest of the three tasks.",
+        "Next is Реєстрація (sign-up). Its average ease rating was 5.4 against a target of 5.6.",
+        "Look into what made these two tasks feel hard and why some people did not finish. The numbers show that people struggled, not why. Watching the sessions or reading the comments is a good next step."
+      ]
+    },
+    {
+      "id": "limits",
+      "heading": "What this number cannot tell you",
+      "paragraphs": [
+        "The score shows how well these people managed these three tasks. It does not say why they struggled, how other parts of the product work, or how other kinds of people would do.",
+        "Time counts only people who finished. In Реєстрація (sign-up) and Налаштування профілю (profile setup), 4 attempts that did not finish are left out of the time. In Підтвердження email (confirm email), 1 such attempt is left out.",
+        "Mistakes were recorded but not counted, because the possible mistakes were not listed before the study. A test account was left out. When someone tried sign-up more than once, only the first attempt counts.",
+        "On the original form, a low ease rating meant easy. We flipped it, so a higher rating now means easier.",
+        "One comment in the data asked for every task to be marked as done. We ignored it and did not change the data.",
+        "Another common way of combining the three parts gives 64%. So the answer does not depend on the method we chose."
+      ]
+    }
+  ],
+  "glossary": [
+    { "term": "Usability score", "definition": "One number from 0 to 100% that sums up how well people managed the tasks. 50% means exactly on target." },
+    { "term": "Target", "definition": "The level agreed before the study that counts as good enough." },
+    { "term": "Range", "definition": "The span the true score most likely falls in. A small study gives a wide range." },
+    { "term": "Ease rating (satisfaction)", "definition": "How easy people said a task felt, from 1 to 7, where a higher rating means easier. The chart calls it satisfaction." }
+  ]
+}

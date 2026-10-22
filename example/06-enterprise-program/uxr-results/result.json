@@ -1,0 +1,1089 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "sum3",
+    "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "original",
+      "smoothing": "none",
+      "timeTarget": "target",
+      "timeLog": true,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "errors",
+        "decision": "sum3",
+        "why": "Errors are present but their opportunities were not defined before the study, so errors are left out (Microsoft and Autodesk found them unreliable).",
+        "params": {
+          "case": "not-predefined"
+        }
+      },
+      {
+        "rule": "default",
+        "decision": "sum3",
+        "why": "Nothing in the data or goal calls for a variant; the three-component SUM is the most stable default."
+      }
+    ],
+    "suggestions": [
+      "With this many tasks, pca-entropy (data-driven weights) could rank tasks against each other. It is planned for v2 and gives dataset-relative scores.",
+      "Accessibility data is present: report it as a separate pass/fail gate next to SUM, not blended into it (SUMA has no validated formula yet)."
+    ]
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "T01",
+          "components": {
+            "completion": {
+              "x": 8,
+              "n": 12,
+              "p": 0.6666666666666666,
+              "score": 0.6666666666666666,
+              "z": 0.4307272992954576,
+              "pct": 0.6666666666666666,
+              "targetPct": null,
+              "ci": [
+                0.3880109657859543,
+                0.864491031995632
+              ]
+            },
+            "time": {
+              "n": 8,
+              "target": 78,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 79.875,
+              "median": 78.3,
+              "geoMean": 68.50152836192757,
+              "ci": [
+                39.69165100232534,
+                118.22283199167153
+              ],
+              "z": 0.19893093245544446,
+              "pct": 0.5788416137704164,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.0277777777777772,
+              "sd": 1.067975838009639,
+              "ci": [
+                2.3492183035049234,
+                3.706337252050631
+              ],
+              "z": -0.9103410279713164,
+              "pct": 0.18132134384749163,
+              "targetPct": 0.5,
+              "alpha": 0.9166051660516604
+            }
+          },
+          "sum": {
+            "z": -0.09356093207347145,
+            "pct": 0.46272897255964973,
+            "targetPct": 0.5,
+            "ci": [
+              0.19908657090978585,
+              0.6678424672057678
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T02",
+          "components": {
+            "completion": {
+              "x": 7,
+              "n": 12,
+              "p": 0.5833333333333334,
+              "score": 0.5833333333333334,
+              "z": 0.2104283942479248,
+              "pct": 0.5833333333333334,
+              "targetPct": null,
+              "ci": [
+                0.3188772556619328,
+                0.8073737432288604
+              ]
+            },
+            "time": {
+              "n": 7,
+              "target": 111,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 97.11428571428573,
+              "median": 92.4,
+              "geoMean": 95.03859771730058,
+              "ci": [
+                77.3775520379999,
+                116.73069020890111
+              ],
+              "z": 0.6983906981081177,
+              "pct": 0.7575335539999078,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.111111111111111,
+              "sd": 1.113129479915629,
+              "ci": [
+                2.403862381498609,
+                3.8183598407236135
+              ],
+              "z": -0.7985494095046906,
+              "pct": 0.2122758661723163,
+              "targetPct": 0.5,
+              "alpha": 0.8783967391304348
+            }
+          },
+          "sum": {
+            "z": 0.036756560950450656,
+            "pct": 0.514660445018045,
+            "targetPct": 0.5,
+            "ci": [
+              0.2829408656063175,
+              0.7944312209581273
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 5
+                },
+                "message": "5 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T03",
+          "components": {
+            "completion": {
+              "x": 8,
+              "n": 12,
+              "p": 0.6666666666666666,
+              "score": 0.6666666666666666,
+              "z": 0.4307272992954576,
+              "pct": 0.6666666666666666,
+              "targetPct": null,
+              "ci": [
+                0.3880109657859543,
+                0.864491031995632
+              ]
+            },
+            "time": {
+              "n": 8,
+              "target": 143,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 175.425,
+              "median": 161.7,
+              "geoMean": 154.88138931608603,
+              "ci": [
+                98.4533133285719,
+                243.65096455844147
+              ],
+              "z": -0.14727509797933291,
+              "pct": 0.4414574435333302,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.194444444444444,
+              "sd": 1.058475493514314,
+              "ci": [
+                2.521921201083118,
+                3.8669676878057704
+              ],
+              "z": -0.7610526275681433,
+              "pct": 0.2233128169684887,
+              "targetPct": 0.5,
+              "alpha": 0.937640871525169
+            }
+          },
+          "sum": {
+            "z": -0.1592001420840062,
+            "pct": 0.4367555959615894,
+            "targetPct": 0.5,
+            "ci": [
+              0.18456019350742361,
+              0.643674967574289
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 4
+                },
+                "message": "4 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T04",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 12,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.2537815976337061,
+                0.7462184023662939
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 176,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 146.10000000000002,
+              "median": 156.9,
+              "geoMean": 137.56845017263316,
+              "ci": [
+                90.81515652645331,
+                208.39118938684666
+              ],
+              "z": 0.6225483177003154,
+              "pct": 0.7332093086013795,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.8055555555555554,
+              "sd": 1.4596134352873644,
+              "ci": [
+                1.8781614235534332,
+                3.7329496875576775
+              ],
+              "z": -0.8183293025178862,
+              "pct": 0.20658458923634335,
+              "targetPct": 0.5,
+              "alpha": 0.964836033188463
+            }
+          },
+          "sum": {
+            "z": -0.0652603282725236,
+            "pct": 0.47398336421556553,
+            "targetPct": 0.5,
+            "ci": [
+              0.22837819315769678,
+              0.6971183221282539
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T05",
+          "components": {
+            "completion": {
+              "x": 7,
+              "n": 12,
+              "p": 0.5833333333333334,
+              "score": 0.5833333333333334,
+              "z": 0.2104283942479248,
+              "pct": 0.5833333333333334,
+              "targetPct": null,
+              "ci": [
+                0.3188772556619328,
+                0.8073737432288604
+              ]
+            },
+            "time": {
+              "n": 7,
+              "target": 208,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 202.62857142857143,
+              "median": 217.2,
+              "geoMean": 180.94374004131276,
+              "ci": [
+                107.35318489749574,
+                304.98058433385074
+              ],
+              "z": 0.24686540089001263,
+              "pct": 0.5974938030989188,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 3.0277777777777772,
+              "sd": 1.1845668631186055,
+              "ci": [
+                2.275139900335881,
+                3.7804156552196733
+              ],
+              "z": -0.8207406880035935,
+              "pct": 0.20589699469508518,
+              "targetPct": 0.5,
+              "alpha": 0.901619676064787
+            }
+          },
+          "sum": {
+            "z": -0.121148964288552,
+            "pct": 0.45178652343171727,
+            "targetPct": 0.5,
+            "ci": [
+              0.18292014941185925,
+              0.6506980168690331
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 5
+                },
+                "message": "5 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T06",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 12,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.2537815976337061,
+                0.7462184023662939
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 241,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 237,
+              "median": 221.7,
+              "geoMean": 233.42414203796136,
+              "ci": [
+                191.4748636109429,
+                284.5638798671243
+              ],
+              "z": 0.16920061998384286,
+              "pct": 0.5671805789273106,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.9722222222222228,
+              "sd": 1.218198150551352,
+              "ci": [
+                2.1982160441996563,
+                3.746228400244789
+              ],
+              "z": -0.8436868643353372,
+              "pct": 0.19942220484378143,
+              "targetPct": 0.5,
+              "alpha": 0.8814520703346569
+            }
+          },
+          "sum": {
+            "z": -0.2248287481171648,
+            "pct": 0.411056250394116,
+            "targetPct": 0.5,
+            "ci": [
+              0.2061330849957736,
+              0.7525732635942596
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T07",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 12,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.2537815976337061,
+                0.7462184023662939
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 273,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 268.2,
+              "median": 227.4,
+              "geoMean": 251.72226132170204,
+              "ci": [
+                171.24877138696672,
+                370.01197924935144
+              ],
+              "z": 0.22106680213026847,
+              "pct": 0.5874797905842818,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.722222222222222,
+              "sd": 1.0715167512214394,
+              "ci": [
+                2.0414129590291212,
+                3.4030314854153225
+              ],
+              "z": -1.1924944489399893,
+              "pct": 0.11653371302969529,
+              "targetPct": 0.5,
+              "alpha": 0.8247800586510265
+            }
+          },
+          "sum": {
+            "z": -0.32380921560324033,
+            "pct": 0.3730412393781225,
+            "targetPct": 0.5,
+            "ci": [
+              0.17443017027262736,
+              0.8725300189280459
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T08",
+          "components": {
+            "completion": {
+              "x": 5,
+              "n": 12,
+              "p": 0.4166666666666667,
+              "score": 0.4166666666666667,
+              "z": -0.2104283942479248,
+              "pct": 0.4166666666666667,
+              "targetPct": null,
+              "ci": [
+                0.19262625677113968,
+                0.6811227443380672
+              ]
+            },
+            "time": {
+              "n": 5,
+              "target": 306,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 238.32000000000002,
+              "median": 187.2,
+              "geoMean": 219.81093149131405,
+              "ci": [
+                126.61935572754523,
+                381.5913082597382
+              ],
+              "z": 0.7447010176635491,
+              "pct": 0.7717737580861564,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.861111111111111,
+              "sd": 1.1930635663704903,
+              "ci": [
+                2.103074685980724,
+                3.619147536241498
+              ],
+              "z": -0.9545919605554545,
+              "pct": 0.16989204216247092,
+              "targetPct": 0.5,
+              "alpha": 0.9118864577173271
+            }
+          },
+          "sum": {
+            "z": -0.1401064457132767,
+            "pct": 0.4442879439431716,
+            "targetPct": 0.5,
+            "ci": [
+              0.21760933085265383,
+              0.8428475972382924
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 7
+                },
+                "message": "7 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T09",
+          "components": {
+            "completion": {
+              "x": 5,
+              "n": 12,
+              "p": 0.4166666666666667,
+              "score": 0.4166666666666667,
+              "z": -0.2104283942479248,
+              "pct": 0.4166666666666667,
+              "targetPct": null,
+              "ci": [
+                0.19262625677113968,
+                0.6811227443380672
+              ]
+            },
+            "time": {
+              "n": 5,
+              "target": 338,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 259.68,
+              "median": 229.2,
+              "geoMean": 233.2022739420973,
+              "ci": [
+                121.69468730538334,
+                446.88311195783217
+              ],
+              "z": 0.708544383724853,
+              "pct": 0.7606963699709252,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.75,
+              "sd": 1.3716096862129297,
+              "ci": [
+                1.8785207825312247,
+                3.6214792174687753
+              ],
+              "z": -0.9113379794300673,
+              "pct": 0.18105866051691624,
+              "targetPct": 0.5,
+              "alpha": 0.9624161073825503
+            }
+          },
+          "sum": {
+            "z": -0.13774066331771306,
+            "pct": 0.44522269049965146,
+            "targetPct": 0.5,
+            "ci": [
+              0.18825984744378385,
+              0.7971764186238322
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 7
+                },
+                "message": "7 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "T10",
+          "components": {
+            "completion": {
+              "x": 6,
+              "n": 12,
+              "p": 0.5,
+              "score": 0.5,
+              "z": 0,
+              "pct": 0.5,
+              "targetPct": null,
+              "ci": [
+                0.2537815976337061,
+                0.7462184023662939
+              ]
+            },
+            "time": {
+              "n": 6,
+              "target": 371,
+              "targetSource": "contract target",
+              "log": true,
+              "mean": 366.3,
+              "median": 415.79999999999995,
+              "geoMean": 331.52299982163106,
+              "ci": [
+                190.55571696663776,
+                576.7735608267039
+              ],
+              "z": 0.21321188113844597,
+              "pct": 0.584419149239898,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 12,
+              "from": [
+                "ease",
+                "satisfaction",
+                "perceived_time"
+              ],
+              "scale": [
+                1,
+                5
+              ],
+              "target": 4,
+              "mean": 2.75,
+              "sd": 1.2154310870109943,
+              "ci": [
+                1.9777519302738944,
+                3.5222480697261056
+              ],
+              "z": -1.0284416890093029,
+              "pct": 0.15187105336624637,
+              "targetPct": 0.5,
+              "alpha": 0.8991452991452991
+            }
+          },
+          "sum": {
+            "z": -0.27174326929028564,
+            "pct": 0.39290971432515864,
+            "targetPct": 0.5,
+            "ci": [
+              0.07404761321099558,
+              0.6019025737028012
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 6
+                },
+                "message": "6 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": -0.15006421478097834,
+        "pct": 0.4403569763479386,
+        "targetPct": 0.5,
+        "ci": [
+          0.22977100382223561,
+          0.7047891048313311
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 40,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T01",
+        "group": null,
+        "task": "T01"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 5
+        },
+        "message": "5 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T02",
+        "group": null,
+        "task": "T02"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 4
+        },
+        "message": "4 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T03",
+        "group": null,
+        "task": "T03"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T04",
+        "group": null,
+        "task": "T04"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 5
+        },
+        "message": "5 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T05",
+        "group": null,
+        "task": "T05"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T06",
+        "group": null,
+        "task": "T06"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T07",
+        "group": null,
+        "task": "T07"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 7
+        },
+        "message": "7 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T08",
+        "group": null,
+        "task": "T08"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 7
+        },
+        "message": "7 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T09",
+        "group": null,
+        "task": "T09"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 6
+        },
+        "message": "6 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task T10",
+        "group": null,
+        "task": "T10"
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.43402487190362066
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "status": "not-applicable",
+      "code": "needs",
+      "missing": [
+        {
+          "code": "empirical-time-impossible",
+          "params": {
+            "n": 2
+          },
+          "text": "an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 2 and no cutoff)",
+          "group": null
+        },
+        {
+          "code": "empirical-time-impossible",
+          "params": {
+            "n": 3
+          },
+          "text": "an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)",
+          "group": null
+        }
+      ],
+      "reason": "needs an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 2 and no cutoff); an empirical time target, which needs 4 satisfied successful users or a cutoff_s (found 3 and no cutoff)"
+    },
+    {
+      "preset": "pearson",
+      "status": "not-applicable",
+      "code": "no-benchmark",
+      "reason": "no completion benchmark"
+    },
+    {
+      "preset": "microsoft",
+      "string": "USABILITY-SCORE|success∧perceived-time∧ease∧satisfaction|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0
+        }
+      ]
+    }
+  ],
+  "methodDependent": true,
+  "contract": {
+    "version": 1,
+    "study": "Enterprise program",
+    "goal": "diagnose",
+    "decided_at": "2026-10-22T08:48:52.339Z",
+    "defaults": {
+      "scales": {
+        "ease": [
+          1,
+          5
+        ],
+        "satisfaction": [
+          1,
+          5
+        ],
+        "perceived_time": [
+          1,
+          5
+        ]
+      },
+      "satisfaction_from": [
+        "ease",
+        "satisfaction",
+        "perceived_time"
+      ],
+      "sat_target": 4,
+      "expert_multiplier": 3,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "T01": {
+        "time_target_s": 78
+      },
+      "T02": {
+        "time_target_s": 111
+      },
+      "T03": {
+        "time_target_s": 143
+      },
+      "T04": {
+        "time_target_s": 176
+      },
+      "T05": {
+        "time_target_s": 208
+      },
+      "T06": {
+        "time_target_s": 241
+      },
+      "T07": {
+        "time_target_s": 273
+      },
+      "T08": {
+        "time_target_s": 306
+      },
+      "T09": {
+        "time_target_s": 338
+      },
+      "T10": {
+        "time_target_s": 371
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": true
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:48:57.750Z"
+}

@@ -1,0 +1,543 @@
+{
+  "study": {
+    "name": "Site search benchmark",
+    "date": "2026-09-14",
+    "method": "unmoderated remote",
+    "moderators": [
+      {
+        "name": "Iryna"
+      },
+      {
+        "name": "Tom"
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "find-product",
+      "description": "Find a 65-inch TV",
+      "cutoff_s": 180
+    },
+    {
+      "id": "filter-by-price",
+      "description": "Show TVs under $800",
+      "cutoff_s": 180
+    },
+    {
+      "id": "compare-two",
+      "description": "Compare two models side by side",
+      "cutoff_s": 240
+    },
+    {
+      "id": "return-policy",
+      "description": "Find the return policy",
+      "cutoff_s": 180
+    }
+  ],
+  "sessions": [
+    {
+      "pid": "S01",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 33278,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S01",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 53317,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S01",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 92447,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S01",
+      "task": "return-policy",
+      "outcome": "abandoned",
+      "duration_ms": 31132,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S02",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 18122,
+      "q1_easy": 7,
+      "q2_satisfied": 7,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S02",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 56080,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S02",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 139559,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S02",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 66481,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S03",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 36965,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S03",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 136471,
+      "q1_easy": 4,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S03",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 80716,
+      "q1_easy": 4,
+      "q2_satisfied": 5,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S03",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 63426,
+      "q1_easy": 5,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S04",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 40600,
+      "q1_easy": 6,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S04",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 34775,
+      "q1_easy": 7,
+      "q2_satisfied": 7,
+      "q3_confident": 7
+    },
+    {
+      "pid": "S04",
+      "task": "compare-two",
+      "outcome": "abandoned",
+      "duration_ms": 122990,
+      "q1_easy": 5,
+      "q2_satisfied": 3,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S04",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 71167,
+      "q1_easy": 5,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S05",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 31315,
+      "q1_easy": 4,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S05",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 117242,
+      "q1_easy": 4,
+      "q2_satisfied": 5,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S05",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 240000,
+      "q1_easy": 3,
+      "q2_satisfied": 2,
+      "q3_confident": 3
+    },
+    {
+      "pid": "S05",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 84883,
+      "q1_easy": 5,
+      "q2_satisfied": 4,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S06",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 49757,
+      "q1_easy": 7,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S06",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 51700,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S06",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 59669,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S06",
+      "task": "return-policy",
+      "outcome": "fail",
+      "duration_ms": 68654,
+      "q1_easy": 4,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S07",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 39260,
+      "q1_easy": 5,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S07",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 69281,
+      "q1_easy": 7,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S07",
+      "task": "compare-two",
+      "outcome": "abandoned",
+      "duration_ms": 162876,
+      "q1_easy": 3,
+      "q2_satisfied": 4,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S07",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 30241,
+      "q1_easy": 7,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S08",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 50047,
+      "q1_easy": 6,
+      "q2_satisfied": 4,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S08",
+      "task": "filter-by-price",
+      "outcome": "fail",
+      "duration_ms": 80029,
+      "q1_easy": 3,
+      "q2_satisfied": 4,
+      "q3_confident": 2
+    },
+    {
+      "pid": "S08",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 118761,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S08",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 121225,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S09",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 49395,
+      "q1_easy": 6,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S09",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 146675,
+      "q1_easy": 6,
+      "q2_satisfied": 3,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S09",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 129130,
+      "q1_easy": 5,
+      "q2_satisfied": 4,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S09",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 37675,
+      "q1_easy": 6,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S10",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 42128,
+      "q1_easy": 5,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S10",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 52669,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S10",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 151608,
+      "q1_easy": 6,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S10",
+      "task": "return-policy",
+      "outcome": "fail",
+      "duration_ms": 144148,
+      "q1_easy": 4,
+      "q2_satisfied": 4,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S11",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 23413,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 7
+    },
+    {
+      "pid": "S11",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 72808,
+      "q1_easy": 5,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S11",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 240000,
+      "q1_easy": 6,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S11",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 92219,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S12",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 26212,
+      "q1_easy": 5,
+      "q2_satisfied": 7,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S12",
+      "task": "filter-by-price",
+      "outcome": "abandoned",
+      "duration_ms": 135930,
+      "q1_easy": 3,
+      "q2_satisfied": 3,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S12",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 146319,
+      "q1_easy": 5,
+      "q2_satisfied": 4,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S12",
+      "task": "return-policy",
+      "outcome": "fail",
+      "duration_ms": 55401,
+      "q1_easy": 4,
+      "q2_satisfied": 4,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S13",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 41355,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S13",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 113945,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S13",
+      "task": "compare-two",
+      "outcome": "fail",
+      "duration_ms": 240000,
+      "q1_easy": 2,
+      "q2_satisfied": 4,
+      "q3_confident": 4
+    },
+    {
+      "pid": "S13",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 69817,
+      "q1_easy": 5,
+      "q2_satisfied": 5,
+      "q3_confident": 5
+    },
+    {
+      "pid": "S14",
+      "task": "find-product",
+      "outcome": "success",
+      "duration_ms": 42303,
+      "q1_easy": 6,
+      "q2_satisfied": 4,
+      "q3_confident": 7
+    },
+    {
+      "pid": "S14",
+      "task": "filter-by-price",
+      "outcome": "success",
+      "duration_ms": 74198,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    },
+    {
+      "pid": "S14",
+      "task": "compare-two",
+      "outcome": "success",
+      "duration_ms": 74190,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 7
+    },
+    {
+      "pid": "S14",
+      "task": "return-policy",
+      "outcome": "success",
+      "duration_ms": 15142,
+      "q1_easy": 6,
+      "q2_satisfied": 6,
+      "q3_confident": 6
+    }
+  ]
+}

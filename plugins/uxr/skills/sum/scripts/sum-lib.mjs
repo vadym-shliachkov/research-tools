@@ -271,7 +271,7 @@ export function computeTask(rows, tc, config, header, fixed = {}) {
 function microsoftTask(rows, tc, header, qa) {
   const need = ['success', 'perceived_time', 'ease', 'satisfaction'];
   const missing = need.filter((c) => !header.includes(c));
-  if (missing.length) { qa.errors.push({ code: 'missing-columns', message: `The Usability Score needs ${missing.join(', ')}.` }); return { components: {}, sum: null, qa }; }
+  if (missing.length) { qa.errors.push({ code: 'missing-columns', params: { missing }, message: `The Usability Score needs ${missing.join(', ')}.` }); return { components: {}, sum: null, qa }; }
   let th = tc.thresholds;
   if (!th) {
     const fivePoint = ['perceived_time', 'ease', 'satisfaction'].every((c) => tc.scales?.[c]?.join('-') === '1-5');

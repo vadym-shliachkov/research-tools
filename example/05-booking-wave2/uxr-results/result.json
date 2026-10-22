@@ -1,0 +1,525 @@
+{
+  "status": "ok",
+  "version": "v1",
+  "method": {
+    "preset": "pearson",
+    "string": "SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1",
+    "config": {
+      "components": [
+        "completion",
+        "time",
+        "satisfaction"
+      ],
+      "agg": "z-mean",
+      "completion": "piecewise",
+      "smoothing": "none",
+      "timeTarget": "target",
+      "timeLog": true,
+      "failedTime": "exclude",
+      "shift": 0,
+      "weights": null
+    }
+  },
+  "choice": {
+    "reasons": [
+      {
+        "rule": "previous-run",
+        "decision": "reuse pearson",
+        "why": "A previous wave of this study exists. Reusing its method and targets keeps the waves comparable.",
+        "params": {
+          "preset": "pearson",
+          "differences": ""
+        }
+      }
+    ],
+    "suggestions": []
+  },
+  "groups": [
+    {
+      "group": null,
+      "tasks": [
+        {
+          "task": "search-hotel",
+          "components": {
+            "completion": {
+              "x": 13,
+              "n": 16,
+              "p": 0.8125,
+              "score": 0.5738636363636362,
+              "z": 0.1862193793052344,
+              "pct": 0.5738636363636362,
+              "targetPct": 0.5,
+              "ci": [
+                0.5619784108230836,
+                0.9420167888428936
+              ],
+              "benchmark": 0.78
+            },
+            "time": {
+              "n": 13,
+              "target": 90,
+              "targetSource": "previous wave",
+              "log": true,
+              "mean": 84.76923076923077,
+              "median": 86,
+              "geoMean": 69.04384184692402,
+              "ci": [
+                45.55268927964911,
+                104.64919135109687
+              ],
+              "z": 0.38516410044434285,
+              "pct": 0.6499420804582978,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 16,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.1875,
+              "sd": 1.2230426539304888,
+              "ci": [
+                4.5357865727699105,
+                5.8392134272300895
+              ],
+              "z": -0.2555103037459238,
+              "pct": 0.3991644932142644,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.10529105866788448,
+            "pct": 0.541927571155939,
+            "targetPct": 0.5,
+            "ci": [
+              0.37619503409466115,
+              0.7526760374607349
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 3
+                },
+                "message": "3 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "choose-room",
+          "components": {
+            "completion": {
+              "x": 11,
+              "n": 16,
+              "p": 0.6875,
+              "score": 0.4407051282051282,
+              "z": -0.1491817041494824,
+              "pct": 0.4407051282051282,
+              "targetPct": 0.5,
+              "ci": [
+                0.44149435375546386,
+                0.8609027660441224
+              ],
+              "benchmark": 0.78
+            },
+            "time": {
+              "n": 11,
+              "target": 60,
+              "targetSource": "previous wave",
+              "log": true,
+              "mean": 40.18181818181818,
+              "median": 30,
+              "geoMean": 35.408221457286395,
+              "ci": [
+                24.920263050074055,
+                50.310148983941446
+              ],
+              "z": 1.0086821189921475,
+              "pct": 0.8434364450271756,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 16,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.3125,
+              "sd": 1.138346754435279,
+              "ci": [
+                4.7059178318923705,
+                5.9190821681076295
+              ],
+              "z": -0.16471255289256448,
+              "pct": 0.43458511807956673,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.23159595398336688,
+            "pct": 0.5915740748311067,
+            "targetPct": 0.5,
+            "ci": [
+              0.4540732800773137,
+              0.7952872729222904
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 5
+                },
+                "message": "5 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "pay",
+          "components": {
+            "completion": {
+              "x": 13,
+              "n": 16,
+              "p": 0.8125,
+              "score": 0.5738636363636362,
+              "z": 0.1862193793052344,
+              "pct": 0.5738636363636362,
+              "targetPct": 0.5,
+              "ci": [
+                0.5619784108230836,
+                0.9420167888428936
+              ],
+              "benchmark": 0.78
+            },
+            "time": {
+              "n": 13,
+              "target": 120,
+              "targetSource": "previous wave",
+              "log": true,
+              "mean": 82.23076923076923,
+              "median": 84,
+              "geoMean": 73.270535708305,
+              "ci": [
+                53.68388753988867,
+                100.00340230563577
+              ],
+              "z": 0.9584389302131806,
+              "pct": 0.8310792638117812,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 16,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.1875,
+              "sd": 1.3275918047351754,
+              "ci": [
+                4.480076262777083,
+                5.894923737222917
+              ],
+              "z": -0.2353886178608467,
+              "pct": 0.40695355977569636,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.3030898972191895,
+            "pct": 0.6190893234411983,
+            "targetPct": 0.5,
+            "ci": [
+              0.4771342118735999,
+              0.8217894257680632
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 3
+                },
+                "message": "3 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        },
+        {
+          "task": "cancel-booking",
+          "components": {
+            "completion": {
+              "x": 11,
+              "n": 16,
+              "p": 0.6875,
+              "score": 0.4407051282051282,
+              "z": -0.1491817041494824,
+              "pct": 0.4407051282051282,
+              "targetPct": 0.5,
+              "ci": [
+                0.44149435375546386,
+                0.8609027660441224
+              ],
+              "benchmark": 0.78
+            },
+            "time": {
+              "n": 11,
+              "target": 90,
+              "targetSource": "previous wave",
+              "log": true,
+              "mean": 66.9090909090909,
+              "median": 81,
+              "geoMean": 60.09024108353831,
+              "ci": [
+                42.4716459815945,
+                85.01759209055726
+              ],
+              "z": 0.7820665834812857,
+              "pct": 0.782912277963939,
+              "targetPct": 0.5
+            },
+            "satisfaction": {
+              "n": 16,
+              "from": [
+                "seq"
+              ],
+              "scale": [
+                1,
+                7
+              ],
+              "target": 5.5,
+              "mean": 5.0625,
+              "sd": 0.9287087810503355,
+              "ci": [
+                4.5676260226682235,
+                5.5573739773317765
+              ],
+              "z": -0.47108416430089484,
+              "pct": 0.3187903165701036,
+              "targetPct": 0.5
+            }
+          },
+          "sum": {
+            "z": 0.05393357167696947,
+            "pct": 0.5215059553746754,
+            "targetPct": 0.5,
+            "ci": [
+              0.35262965162193366,
+              0.6971040480131564
+            ]
+          },
+          "qa": {
+            "errors": [],
+            "warnings": [
+              {
+                "code": "failed-time-excluded",
+                "params": {
+                  "failed": 5
+                },
+                "message": "5 failed attempt(s) are left out of time; time describes successful users only."
+              }
+            ],
+            "needs": []
+          }
+        }
+      ],
+      "product": {
+        "z": 0.17347762038685258,
+        "pct": 0.5688619912413815,
+        "targetPct": 0.5,
+        "ci": [
+          0.4687196942368435,
+          0.714203187770504
+        ]
+      },
+      "bootstrap": {
+        "B": 2000,
+        "skipped": 0,
+        "smoothedSamples": 136,
+        "seed": 20261021,
+        "unit": "participant"
+      }
+    }
+  ],
+  "qa": {
+    "errors": [],
+    "warnings": [
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 3
+        },
+        "message": "3 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task search-hotel",
+        "group": null,
+        "task": "search-hotel"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 5
+        },
+        "message": "5 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task choose-room",
+        "group": null,
+        "task": "choose-room"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 3
+        },
+        "message": "3 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task pay",
+        "group": null,
+        "task": "pay"
+      },
+      {
+        "code": "failed-time-excluded",
+        "params": {
+          "failed": 5
+        },
+        "message": "5 failed attempt(s) are left out of time; time describes successful users only.",
+        "where": "task cancel-booking",
+        "group": null,
+        "task": "cancel-booking"
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "preset": "sum4",
+      "status": "not-applicable",
+      "code": "no-error-data",
+      "reason": "no error data"
+    },
+    {
+      "preset": "sum3",
+      "string": "SUM3|zmean|completion=original|time=target,log|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.65417805542983
+        }
+      ]
+    },
+    {
+      "preset": "measuringu",
+      "string": "SUM3|pctmean|completion=original|time=target,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.6279034801801489
+        }
+      ]
+    },
+    {
+      "preset": "autodesk",
+      "string": "SUM3|zmean|completion=original|time=empirical,raw|failed-time=exclude|shift=0|v1",
+      "status": "ok",
+      "products": [
+        {
+          "group": null,
+          "pct": 0.6427041715730839
+        }
+      ]
+    },
+    {
+      "preset": "microsoft",
+      "status": "not-applicable",
+      "code": "missing-columns",
+      "reason": "The Usability Score needs perceived_time, ease, satisfaction."
+    }
+  ],
+  "methodDependent": false,
+  "contract": {
+    "version": 1,
+    "study": "Booking",
+    "goal": "benchmark",
+    "decided_at": "2026-10-22T08:49:42.450Z",
+    "defaults": {
+      "scales": {
+        "seq": [
+          1,
+          7
+        ]
+      },
+      "satisfaction_from": "seq",
+      "sat_target": 5.5,
+      "expert_multiplier": 3,
+      "completion_benchmark": 0.78,
+      "error_opportunities_predefined": false
+    },
+    "tasks": {
+      "search-hotel": {
+        "time_target_s": 90,
+        "time_target_from_previous_s": 90
+      },
+      "choose-room": {
+        "time_target_s": 60,
+        "time_target_from_previous_s": 60
+      },
+      "pay": {
+        "time_target_s": 120,
+        "time_target_from_previous_s": 120
+      },
+      "cancel-booking": {
+        "time_target_s": 90,
+        "time_target_from_previous_s": 90
+      }
+    },
+    "compare_with_measuringu": false,
+    "accessibility_data": false,
+    "previous": {
+      "method": {
+        "preset": "pearson",
+        "string": "SUM3|zmean|completion=piecewise|time=target,log|failed-time=exclude|shift=0|v1",
+        "config": {
+          "components": [
+            "completion",
+            "time",
+            "satisfaction"
+          ],
+          "agg": "z-mean",
+          "completion": "piecewise",
+          "smoothing": "none",
+          "timeTarget": "target",
+          "timeLog": true,
+          "failedTime": "exclude",
+          "shift": 0,
+          "weights": null
+        }
+      },
+      "from": "booking-2026-10-22/result.json",
+      "differences": []
+    }
+  },
+  "data": "data.csv",
+  "generated_at": "2026-10-22T08:49:43.822Z"
+}

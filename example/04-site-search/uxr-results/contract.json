@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "study": "Site search",
+  "goal": "benchmark",
+  "decided_at": "2026-10-22T08:48:52.339Z",
+  "defaults": {
+    "scales": {
+      "sat_1": [
+        1,
+        7
+      ],
+      "sat_2": [
+        1,
+        7
+      ],
+      "sat_3": [
+        1,
+        7
+      ]
+    },
+    "satisfaction_from": [
+      "sat_1",
+      "sat_2",
+      "sat_3"
+    ],
+    "sat_target": 5,
+    "time_target_s": null,
+    "expert_time_s": null,
+    "expert_multiplier": 3,
+    "cutoff_s": 180,
+    "completion_benchmark": null,
+    "error_opportunities_predefined": false,
+    "gate_threshold": null
+  },
+  "tasks": {
+    "find-product": {},
+    "filter-by-price": {},
+    "compare-two": {
+      "cutoff_s": 240
+    },
+    "return-policy": {}
+  },
+  "compare_with_measuringu": false,
+  "accessibility_data": false,
+  "changes": [
+    {
+      "at": "2026-10-22T08:49:18.772Z",
+      "change": "Added Laplace smoothing (--smoothing laplace)",
+      "why": "The run stopped because a task had 100% completion, which makes the original score infinite. The user chose Laplace smoothing before any score was seen."
+    }
+  ]
+}
